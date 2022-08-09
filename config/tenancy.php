@@ -218,7 +218,7 @@ return [
          * base_path() or database_path() to set this up.
          */
         // Migraciones de inquilinos (empresas)
-        'tenant-migrations-path' => database_path('migrations/tenant'),
+        'tenant-migrations-path' => database_path('migrations/Tenant'),
 
         /**
          * The default Seeder class used on newly created databases and while
