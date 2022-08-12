@@ -12,16 +12,8 @@ class TenantSeeder extends Seeder
    */
   public function run()
   {
-    // factory(\App\Models\Tenant\Roles::class, 2)->create();
-    factory(\App\Models\Tenant\Roles::class, 1)->create();
-    $roles = ["Administrador", "Empleado"];
-    foreach ($roles as $rol) {
-      DB::table('roles')->insert([
-        'nombre_rol' => $rol,
-        'created_at' => date('Y-m-d H:i:s'),
-        'updated_at' => date('Y-m-d H:i:s')
-      ]);
-    }
+    // factory(\App\Models\Tenant\Roles::class, 1)->create();
+    $this->roles();
   }
 
   public function roles()
