@@ -118,6 +118,7 @@ class RegisterController extends Controller
     return \App\Models\Tenant\User::create($user);
   }
 
+
   /**
    * The user has been registered
    *
