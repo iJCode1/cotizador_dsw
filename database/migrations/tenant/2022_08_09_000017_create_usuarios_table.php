@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Usuarios extends Migration
+class CreateUsuariosTable extends Migration
 {
   /**
    * Run the migrations.
@@ -25,7 +25,7 @@ class Usuarios extends Migration
 
       // Llave foranea
       $table->integer('rol_id')->unsigned();
-      $table->foreign('rol_id')->references('rol_id')->on('rol');
+      $table->foreign('rol_id')->references('rol_id')->on('roles');
 
       $table->rememberToken();
       $table->timestamps();

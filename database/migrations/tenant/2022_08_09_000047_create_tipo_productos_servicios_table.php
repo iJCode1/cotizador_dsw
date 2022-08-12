@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Rol extends Migration
+class CreateTipoProductosServiciosTable extends Migration
 {
   /**
    * Run the migrations.
@@ -13,9 +13,9 @@ class Rol extends Migration
    */
   public function up()
   {
-    Schema::create('rol', function(Blueprint $table){
-      $table->increments('rol_id');
-      $table->string('nombre_rol', 45);
+    Schema::create('tipo_productos_servicios', function(Blueprint $table){
+      $table->increments('tipo_id');
+      $table->string('nombre_tipo', 10);
 
       $table->rememberToken();
       $table->timestamps();
@@ -29,6 +29,6 @@ class Rol extends Migration
    */
   public function down()
   {
-    Schema::drop('rol');
+    Schema::drop('tipo_productos_servicios');
   }
 }

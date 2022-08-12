@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TipoProductosServicios extends Migration
+class CreateUnidadesDeMedidaTable extends Migration
 {
   /**
    * Run the migrations.
@@ -13,9 +13,10 @@ class TipoProductosServicios extends Migration
    */
   public function up()
   {
-    Schema::create('tipo_productos_servicios', function(Blueprint $table){
-      $table->increments('tipo_id');
-      $table->string('nombre_tipo', 10);
+    Schema::create('unidades_de_medida', function(Blueprint $table){
+      $table->increments('unidad_medida_id');
+      $table->string('nombre_unidad', 45);
+      $table->string('abrev', 5);
 
       $table->rememberToken();
       $table->timestamps();
@@ -29,6 +30,6 @@ class TipoProductosServicios extends Migration
    */
   public function down()
   {
-    Schema::drop('tipo_productos_servicios');
+    Schema::drop('unidades_de_medida');
   }
 }
