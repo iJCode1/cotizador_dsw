@@ -22,7 +22,7 @@ use Stringable;
 
 class RegisterController extends Controller
 {
-    /*
+  /*
     |--------------------------------------------------------------------------
     | Register Controller
     |--------------------------------------------------------------------------
@@ -33,26 +33,31 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+  use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
+  /**
+   * Where to redirect users after registration.
+   *
+   * @var string
+   */
+  protected $redirectTo = RouteServiceProvider::HOME;
 
-    protected $tenantName = null;
+  protected $tenantName = null;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    $this->middleware('guest');
+    $hostname = app(\Hyn\Tenancy\Environment::class)->hostname();
+    if ($hostname) {
+      $fqdn = $hostname->fqdn;
+      $this->tenantName = explode('.', $fqdn)[0];
     }
+  }
 
   /**
    * Show the aplication registration form
@@ -93,22 +98,27 @@ class RegisterController extends Controller
   }
 
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-    }
+  /**
+   * Create a new user instance after a valid registration.
+   *
+   * @param  array  $data
+   * @return \App\User
+   */
+  protected function create(array $data)
+  {
+    $user = [
+      'name' => $data['name'],
+      'email' => $data['email'],
+      'password' => Hash::make($data['password'])
+    ];
 
-    
+    if (!$this->tenantName) {
+      return User::create($user);
+    }
+    return \App\Models\Tenant\User::create($user);
+  }
+
+
   /**
    * The user has been registered
    *
