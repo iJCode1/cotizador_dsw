@@ -217,6 +217,7 @@ return [
          * @warn this has to be an absolute path, feel free to use helper methods like
          * base_path() or database_path() to set this up.
          */
+        // Migraciones de inquilinos (empresas)
         'tenant-migrations-path' => database_path('migrations/tenant'),
 
         /**
@@ -228,7 +229,7 @@ return [
          *
          * @warn specify a valid fully qualified class name.
          */
-        'tenant-seed-class' => false,
+        'tenant-seed-class' => TenantSeeder::class,
 //      eg an admin seeder under `app/Seeders/AdminSeeder.php`:
 //        'tenant-seed-class' => App\Seeders\AdminSeeder::class,
 
