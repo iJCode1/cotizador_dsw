@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\Tenant\Roles;
+use App\Models\Roles;
 
 
 $factory->define(Roles::class, function () {
