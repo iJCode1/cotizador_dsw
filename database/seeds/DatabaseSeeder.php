@@ -3,21 +3,22 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
-    {
-        // $this->call(UserSeeder::class);
-        $this->roles();
-        factory(App\User::class, 1)->create();
-    }
+  /**
+   * Seed the application's database.
+   *
+   * @return void
+   */
+  public function run()
+  {
+    // $this->call(UserSeeder::class);
+    $this->roles();
+    factory(App\User::class, 1)->create();
+  }
 
-    public function roles()
+  public function roles()
   {
     $roles = ["Administrador", "Empleado"];
     foreach ($roles as $rol) {
