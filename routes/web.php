@@ -18,6 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/**
+ * Rutas de un Administrador
+ */
+// Route::get('/empresa', 'EmpresaController')->name('empresa');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
