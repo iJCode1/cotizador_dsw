@@ -70,6 +70,9 @@
                                     </form>
                                 </div>
                             </li>
+                            <li class="nav-item">
+                              <a href="{{ url('/altaempresa') }}">Alta Empresa</a>
+                            </li>
                         @endguest
                     </ul>
                 </div>

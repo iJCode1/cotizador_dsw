@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmpresaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,13 +16,15 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+  return view('welcome');
 });
 
 /**
- * Rutas de un Administrador
+ * Rutas de un Administrador General
  */
-// Route::get('/empresa', 'EmpresaController')->name('empresa');
+Route::get('/altaempresa', [EmpresaController::class, 'altaempresa'])->name('altaempresa');
+Route::post('/registrarempresa', [EmpresaController::class, 'registrarempresa'])->name('registrarempresa');
+
 
 Auth::routes();
 
