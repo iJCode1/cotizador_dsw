@@ -233,29 +233,17 @@
     $estadoSelect.addEventListener('change', ()=> {
       $municipiosSelect.innerHTML = "";
       let estadoID = $estadoSelect.selectedIndex;
-      // console.log(estadoID);
-
       const municipios = @json($municipios);
-
-      
 
       municipios.forEach((mun) => {
         if(mun.estado_id === estadoID){
-          // console.log("Mun", mun);
-
           let option = document.createElement('option');
           option.value= mun.municipio_id;
           option.textContent = mun.nombre;
-          // console.log(option);
           $municipiosSelect.appendChild(option);
-          // $municipiosSelect.appendChild(option);
-
-          // <option value="{{$estado->id}}">{{$estado->nombre}}</option>
         }
       });
-
     });
-    // console.log($estadoSelect);
   }
 
 </script>
