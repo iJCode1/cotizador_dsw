@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Estados;
@@ -53,14 +55,23 @@ class EmpresaController extends Controller
    */
   public function altaEmpresa()
   {
+    $id = Auth::user()->id ?? 0; // ID del usuario logueado
+    // Consulta entre 2 tablas - Users y Roles
+    $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
+    ->select('users.name', 'roles.nombre_rol AS NombreRol')
+    ->where('users.id', "=", $id)
+    ->get();
+
     $estados = Estados::select('estado_id', 'nombre')->get();
     $municipios = Municipios::select('municipio_id', 'nombre', 'estado_id')
       ->orderBy('estado_id')
       ->orderBy('nombre', 'Asc')
       ->get();
+      
     return view('altaEmpresa')
       ->with('estados', $estados)
-      ->with('municipios', $municipios);
+      ->with('municipios', $municipios)
+      ->with('user', $user);
   }
 
   /**
