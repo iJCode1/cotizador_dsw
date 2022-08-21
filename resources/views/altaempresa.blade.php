@@ -8,7 +8,7 @@
         <div class="card-header">{{ __('Registrar') }}</div>
 
         <div class="card-body">
-          <form method="POST" action="{{ route('registrarempresa') }}">
+          <form method="POST" action="{{ route('registrarEmpresa') }}">
             @csrf
 
             <!-- Registro de un Inquilino (Empresa): fqdn - fully qualified domain name -->

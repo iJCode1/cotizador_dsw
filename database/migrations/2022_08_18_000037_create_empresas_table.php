@@ -16,8 +16,6 @@ class CreateEmpresasTable extends AbstractMigration
     {
         Schema::create('empresas', function (Blueprint $table) {
             $table->bigIncrements('empresa_id');
-            $table->string('fqdn', 100);
-            // $table->string('uuid');
             $table->string('direccion', 255);
             $table->string('codigo_postal', 5);
             $table->string('numero', 10);
@@ -26,15 +24,13 @@ class CreateEmpresasTable extends AbstractMigration
             $table->string('telefono', 10);
             $table->string('correo_electronico', 50);
             $table->string('contraseña');
-
+            $table->bigInteger('hostname_id')->unsigned()->nullable();
             $table->bigInteger('municipio_id')->unsigned()->nullable();
-            $table->foreign('municipio_id')->references('municipio_id')->on('municipios')->onDelete('set null');
-            
             $table->bigInteger('usuario_id')->unsigned()->nullable();
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('set null');
 
-            $table->bigInteger('website_id')->unsigned()->nullable();
-            $table->foreign('website_id')->references('id')->on('websites')->onDelete('set null');
+            $table->foreign('municipio_id')->references('municipio_id')->on('municipios')->onDelete('set null');
+            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('hostname_id')->references('id')->on('hostnames')->onDelete('set null');
 
             $table->timestamps();
             $table->softDeletes();

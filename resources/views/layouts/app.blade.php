@@ -71,7 +71,7 @@
                                 </div>
                             </li>
                             <li class="nav-item">
-                              <a href="{{ url('/altaempresa') }}">Alta Empresa</a>
+                              <a href="{{ route('altaEmpresa') }}">Alta Empresa</a>
                             </li>
                         @endguest
                     </ul>

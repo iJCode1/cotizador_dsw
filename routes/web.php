@@ -22,8 +22,8 @@ Route::get('/', function () {
 /**
  * Rutas de un Administrador General
  */
-Route::get('/altaempresa', [EmpresaController::class, 'altaempresa'])->name('altaempresa');
-Route::post('/registrarempresa', [EmpresaController::class, 'registrarempresa'])->name('registrarempresa');
+Route::get('/empresa', [EmpresaController::class, 'altaEmpresa'])->name('altaEmpresa');
+Route::post('/empresa/register', [EmpresaController::class, 'registrarEmpresa'])->name('registrarEmpresa');
 
 
 Auth::routes();
