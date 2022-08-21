@@ -14,7 +14,7 @@ class CreateMunicipiosTable extends Migration
   public function up()
   {
     Schema::create('municipios', function (Blueprint $table) {
-      $table->increments('municipio_id');
+      $table->bigIncrements('municipio_id');
       $table->string('clave', 3);
       $table->string('nombre', 100);
       $table->string('activo', 1);
@@ -34,6 +34,8 @@ class CreateMunicipiosTable extends Migration
    */
   public function down()
   {
+    Schema::disableForeignKeyConstraints();
     Schema::dropIfExists('municipios');
+    Schema::enableForeignKeyConstraints();
   }
 }

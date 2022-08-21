@@ -27,7 +27,8 @@
 
 
             @if(!$tenantName)
-            
+              <p>Soy una empresa!</p>
+
               {{-- Dirección --}}
               <div class="form-group row">
                 <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Dirección') }}</label>
