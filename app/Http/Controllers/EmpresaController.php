@@ -84,6 +84,7 @@ class EmpresaController extends Controller
     //   'password' => ['required', 'string', 'min:8', 'max:50', 'confirmed'],
     // ]);
     $this->registered($request);
+    return redirect()->route('home');
   }
 
   /**
@@ -125,13 +126,12 @@ class EmpresaController extends Controller
       'telefono' => $request->phone,
       'correo_electronico' => $request->email,
       'contraseña' => Hash::make($request->password),
+      'usuario_id' => Auth::user()->id,
       'hostname_id' => $hostname->id,
       'municipio_id' => $request->municipio_id
     ];
 
     Empresas::create($empresa);
-    return redirect()->route('/empresa');
-
     // Session::flash('mensaje', "Se ha registrado la empresa $request->fqdn correctamente!");
     // Session::flash('tipoDeMensaje', "satisfactorio");
   }
