@@ -16,8 +16,8 @@ class CreateEmpresasTable extends AbstractMigration
     {
         Schema::create('empresas', function (Blueprint $table) {
             $table->bigIncrements('empresa_id');
-            $table->string('fqdn', 100);
-            $table->string('uuid');
+            // $table->string('fqdn', 100);
+            // $table->string('uuid');
             $table->string('direccion', 255);
             $table->string('codigo_postal', 5);
             $table->string('numero', 10);
@@ -26,9 +26,12 @@ class CreateEmpresasTable extends AbstractMigration
             $table->string('telefono', 10);
             $table->string('correo_electronico', 50);
             $table->string('contraseña');
+            $table->bigInteger('hostname_id')->unsigned()->nullable();
+
 
             $table->integer('municipio_id')->unsigned();
             $table->foreign('municipio_id')->references('municipio_id')->on('municipios');
+            $table->foreign('hostname_id')->references('id')->on('hostnames')->onDelete('set null');
 
             $table->timestamps();
             $table->softDeletes();

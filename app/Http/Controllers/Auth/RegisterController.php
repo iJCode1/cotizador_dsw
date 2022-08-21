@@ -119,7 +119,7 @@ class RegisterController extends Controller
       'name' => $data['name'],
       'email' => $data['email'],
       'password' => Hash::make($data['password'])
-      // ,'rol_id' => 1,
+      ,'rol_id' => 1,
     ];
 
     if (!$this->tenantName) {
