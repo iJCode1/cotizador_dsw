@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+
 use App\Http\Controllers\EmpresaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +18,13 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-  return view('welcome');
+  $id = Auth::user()->id ?? 0; // ID del usuario logueado
+  // Consulta entre 2 tablas - Users y Roles
+  $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
+  ->select('users.name', 'roles.nombre_rol AS NombreRol')
+  ->where('users.id', "=", $id)
+  ->get();
+  return view('welcome', ['user' => $user]);
 });
 
 /**

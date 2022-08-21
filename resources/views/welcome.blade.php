@@ -69,8 +69,10 @@
                 <div class="top-right links">
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
-                        <a href="{{ route('altaEmpresa') }}">Alta Empresa</a>
-                    @else
+                        @if ((Auth::user()->rol_id === 1) && ($user[0]->NombreRol === 'Administrador General'))
+                          <a href="{{ route('altaEmpresa') }}">Alta Empresa</a>
+                        @endif
+                    @else 
                         <a href="{{ route('login') }}">Login</a>
 
                         @if (Route::has('register'))

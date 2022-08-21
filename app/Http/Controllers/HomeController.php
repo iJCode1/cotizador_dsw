@@ -34,6 +34,6 @@ class HomeController extends Controller
       ->where('users.id', "=", $id)
       ->get();
       echo($consulta);
-      return view('home');
+      return view('home', ['user' => $consulta]);
     }
 }

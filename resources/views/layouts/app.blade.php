@@ -70,9 +70,14 @@
                                     </form>
                                 </div>
                             </li>
-                            <li class="nav-item">
-                              <a href="{{ route('altaEmpresa') }}">Alta Empresa</a>
-                            </li>
+                            {{-- @extends($user) --}}
+                            {{-- {{dd($user)}} --}}
+                            {{-- {{$user = $user[0] ?? ['NombreRol' => '']}} --}}
+                            {{-- @if ((Auth::user()->rol_id === 1) && ($user->NombreRol === 'Administrador General'))
+                              <li class="nav-item">
+                                <a href="{{ route('altaEmpresa') }}">Alta Empresa</a>
+                              </li>
+                            @endif --}}
                         @endguest
                     </ul>
                 </div>
