@@ -62,8 +62,10 @@ class EmpresaController extends Controller
     ->get();
 
     $empresas = Empresas::all();
+    $municipios = Municipios::all();
+    $estados = Estados::all();
 
-    return view('Empresa.index', ['user' => $user, 'empresas' => $empresas]);
+    return view('Empresa.index', ['user' => $user, 'empresas' => $empresas, 'municipios' => $municipios, 'estados' => $estados]);
   }
 
   /**
@@ -124,7 +126,7 @@ class EmpresaController extends Controller
     //   'password' => ['required', 'string', 'min:8', 'max:50', 'confirmed'],
     // ]);
     $this->registered($request);
-    return redirect()->route('home');
+    return redirect()->route('empresas');
   }
 
   /**

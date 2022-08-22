@@ -29,15 +29,26 @@
             </tr>
           </thead>
           <tbody>
-            {{-- {{dd($empresas[0])}} --}}
             @foreach ($empresas as $empresa)   
             <tr>
               <th scope="row">{{$empresa->empresa_id}}</th>
               <td>{{$empresa->direccion}}</td>
               <td>{{$empresa->codigo_postal}}</td>
               <td>{{$empresa->numero}}</td>
-              <td>Estado</td>
-              <td>Municipio</td>
+              @foreach ($municipios as $municipio)
+                @if ($municipio->municipio_id === $empresa->municipio_id)
+                  @foreach ($estados as $estado)
+                    @if ($estado->estado_id === $municipio->estado_id)
+                      <td>{{$estado->nombre}}</td>
+                    @endif
+                  @endforeach
+                @endif
+              @endforeach
+              @foreach ($municipios as $municipio)
+                @if ($municipio->municipio_id === $empresa->municipio_id)  
+                  <td>{{$municipio->nombre}}</td>
+                @endif
+              @endforeach
               <td>{{$empresa->rfc}}</td>
               <td>{{$empresa->nombre_contacto}}</td>
               <td>{{$empresa->telefono}}</td>
