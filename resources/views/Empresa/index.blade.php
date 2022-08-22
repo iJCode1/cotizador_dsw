@@ -52,8 +52,16 @@
               <td>{{$empresa->rfc}}</td>
               <td>{{$empresa->nombre_contacto}}</td>
               <td>{{$empresa->telefono}}</td>
-              <td>hostname</td>
-              <td>Usuario</td>
+              @foreach ($hostnames as $hostname)
+                @if ($hostname->id === $empresa->hostname_id)
+                  <td>{{$hostname->fqdn}}</td>
+                @endif
+              @endforeach
+              @foreach ($users as $usuario)
+                @if ($usuario->id === $empresa->usuario_id)
+                  <td>{{$usuario->name}}</td>
+                @endif
+              @endforeach
               <td>
                 <a href="#" class="btn btn-warning">Editar</a>
               </td>

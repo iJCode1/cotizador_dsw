@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 
 use App\Models\Estados;
 use App\Models\Municipios;
@@ -27,6 +26,9 @@ use Hyn\Tenancy\Traits\DispatchesEvents;
 use Hyn\Tenancy\Validators\HostnameValidator;
 use Illuminate\Contracts\Cache\Factory;
 use Illuminate\Database\Eloquent\Builder;
+
+use App\User;
+
 
 class EmpresaController extends Controller
 {
@@ -64,8 +66,10 @@ class EmpresaController extends Controller
     $empresas = Empresas::all();
     $municipios = Municipios::all();
     $estados = Estados::all();
+    $hostname = Hostname::all();
+    $users = User::all();
 
-    return view('Empresa.index', ['user' => $user, 'empresas' => $empresas, 'municipios' => $municipios, 'estados' => $estados]);
+    return view('Empresa.index', ['user' => $user, 'empresas' => $empresas, 'municipios' => $municipios, 'estados' => $estados, 'hostnames' => $hostname, 'users' => $users]);
   }
 
   /**
