@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\User;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use App\Models\Estados;
 use App\Models\Municipios;
 use App\Models\Empresas;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
@@ -46,6 +47,33 @@ class EmpresaController extends Controller
       $fqdn = $hostname->fqdn;
       $this->tenantName = explode('.', $fqdn)[0];
     }
+  }
+
+  /**
+   * Función index()
+   * Enlista las empresas que ha dado de alta el administrador
+   */
+  public function index(){
+    $id = Auth::user()->id ?? 0; // ID del usuario logueado
+    // Consulta entre 2 tablas - Users y Roles
+    $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
+    ->select('users.name', 'roles.nombre_rol AS NombreRol')
+    ->where('users.id', "=", $id)
+    ->get();
+
+    $empresas = Empresas::all();
+
+    return view('Empresa.index', ['user' => $user, 'empresas' => $empresas]);
+  }
+
+  /**
+   * Función desactivarEmpresa()
+   * Hace una baja lógica de la empresa seleccionada
+   */
+  public function desactivarEmpresa($id){
+    Empresas::find($id)
+            ->delete();
+    return redirect()->route('empresas');
   }
 
   /**
