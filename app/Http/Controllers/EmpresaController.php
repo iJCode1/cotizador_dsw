@@ -106,16 +106,31 @@ class EmpresaController extends Controller
   public function registrarEmpresa(Request $request)
   {
     // Las validaciones se hacen de izquierda a derecha
+    // dd($request);
+    $request->validate([
+      'fqdn' => 'required',
+      'address' => 'required',
+      'postal' => 'required|min:5|max:5',
+      'estado' => 'required',
+      'municipio_id' => 'required',
+      'number' => 'required|digits_between:1,5',
+      'rfc' => 'required|min:13|max:13',
+      'nameContact' => 'required','regex: /^[A-Z][A-Z,a-z,\s, á, é, í, ó, ú, ü]+$/',
+      'phone' => 'required|min:10|max:10',
+      'email' => 'required|email',
+      'password' => 'required|digits_between:8,45',
+      'password_confirmation' => 'required',
+    ]);
     // $this->validate($request, [
-    //   // 'fqdn' => ['required', 'string', 'max:20', Rule::unique('hostnames')->where(function ($query) use ($fqdn) {
-    //   //   return $query->where('fqdn', $fqdn);
-    //   // })],
+            // 'fqdn' => ['required', 'string', 'max:20', Rule::unique('hostnames')->where(function ($query) use ($fqdn) {
+            //   return $query->where('fqdn', $fqdn);
+            // })],
     //   'address' => ['required', 'string',],
     //   'postal' => ['required', 'string', 'regex: /^[0-9]{5}$/'],
     //   'number' => ['required', 'string', 'regex: /^[0-9]*$/', 'max:10'],
-    //   // 'estado' => ['required'],
+            // 'estado' => ['required'],
     //   'municipio' => ['required'],
-    //   // 'rfc' => ['required', 'string', 'regex: /^[0-9][A-Z,a-z]{13}$/'],
+            // 'rfc' => ['required', 'string', 'regex: /^[0-9][A-Z,a-z]{13}$/'],
     //   'nameContact' => ['required', 'string', 'max:50'],
     //   'phone' => ['required', 'string', 'regex: /^[0-9]{10}$/'],
     //   'email' => ['required', 'string', 'email', 'max:50', 'unique:users'],
@@ -228,6 +243,17 @@ class EmpresaController extends Controller
    */
   public function actualizarEmpresa(Request $request, $empresaID)
   {
+    $request->validate([
+      'address' => 'required',
+      'postal' => 'required|min:5|max:5',
+      'number' => 'required|digits_between:1,5',
+      'rfc' => 'required|min:13|max:13',
+      'nameContact' => 'required','regex: /^[A-Z][A-Z,a-z,\s, á, é, í, ó, ú, ü]+$/',
+      'phone' => 'required|min:10|max:10',
+      'municipio_id' => 'required',
+      'estado' => 'required',
+    ]);
+
     $empresa = Empresas::find($empresaID);
     $empresa->direccion = $request->address;
     $empresa->codigo_postal = $request->postal;
