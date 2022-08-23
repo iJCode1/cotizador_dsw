@@ -181,4 +181,65 @@ class EmpresaController extends Controller
     // Session::flash('mensaje', "Se ha registrado la empresa $request->fqdn correctamente!");
     // Session::flash('tipoDeMensaje', "satisfactorio");
   }
+
+  /**
+   * Función editarEmpresa()
+   * Obtiene la información de la empresa que se quiere editar
+   * Obtiene los estados y municipios y se lo manda a la vista de Empresa.editar
+   */
+  public function editarEmpresa($empresa){
+    $id = Auth::user()->id ?? 0; // ID del usuario logueado
+    // Consulta entre 2 tablas - Users y Roles
+    $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
+    ->select('users.name', 'roles.nombre_rol AS NombreRol')
+    ->where('users.id', "=", $id)
+    ->get();
+
+    $empresaFind = Empresas::find($empresa);
+
+    // Consulta entre 2 tablas - Empresas y Hostames
+    $fqdn = Hostname::find($empresaFind->hostname_id);
+
+    $municipioId = $empresaFind->municipio_id;
+    $municipios = Municipios::select('municipio_id', 'nombre', 'estado_id')
+      ->orderBy('estado_id')
+      ->orderBy('nombre', 'Asc')
+      ->get();
+    $municipioEmpresa = Municipios::find($municipioId);
+    $municipiosEmpresa = Municipios::where('estado_id', '=', $municipioEmpresa->estado_id)->get();
+
+    $estadoId = Estados::find($municipioEmpresa->estado_id);
+    $estados = Estados::all();
+    $estadoEmpresa = $estadoId->nombre;
+
+    // dd($municipiosEmpresa);
+    // dd($empresaFind);
+    return view('Empresa.editar', [
+      'empresa' => $empresaFind, 
+      'user' => $user, 
+      'fqdn' => $fqdn->fqdn, 
+      'municipios' => $municipios,
+      'estados' => $estados,
+      'municipioEmpresa' => $municipioEmpresa,
+      'municipiosEmpresa' => $municipiosEmpresa,
+      'estadoEmpresa' => $estadoEmpresa,
+    ]);
+  }
+
+  public function actualizarEmpresa(Request $request, $empresaID){
+    
+    $empresa = Empresas::find($empresaID);
+    // dd($empresa);
+    $empresa->direccion = $request->address;
+    $empresa->codigo_postal = $request->postal;
+    $empresa->numero = $request->number;
+    $empresa->rfc = $request->rfc;
+    $empresa->nombre_contacto = $request->nameContact;
+    $empresa->telefono = $request->phone;
+    $empresa->municipio_id = $request->municipio_id;
+    $empresa->update();
+
+    // dd($empresa);
+    return redirect()->route("empresas");
+  }
 }

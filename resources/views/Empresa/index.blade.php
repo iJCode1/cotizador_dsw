@@ -62,8 +62,9 @@
                   <td>{{$usuario->name}}</td>
                 @endif
               @endforeach
+              {{-- {{dd($empresa)}} --}}
               <td>
-                <a href="#" class="btn btn-warning">Editar</a>
+                <a href="{{ route('editarEmpresa', $empresa) }}" class="btn btn-warning">Editar</a>
               </td>
               <td>
                 <a href="{{ route('desactivarEmpresa', ['id' => $empresa->empresa_id]) }}" class="btn btn-danger">Eliminar</a>
