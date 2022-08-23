@@ -55,13 +55,14 @@ class EmpresaController extends Controller
    * Función index()
    * Enlista las empresas que ha dado de alta el administrador
    */
-  public function index(){
+  public function index()
+  {
     $id = Auth::user()->id ?? 0; // ID del usuario logueado
     // Consulta entre 2 tablas - Users y Roles
     $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
-    ->select('users.name', 'roles.nombre_rol AS NombreRol')
-    ->where('users.id', "=", $id)
-    ->get();
+      ->select('users.name', 'roles.nombre_rol AS NombreRol')
+      ->where('users.id', "=", $id)
+      ->get();
 
     $empresas = Empresas::all();
     $municipios = Municipios::all();
@@ -73,36 +74,27 @@ class EmpresaController extends Controller
   }
 
   /**
-   * Función desactivarEmpresa()
-   * Hace una baja lógica de la empresa seleccionada
-   */
-  public function desactivarEmpresa($id){
-    Empresas::find($id)
-            ->delete();
-    return redirect()->route('empresas');
-  }
-
-  /**
    * Función altaEmpresa()
    * Hace la consulta a las tablas de Estados y Municipios
-   * Retorna las consultas junto a una vista
+   * Retorna las consultas junto a la vista altaEmpresa
+   * La vista muestra formulario para dar de alta una empresa
    */
   public function altaEmpresa()
   {
     $id = Auth::user()->id ?? 0; // ID del usuario logueado
     // Consulta entre 2 tablas - Users y Roles
     $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
-    ->select('users.name', 'roles.nombre_rol AS NombreRol')
-    ->where('users.id', "=", $id)
-    ->get();
+      ->select('users.name', 'roles.nombre_rol AS NombreRol')
+      ->where('users.id', "=", $id)
+      ->get();
 
     $estados = Estados::select('estado_id', 'nombre')->get();
     $municipios = Municipios::select('municipio_id', 'nombre', 'estado_id')
       ->orderBy('estado_id')
       ->orderBy('nombre', 'Asc')
       ->get();
-      
-    return view('altaEmpresa')
+
+    return view('Empresa.altaEmpresa')
       ->with('estados', $estados)
       ->with('municipios', $municipios)
       ->with('user', $user);
@@ -142,6 +134,10 @@ class EmpresaController extends Controller
    * @return mixed
    */
 
+   /**
+    * Función registered()
+    * Esta función hace el registro de un website y un hostname
+    */
   protected function registered($request)
   {
     // Se concatena: fqdn.APP_DOMAIN
@@ -159,7 +155,8 @@ class EmpresaController extends Controller
   }
 
   /**
-   * Se hace la alta de una nueva empresa
+   * Función crearEmpresa()
+   * Se obtienen los datos ingresados en el formulario y se hace la alta de una nueva empresa
    */
   public function crearEmpresa($request, $hostname)
   {
@@ -187,13 +184,14 @@ class EmpresaController extends Controller
    * Obtiene la información de la empresa que se quiere editar
    * Obtiene los estados y municipios y se lo manda a la vista de Empresa.editar
    */
-  public function editarEmpresa($empresa){
+  public function editarEmpresa($empresa)
+  {
     $id = Auth::user()->id ?? 0; // ID del usuario logueado
     // Consulta entre 2 tablas - Users y Roles
     $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
-    ->select('users.name', 'roles.nombre_rol AS NombreRol')
-    ->where('users.id', "=", $id)
-    ->get();
+      ->select('users.name', 'roles.nombre_rol AS NombreRol')
+      ->where('users.id', "=", $id)
+      ->get();
 
     $empresaFind = Empresas::find($empresa);
 
@@ -212,12 +210,10 @@ class EmpresaController extends Controller
     $estados = Estados::all();
     $estadoEmpresa = $estadoId->nombre;
 
-    // dd($municipiosEmpresa);
-    // dd($empresaFind);
     return view('Empresa.editar', [
-      'empresa' => $empresaFind, 
-      'user' => $user, 
-      'fqdn' => $fqdn->fqdn, 
+      'empresa' => $empresaFind,
+      'user' => $user,
+      'fqdn' => $fqdn->fqdn,
       'municipios' => $municipios,
       'estados' => $estados,
       'municipioEmpresa' => $municipioEmpresa,
@@ -226,10 +222,13 @@ class EmpresaController extends Controller
     ]);
   }
 
-  public function actualizarEmpresa(Request $request, $empresaID){
-    
+  /**
+   * Función actualizarEmpresa()
+   * Recibe los datos editados de la empresa y los actualiza en el registro
+   */
+  public function actualizarEmpresa(Request $request, $empresaID)
+  {
     $empresa = Empresas::find($empresaID);
-    // dd($empresa);
     $empresa->direccion = $request->address;
     $empresa->codigo_postal = $request->postal;
     $empresa->numero = $request->number;
@@ -239,7 +238,17 @@ class EmpresaController extends Controller
     $empresa->municipio_id = $request->municipio_id;
     $empresa->update();
 
-    // dd($empresa);
     return redirect()->route("empresas");
+  }
+
+  /**
+   * Función desactivarEmpresa()
+   * Hace una baja lógica de la empresa seleccionada
+   */
+  public function desactivarEmpresa($id)
+  {
+    Empresas::find($id)
+      ->delete();
+    return redirect()->route('empresas');
   }
 }
