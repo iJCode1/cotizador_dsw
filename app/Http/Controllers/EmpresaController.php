@@ -117,7 +117,7 @@ class EmpresaController extends Controller
       'rfc' => 'required|min:13|max:13',
       'nameContact' => 'required','regex: /^[A-Z][A-Z,a-z,\s, á, é, í, ó, ú, ü]+$/',
       'phone' => 'required|min:10|max:10',
-      'email' => 'required|email',
+      'email' => 'required|email|unique:Empresas,correo_electronico',
       'password' => 'required|digits_between:8,45',
       'password_confirmation' => 'required',
     ]);
