@@ -108,7 +108,7 @@ class EmpresaController extends Controller
     // Las validaciones se hacen de izquierda a derecha
     // dd($request);
     $request->validate([
-      'fqdn' => 'required',
+      'fqdn' => 'required|unique:Empresas',
       'address' => 'required',
       'postal' => 'required|min:5|max:5',
       'estado' => 'required',
@@ -184,6 +184,7 @@ class EmpresaController extends Controller
       'telefono' => $request->phone,
       'correo_electronico' => $request->email,
       'contraseña' => Hash::make($request->password),
+      'fqdn' => $request->fqdn,
       'usuario_id' => Auth::user()->id,
       'hostname_id' => $hostname->id,
       'municipio_id' => $request->municipio_id

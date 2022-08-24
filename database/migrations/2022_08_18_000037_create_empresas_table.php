@@ -24,6 +24,7 @@ class CreateEmpresasTable extends AbstractMigration
             $table->string('telefono', 10);
             $table->string('correo_electronico', 50);
             $table->string('contraseña');
+            $table->string('fqdn');
             $table->bigInteger('hostname_id')->unsigned()->nullable();
             $table->bigInteger('municipio_id')->unsigned()->nullable();
             $table->bigInteger('usuario_id')->unsigned()->nullable();
