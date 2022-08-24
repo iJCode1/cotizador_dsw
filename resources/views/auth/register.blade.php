@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="container">
+  @if (!$tenantName)
+    <p>Soy el sistema general</p>
+  @else
+    <p>Soy el sistema de un inquilino</p>
+  @endif
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
