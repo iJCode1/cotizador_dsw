@@ -24,7 +24,7 @@ class CreateUsuariosTable extends Migration
       $table->string('contraseña', 50);
 
       // Llave foranea
-      $table->integer('rol_id')->unsigned();
+      $table->bigInteger('rol_id')->unsigned();
       $table->foreign('rol_id')->references('rol_id')->on('roles');
 
       $table->rememberToken();
