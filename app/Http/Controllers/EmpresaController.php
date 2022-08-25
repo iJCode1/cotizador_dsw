@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+if(!isset($_SESSION)) {
+  session_start();
+} else {
+  session_destroy();
+  session_start();
+}
 
 use App\Models\Estados;
 use App\Models\Municipios;
@@ -136,7 +142,12 @@ class EmpresaController extends Controller
     //   'email' => ['required', 'string', 'email', 'max:50', 'unique:users'],
     //   'password' => ['required', 'string', 'min:8', 'max:50', 'confirmed'],
     // ]);
+    $contraseña = Hash::make($request->password);
+    $_SESSION['name'] = $request->fqdn;
+    $_SESSION['email'] = $request->email;
+    $_SESSION['password'] = $contraseña;
     $this->registered($request);
+
     return redirect()->route('empresas');
   }
 
@@ -166,6 +177,7 @@ class EmpresaController extends Controller
     $hostname = app(HostnameRepository::class)->create($hostname);
 
     app(HostnameRepository::class)->attach($hostname, $website);
+
     $this->crearEmpresa($request, $hostname);
   }
 
