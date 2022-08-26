@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
 
   public function roles()
   {
-    $roles = ["Administrador General", "Empleado"];
+    $roles = ["Administrador General"];
     foreach ($roles as $rol) {
       DB::table('roles')->insert([
         'nombre_rol' => $rol,
