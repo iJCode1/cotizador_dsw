@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tenant;
 
 use Hyn\Tenancy\Traits\UsesTenantConnection;
 use Illuminate\Database\Eloquent\Model;
 
-class Roles extends Model
+class Rol extends Model
 {
   use UsesTenantConnection;
   protected $primaryKey = 'rol_id';

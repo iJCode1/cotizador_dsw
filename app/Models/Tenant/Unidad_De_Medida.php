@@ -5,7 +5,7 @@ namespace App\Models\Tenant;
 use Illuminate\Database\Eloquent\Model;
 use Hyn\Tenancy\Traits\UsesTenantConnection;
 
-class Unidades_De_Medida extends Model
+class Unidad_De_Medida extends Model
 {
   use UsesTenantConnection;
   protected $primaryKey = 'unidad_medida_id';

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Estados extends Model
+class Estado extends Model
 {
   protected $primaryKey = 'estado_id';
   protected $fillable = ['estado_id', 'clave', 'nombre', 'abrev', 'activo'];

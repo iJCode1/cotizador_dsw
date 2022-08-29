@@ -5,7 +5,7 @@ namespace App\Models\Tenant;
 use Illuminate\Database\Eloquent\Model;
 use Hyn\Tenancy\Traits\UsesTenantConnection;
 
-class Estatus_Cotizaciones extends Model
+class Estatus_Cotizacion extends Model
 {
   use UsesTenantConnection;
   protected $primaryKey = 'estatus_cotizacion_id';

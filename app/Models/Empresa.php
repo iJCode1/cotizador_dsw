@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Empresas extends Model
+class Empresa extends Model
 {
   use SoftDeletes;
   protected $primaryKey = 'empresa_id';

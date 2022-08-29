@@ -5,7 +5,7 @@ namespace App\Models\Tenant;
 use Illuminate\Database\Eloquent\Model;
 use Hyn\Tenancy\Traits\UsesTenantConnection;
 
-class Productos_Servicios extends Model
+class Producto_Servicio extends Model
 {
   use UsesTenantConnection;
   protected $primaryKey = 'producto_servicio_id';
