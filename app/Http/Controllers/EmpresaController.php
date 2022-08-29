@@ -167,14 +167,15 @@ class EmpresaController extends Controller
   protected function registered($request)
   {
     // Se concatena: fqdn.APP_DOMAIN
-    $fqdn = sprintf('%s.%s', $request->fqdn, env('APP_DOMAIN'));
+    $fqdn1 = sprintf('%s.%s', $request->fqdn, env('APP_DOMAIN'));
     $website = new Website;
-    $website->uuid = $fqdn;
+    $website->uuid = $fqdn1;
     app(WebsiteRepository::class)->create($website);
 
     $hostname = new Hostname();
-    $hostname->fqdn = $fqdn;
+    $hostname->fqdn = $fqdn1;
     $hostname = app(HostnameRepository::class)->create($hostname);
+
 
     app(HostnameRepository::class)->attach($hostname, $website);
 
