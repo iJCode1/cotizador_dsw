@@ -8,6 +8,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 class Tipo_Producto_Servicio extends Model
 {
   use UsesTenantConnection;
+  protected $table = "tipo_productos_servicios";
   protected $primaryKey = 'tipo_id';
   protected $fillable = ['tipo_id', 'nombre_tipo'];
 }

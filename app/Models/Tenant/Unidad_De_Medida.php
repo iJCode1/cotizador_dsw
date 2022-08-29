@@ -8,6 +8,7 @@ use Hyn\Tenancy\Traits\UsesTenantConnection;
 class Unidad_De_Medida extends Model
 {
   use UsesTenantConnection;
+  protected $table = "unidades_de_medida";
   protected $primaryKey = 'unidad_medida_id';
   protected $fillable = ['unidad_medida_id', 'nombre_unidad', 'abrev'];
 }
