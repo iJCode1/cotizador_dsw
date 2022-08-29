@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Models\Roles;
+use App\Models\Rol;
 use App\Models\Tenant\User as User2;
 
 class HomeController extends Controller

@@ -9,9 +9,9 @@ if(!isset($_SESSION)) {
   session_start();
 }
 
-use App\Models\Estados;
-use App\Models\Municipios;
-use App\Models\Empresas;
+use App\Models\Estado;
+use App\Models\Municipio;
+use App\Models\Empresa;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -70,9 +70,9 @@ class EmpresaController extends Controller
       ->where('users.id', "=", $id)
       ->get();
 
-    $empresas = Empresas::all();
-    $municipios = Municipios::all();
-    $estados = Estados::all();
+    $empresas = Empresa::all();
+    $municipios = Municipio::all();
+    $estados = Estado::all();
     $hostname = Hostname::all();
     $users = User::all();
 
@@ -94,8 +94,8 @@ class EmpresaController extends Controller
       ->where('users.id', "=", $id)
       ->get();
 
-    $estados = Estados::select('estado_id', 'nombre')->get();
-    $municipios = Municipios::select('municipio_id', 'nombre', 'estado_id')
+    $estados = Estado::select('estado_id', 'nombre')->get();
+    $municipios = Municipio::select('municipio_id', 'nombre', 'estado_id')
       ->orderBy('estado_id')
       ->orderBy('nombre', 'Asc')
       ->get();
@@ -202,7 +202,7 @@ class EmpresaController extends Controller
       'municipio_id' => $request->municipio_id
     ];
 
-    Empresas::create($empresa);
+    Empresa::create($empresa);
     // Session::flash('mensaje', "Se ha registrado la empresa $request->fqdn correctamente!");
     // Session::flash('tipoDeMensaje', "satisfactorio");
   }
@@ -221,21 +221,21 @@ class EmpresaController extends Controller
       ->where('users.id', "=", $id)
       ->get();
 
-    $empresaFind = Empresas::find($empresa);
+    $empresaFind = Empresa::find($empresa);
 
     // Consulta entre 2 tablas - Empresas y Hostames
     $fqdn = Hostname::find($empresaFind->hostname_id);
 
     $municipioId = $empresaFind->municipio_id;
-    $municipios = Municipios::select('municipio_id', 'nombre', 'estado_id')
+    $municipios = Municipio::select('municipio_id', 'nombre', 'estado_id')
       ->orderBy('estado_id')
       ->orderBy('nombre', 'Asc')
       ->get();
-    $municipioEmpresa = Municipios::find($municipioId);
-    $municipiosEmpresa = Municipios::where('estado_id', '=', $municipioEmpresa->estado_id)->get();
+    $municipioEmpresa = Municipio::find($municipioId);
+    $municipiosEmpresa = Municipio::where('estado_id', '=', $municipioEmpresa->estado_id)->get();
 
-    $estadoId = Estados::find($municipioEmpresa->estado_id);
-    $estados = Estados::all();
+    $estadoId = Estado::find($municipioEmpresa->estado_id);
+    $estados = Estado::all();
     $estadoEmpresa = $estadoId->nombre;
 
     return view('Empresa.editar', [
@@ -267,7 +267,7 @@ class EmpresaController extends Controller
       'estado' => 'required',
     ]);
 
-    $empresa = Empresas::find($empresaID);
+    $empresa = Empresa::find($empresaID);
     $empresa->direccion = $request->address;
     $empresa->codigo_postal = $request->postal;
     $empresa->numero = $request->number;
@@ -286,7 +286,7 @@ class EmpresaController extends Controller
    */
   public function desactivarEmpresa($id)
   {
-    Empresas::find($id)
+    Empresa::find($id)
       ->delete();
     return redirect()->route('empresas');
   }

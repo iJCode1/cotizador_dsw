@@ -13,8 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 // use Illuminate\Foundation\Auth\User;
 // use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use App\Models\Estados;
-use App\Models\Municipios;
+use App\Models\Estado;
+use App\Models\Municipio;
 // MultiTenancy
 use Hyn\Tenancy\Models\Hostname;
 use Hyn\Tenancy\Models\Website;
@@ -68,8 +68,8 @@ class RegisterController extends Controller
    */
   public function showRegistrationForm()
   {
-    $estados = Estados::select('estado_id', 'nombre')->get();
-    $municipios = Municipios::select('municipio_id', 'nombre', 'estado_id')
+    $estados = Estado::select('estado_id', 'nombre')->get();
+    $municipios = Municipio::select('municipio_id', 'nombre', 'estado_id')
                   ->orderBy('estado_id')
                   ->orderBy('nombre', 'Asc')
                   ->get();
