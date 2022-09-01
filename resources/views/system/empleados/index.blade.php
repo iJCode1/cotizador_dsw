@@ -21,7 +21,7 @@
         </tr>
       </thead>
       <tbody>
-        @foreach ($usuarios as $usuario)   
+        @foreach ($usuarios as $usuario)
         <tr>
           <th scope="row">{{$usuario->usuario_id}}</th>
           <td>{{$usuario->nombre}}</td>
@@ -36,7 +36,15 @@
           </td>
           <td>
             {{-- <a href="{{ route('desactivarEmpresa', ['id' => $empresa->empresa_id]) }}" class="btn btn-danger">Eliminar</a> --}}
-            <a href="#" class="btn btn-danger">Eliminar</a>
+            @if ($usuario->deleted_at != NULL)
+              <a href="#">
+                <button type="button" class="btn btn-info text-white">Activar</button>
+              </a>
+            @else
+              <a href="{{ Route('tenant.deleteUser', ['usuario_id' => $usuario->usuario_id]) }}">
+                <button type="button" class="btn btn-danger">Eliminar</button>
+              </a>
+            @endif
           </td>
         </tr>
         @endforeach

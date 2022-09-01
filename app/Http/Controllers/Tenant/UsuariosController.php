@@ -81,4 +81,13 @@ class UsuariosController extends Controller
       'usuarios' => $usuarios,
     ]);
   }
+
+  public function deleteUser($usuario_id){
+    // dd($usuario_id);
+    Usuario::find($usuario_id)
+            ->delete();
+    
+    return redirect()->route('tenant.showEmpleados');
+  }
+
 }

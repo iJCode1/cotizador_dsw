@@ -15,4 +15,5 @@ Route::middleware(['web'])
         Route::get('/empleados', [UsuariosController::class, 'index'])->name('showEmpleados');
         Route::get('/empleado', [UsuariosController::class, 'showRegister'])->name('showRegister');
         Route::post('/empleado/register', [UsuariosController::class, 'registerUser'])->name('registerUser');
+        Route::get('/empleado/{usuario_id}', [UsuariosController::class, 'deleteUser'])->name('deleteUser');
       });
