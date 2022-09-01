@@ -37,7 +37,7 @@
           <td>
             {{-- <a href="{{ route('desactivarEmpresa', ['id' => $empresa->empresa_id]) }}" class="btn btn-danger">Eliminar</a> --}}
             @if ($usuario->deleted_at != NULL)
-              <a href="#">
+              <a href="{{ route('tenant.activateUser', ['usuario_id' => $usuario->usuario_id]) }}">
                 <button type="button" class="btn btn-info text-white">Activar</button>
               </a>
             @else

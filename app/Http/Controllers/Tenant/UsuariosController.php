@@ -90,4 +90,12 @@ class UsuariosController extends Controller
     return redirect()->route('tenant.showEmpleados');
   }
 
+  public function activateUser($usuario_id){
+    Usuario::withTrashed()
+            ->find($usuario_id)
+            ->restore();
+
+    return redirect()->route('tenant.showEmpleados');
+  }
+
 }
