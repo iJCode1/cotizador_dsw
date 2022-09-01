@@ -67,8 +67,8 @@ class UsuariosController extends Controller
   }
 
   public function index(){
-    $usuarios = \App\Models\Tenant\Usuario::all();
-    
+    $usuarios = Usuario::withTrashed()->get();
+    // $usuarios = Usuario::all();
     $id = Auth::user()->id ?? 0; // ID del usuario logueado
     // Consulta entre 2 tablas - Users y Roles
     $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
