@@ -78,7 +78,7 @@
                           <label for="telefono" class="col-md-4 col-form-label text-md-right">{{ __('Telefono') }}</label>
 
                           <div class="col-md-6">
-                              <input id="telefono" type="text" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{ old('telefono', $usuarioFind->telefono) }}" autocomplete="telefono" autofocus placeholder="xxxxxxxxxx">
+                              <input id="telefono" type="number" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{ old('telefono', $usuarioFind->telefono) }}" autocomplete="telefono" autofocus placeholder="xxxxxxxxxx">
 
                               @error('telefono')
                                   <span class="invalid-feedback" role="alert">
@@ -87,50 +87,6 @@
                               @enderror
                           </div>
                         </div>
-
-                        {{-- Email --}}
-                        {{-- <div class="form-group row">
-                            <label for="correo" class="col-md-4 col-form-label text-md-right">{{ __('Correo electronico') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="correo" type="email" class="form-control @error('correo') is-invalid @enderror" name="correo" value="{{ old('correo', $usuarioFind->correo_electronico) }}" autocomplete="email" placeholder="example@example.com">
-
-                                @error('correo')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div> --}}
-
-                        {{-- Password --}}
-                        {{-- <div class="form-group row">
-                            <label for="contraseña" class="col-md-4 col-form-label text-md-right">{{ __('Contraseña') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="contraseña" type="password" class="form-control @error('contraseña') is-invalid @enderror" name="contraseña" autocomplete="new-password" placeholder="********">
-
-                                @error('contraseña')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div> --}}
-
-                        {{-- Confirmar Password --}}
-                        {{-- <div class="form-group row">
-                            <label for="confirmar_contraseña" class="col-md-4 col-form-label text-md-right">{{ __('Confirmar Contraseña') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="confirmar_contraseña" type="password" class="form-control @error('confirmar_contraseña') is-invalid @enderror" name="confirmar_contraseña" autocomplete="new-password" placeholder="********">
-                                @error('confirmar_contraseña')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div> --}}
 
                         {{-- Boton de registrar --}}
                         <div class="form-group row mb-0">

@@ -29,21 +29,18 @@ class UsuariosController extends Controller
   }
 
   public function registerUser(Request $request){
-    // dd($request);
-    // dd(Usuario::all());
 
     $request->validate([
-      'nombre' => 'required',
-      'app' => 'required',
-      'apm' => 'required',
-      'direccion' => 'required',
+      'nombre' => 'required|max:45',
+      'app' => 'required|max:45',
+      'apm' => 'required|max:45',
+      'direccion' => 'required|max:255',
       'telefono' => 'required|min:10|max:10',
-      'correo' => 'required|email',
+      'correo' => 'required|email|unique:Usuarios,correo_electronico',
       'contraseña' => 'required|digits_between:8,45',
       'confirmar_contraseña' => 'required|digits_between:8,45',
     ]);
 
-    // $usuario->save();
     $usuario = [
       'nombre' => $request->nombre,
       'apellido_p' => $request->app,
@@ -56,11 +53,7 @@ class UsuariosController extends Controller
       'rol_id' => 2,
     ];
 
-    // dd($usuario);
     \App\Models\Tenant\Usuario::create($usuario);
-    // dd(\App\Models\Tenant\Usuario::all());
-
-    // User2::create($usuario);
 
     return redirect()->route('tenant.showEmpleados');
 
@@ -116,6 +109,15 @@ class UsuariosController extends Controller
   }
 
   public function editUser(Request $request, $usuario_id){
+
+    $request->validate([
+      'nombre' => 'required|max:45',
+      'app' => 'required|max:45',
+      'apm' => 'required|max:45',
+      'direccion' => 'required|max:255',
+      'telefono' => 'required|min:10|max:10',
+    ]);
+
     $usuario = Usuario::withTrashed()->find($usuario_id);
     $usuario->nombre = $request->nombre;
     $usuario->apellido_p = $request->app;
