@@ -29,14 +29,14 @@ class UsuariosController extends Controller
   }
 
   public function registerUser(Request $request){
-
+    
     $request->validate([
       'nombre' => 'required|max:45',
       'app' => 'required|max:45',
       'apm' => 'required|max:45',
       'direccion' => 'required|max:255',
       'telefono' => 'required|min:10|max:10',
-      'correo' => 'required|email|unique:Usuarios,correo_electronico',
+      'correo' => 'required|email|unique:tenant.usuarios,correo_electronico',
       'contraseña' => 'required|digits_between:8,45',
       'confirmar_contraseña' => 'required|digits_between:8,45',
     ]);
@@ -49,7 +49,6 @@ class UsuariosController extends Controller
       'telefono' => $request->telefono,
       'correo_electronico' => $request->correo,
       'contraseña' => $request->contraseña,
-      // 'confirmar_contraseña' => $request->confirmar_contraseña,
       'rol_id' => 2,
     ];
 
