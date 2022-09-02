@@ -98,4 +98,33 @@ class UsuariosController extends Controller
     return redirect()->route('tenant.showEmpleados');
   }
 
+  public function showEditUser($usuario_id){
+    $id = Auth::user()->id ?? 0; // ID del usuario logueado
+    // Consulta entre 2 tablas - Users y Roles
+    $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
+    ->select('users.name', 'roles.nombre_rol AS NombreRol')
+    ->where('users.id', "=", $id)
+    ->get();
+
+    $usuarioFind = Usuario::withTrashed()->find($usuario_id);
+    // $usuarioFind = Usuario::find($usuario_id);
+
+    return view('system.empleados.edit', [
+      'user' => $user, 
+      'usuarioFind' => $usuarioFind,
+    ]);
+  }
+
+  public function editUser(Request $request, $usuario_id){
+    $usuario = Usuario::withTrashed()->find($usuario_id);
+    $usuario->nombre = $request->nombre;
+    $usuario->apellido_p = $request->app;
+    $usuario->apellido_m = $request->apm;
+    $usuario->direccion = $request->direccion;
+    $usuario->telefono = $request->telefono;
+    $usuario->update();
+
+    return redirect()->route('tenant.showEmpleados');
+  }
+
 }

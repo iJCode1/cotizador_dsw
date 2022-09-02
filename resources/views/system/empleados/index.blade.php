@@ -32,7 +32,9 @@
           <td>{{$usuario->correo_electronico}}</td>
           <td>
             {{-- <a href="{{ route('editarEmpresa', $empresa) }}" class="btn btn-warning">Editar</a> --}}
-            <a href="#" class="btn btn-warning">Editar</a>
+            <a href=" {{ route('tenant.showEditUser', ['usuario_id' => $usuario->usuario_id]) }} ">
+              <button type="button" class="btn btn-warning">Editar</button>
+            </a>
           </td>
           <td>
             {{-- <a href="{{ route('desactivarEmpresa', ['id' => $empresa->empresa_id]) }}" class="btn btn-danger">Eliminar</a> --}}
