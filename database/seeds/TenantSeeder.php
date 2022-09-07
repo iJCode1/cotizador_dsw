@@ -23,7 +23,7 @@ class TenantSeeder extends Seeder
 
   public function roles()
   {
-    $roles = ["Administrador", "Empleado"];
+    $roles = ["Administrador Empresa", "Empleado", "Cliente"];
     foreach ($roles as $rol) {
       DB::table('roles')->insert([
         'nombre_rol' => $rol,
