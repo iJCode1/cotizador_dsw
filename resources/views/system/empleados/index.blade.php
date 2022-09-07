@@ -16,6 +16,8 @@
           <th scope="col">Direccion</th>
           <th scope="col">Telefono</th>
           <th scope="col">Correo Electronico</th>
+          <th scope="col">Editar</th>
+          <th scope="col">Eliminar</th>
           {{-- <th scope="col">Contraseña</th> --}}
           {{-- <th scope="col">Rol</th> --}}
         </tr>
@@ -52,6 +54,7 @@
         @endforeach
       </tbody>
     </table>
+    <a href="{{route('tenant.showRegister')}}" class="btn btn-block btn-primary mb-">Crear Usuario</a>
     @endif
   </div>
 

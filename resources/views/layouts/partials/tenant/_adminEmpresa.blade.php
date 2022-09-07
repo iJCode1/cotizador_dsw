@@ -1,3 +1,11 @@
 <li>
-  <a href="#" class="nav-link">AdminEmpresa</a>
+  <a href="#" class="nav-link">Productos y/o Servicios</a>
+</li>
+
+<li>
+  <a href="{{route('tenant.showEmpleados')}}" class="nav-link">Empleados</a>
+</li>
+
+<li>
+  <a href="#" class="nav-link">Cotizaciones</a>
 </li>
