@@ -14,4 +14,9 @@ class Cliente extends Authenticatable
   protected $table = "clientes";
   protected $primaryKey = 'cliente_id';
   protected $fillable = ['cliente_id', 'nombre', 'apellido_p', 'apellido_m', 'direccion', 'telefono', 'correo_electronico', 'contraseña'];
+
+  public function rol()
+  {
+    return $this->belongsTo('App\Models\Tenant\Rol', 'rol_id', 'rol_id');
+  }
 }
