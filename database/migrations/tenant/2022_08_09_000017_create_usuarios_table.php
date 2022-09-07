@@ -27,6 +27,7 @@ class CreateUsuariosTable extends Migration
       $table->bigInteger('rol_id')->unsigned();
       $table->foreign('rol_id')->references('rol_id')->on('roles');
 
+      $table->softDeletesTz('deleted_at');
       $table->rememberToken();
       $table->timestamps();
     });

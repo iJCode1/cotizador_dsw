@@ -94,10 +94,10 @@ class UsuariosController extends Controller
   }
 
   public function deleteUser($usuario_id){
-    // dd($usuario_id);
-    Usuario::find($usuario_id)
+    $id = (int)$usuario_id;
+    // dd(Usuario::withTrashed()->find($id));
+    Usuario::withTrashed()->find($id)
             ->delete();
-    
     return redirect()->route('tenant.showEmpleados');
   }
 
