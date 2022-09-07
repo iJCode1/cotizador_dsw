@@ -11,4 +11,9 @@ class Rol extends Model
   protected $table = "roles";
   protected $primaryKey = 'rol_id';
   protected $fillable = ['rol_id', 'nombre_rol'];
+
+  public function user()
+  {
+    return $this->hasOne('App\User');
+  }
 }

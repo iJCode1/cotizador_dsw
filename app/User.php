@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Rol;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -36,4 +37,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function rol()
+    {
+      return $this->belongsTo('App\Models\Rol', 'rol_id', 'rol_id');
+    }
 }

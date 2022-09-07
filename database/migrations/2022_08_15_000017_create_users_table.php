@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
 
             $table->integer('rol_id')->unsigned();
-            $table->foreign('rol_id')->references('rol_id')->on('roles');
+            $table->foreign('rol_id')->references('rol_id')->on('roles')->onDelete('cascade');
 
             $table->rememberToken();
             $table->timestamps();
