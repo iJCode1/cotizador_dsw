@@ -54,8 +54,8 @@
         @endforeach
       </tbody>
     </table>
-    <a href="{{route('tenant.showRegister')}}" class="btn btn-block btn-primary mb-">Crear Usuario</a>
     @endif
+    <a href="{{route('tenant.showRegister')}}" class="btn btn-block btn-primary mb-">Crear Usuario</a>
   </div>
 
 @endsection()
