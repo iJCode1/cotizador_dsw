@@ -53,6 +53,18 @@
                                 </li>
                             @endif
                         @else
+                            @if ((Auth::user()->rol->nombre_rol === "Administrador General"))
+                              @include('layouts.partials._app')
+                            @endif
+                            @if ((Auth::user()->rol->nombre_rol === "Administrador Empresa"))
+                              @include('layouts.partials.tenant._adminEmpresa')
+                            @endif
+                            @if ((Auth::user()->rol->nombre_rol === "Empleado"))
+                              @include('layouts.partials.tenant._empleado')
+                            @endif
+                            @if ((Auth::user()->rol->nombre_rol === "Cliente"))
+                              @include('layouts.partials.tenant._cliente')
+                            @endif
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
