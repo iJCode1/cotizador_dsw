@@ -12,6 +12,25 @@ use App\Models\Tenant\Usuario;
 
 class UsuariosController extends Controller
 {
+
+  protected $tenantName = null;
+
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    $this->middleware('auth');
+    $this->middleware('adminEmpresa');
+    $hostname = app(\Hyn\Tenancy\Environment::class)->hostname();
+    if ($hostname) {
+      $fqdn = $hostname->fqdn;
+      $this->tenantName = explode('.', $fqdn)[0];
+    }
+  }
+
   public function showRegister(){
     $id = Auth::user()->id ?? 0; // ID del usuario logueado
     // Consulta entre 2 tablas - Users y Roles
