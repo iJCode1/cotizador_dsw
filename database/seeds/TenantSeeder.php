@@ -19,6 +19,7 @@ class TenantSeeder extends Seeder
     // factory(\App\Models\Tenant\Roles::class, 1)->create();
     $this->roles();
     $this->unidadesDeMedida();
+    $this->tiposProductosYServicios();
     $this->sesion();
   }
 
@@ -48,6 +49,17 @@ class TenantSeeder extends Seeder
       DB::table('unidades_de_medida')->insert([
         'nombre_unidad' => $unidad[0],
         'abrev' => $unidad[1],
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s')
+      ]);
+    }
+  }
+
+  public function tiposProductosYServicios(){
+    $tipos = ["Producto", "Servicio"];
+    foreach ($tipos as $nombreTipo) {
+      DB::table('tipo_productos_servicios')->insert([
+        'nombre_tipo' => $nombreTipo,
         'created_at' => date('Y-m-d H:i:s'),
         'updated_at' => date('Y-m-d H:i:s')
       ]);
