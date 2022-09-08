@@ -18,6 +18,7 @@ class TenantSeeder extends Seeder
   {
     // factory(\App\Models\Tenant\Roles::class, 1)->create();
     $this->roles();
+    $this->unidadesDeMedida();
     $this->sesion();
   }
 
@@ -27,6 +28,26 @@ class TenantSeeder extends Seeder
     foreach ($roles as $rol) {
       DB::table('roles')->insert([
         'nombre_rol' => $rol,
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s')
+      ]);
+    }
+  }
+
+  public function unidadesDeMedida()
+  {
+    $unidades = array(
+      array("unidad", "UN"),
+      array("gramos", "G"),
+      array("kilogramos", "KG"),
+      array("mililitros", "ML"),
+      array("litros", "L"),
+    );
+    // var_dump($unidades);
+    foreach ($unidades as $unidad) {
+      DB::table('unidades_de_medida')->insert([
+        'nombre_unidad' => $unidad[0],
+        'abrev' => $unidad[1],
         'created_at' => date('Y-m-d H:i:s'),
         'updated_at' => date('Y-m-d H:i:s')
       ]);
