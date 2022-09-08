@@ -31,24 +31,53 @@ class UsuariosController extends Controller
     }
   }
 
-  public function showRegister(){
+  /**
+   * Función index()
+   * Retorna la vista 'index' donde se enlistan los usuarios dados de alta en la base de datos
+   */
+  public function index()
+  {
+    $usuarios = Usuario::withTrashed()->get();
+    // $usuarios = Usuario::all();
     $id = Auth::user()->id ?? 0; // ID del usuario logueado
     // Consulta entre 2 tablas - Users y Roles
     $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
-    ->select('users.name', 'roles.nombre_rol AS NombreRol')
-    ->where('users.id', "=", $id)
-    ->get();
-    
-    // dd($user[0]);
+      ->select('users.name', 'roles.nombre_rol AS NombreRol')
+      ->where('users.id', "=", $id)
+      ->get();
+
+    return view('system.empleados.index', [
+      'user' => $user,
+      'usuarios' => $usuarios,
+    ]);
+  }
+
+  /**
+   * Función showRegister()
+   * Retorna la vista de registro de usuarios
+   */
+  public function showRegister()
+  {
+    $id = Auth::user()->id ?? 0; // ID del usuario logueado
+    // Consulta entre 2 tablas - Users y Roles
+    $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
+      ->select('users.name', 'roles.nombre_rol AS NombreRol')
+      ->where('users.id', "=", $id)
+      ->get();
 
     return view('system.empleados.register', [
       'user' => $user
     ]);
-    return "Hola";
   }
 
-  public function registerUser(Request $request){
-    
+  /**
+   * Función registerUser()
+   * Valida los datos de un usuario al registrarlo 
+   * y hace la alta de ese usuario en la tabla correspondiente
+   * Finalmente retorna a la vista donde se enlistan los usuarios registrados
+   */
+  public function registerUser(Request $request)
+  {
     $request->validate([
       'nombre' => 'required|max:45',
       'app' => 'required|max:45',
@@ -74,59 +103,38 @@ class UsuariosController extends Controller
     \App\Models\Tenant\Usuario::create($usuario);
 
     return redirect()->route('tenant.showEmpleados');
-
   }
 
-  public function index(){
-    $usuarios = Usuario::withTrashed()->get();
-    // $usuarios = Usuario::all();
+  /**
+   * Función showEditUser()
+   * Retorna la vista de edición de usuario seleccionado
+   */
+  public function showEditUser($usuario_id)
+  {
     $id = Auth::user()->id ?? 0; // ID del usuario logueado
     // Consulta entre 2 tablas - Users y Roles
     $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
-    ->select('users.name', 'roles.nombre_rol AS NombreRol')
-    ->where('users.id', "=", $id)
-    ->get();
-
-    return view('system.empleados.index', [
-      'user' => $user,
-      'usuarios' => $usuarios,
-    ]);
-  }
-
-  public function deleteUser($usuario_id){
-    $id = (int)$usuario_id;
-    // dd(Usuario::withTrashed()->find($id));
-    Usuario::withTrashed()->find($id)
-            ->delete();
-    return redirect()->route('tenant.showEmpleados');
-  }
-
-  public function activateUser($usuario_id){
-    Usuario::withTrashed()
-            ->find($usuario_id)
-            ->restore();
-
-    return redirect()->route('tenant.showEmpleados');
-  }
-
-  public function showEditUser($usuario_id){
-    $id = Auth::user()->id ?? 0; // ID del usuario logueado
-    // Consulta entre 2 tablas - Users y Roles
-    $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
-    ->select('users.name', 'roles.nombre_rol AS NombreRol')
-    ->where('users.id', "=", $id)
-    ->get();
+      ->select('users.name', 'roles.nombre_rol AS NombreRol')
+      ->where('users.id', "=", $id)
+      ->get();
 
     $usuarioFind = Usuario::withTrashed()->find($usuario_id);
     // $usuarioFind = Usuario::find($usuario_id);
 
     return view('system.empleados.edit', [
-      'user' => $user, 
+      'user' => $user,
       'usuarioFind' => $usuarioFind,
     ]);
   }
 
-  public function editUser(Request $request, $usuario_id){
+  /**
+   * Función editUser()
+   * Hace las validaciones de los datos ingresados al editar un usuario
+   * Y hace la actualización de los datos del usuario editado
+   * Finalmente retorna a la vista donde se enlistan los usuarios registrados
+   */
+  public function editUser(Request $request, $usuario_id)
+  {
 
     $request->validate([
       'nombre' => 'required|max:45',
@@ -147,4 +155,32 @@ class UsuariosController extends Controller
     return redirect()->route('tenant.showEmpleados');
   }
 
+  /**
+   * Función deleteUser()
+   * Hace la baja lógica del usuario seleccionado
+   * Y retorna a la vista donde se enlistan los usuarios registrados
+   */
+  public function deleteUser($usuario_id)
+  {
+    $id = (int)$usuario_id;
+    // dd(Usuario::withTrashed()->find($id));
+    Usuario::withTrashed()->find($id)
+      ->delete();
+    return redirect()->route('tenant.showEmpleados');
+  }
+
+  /**
+   * Función activateUser()
+   * Hace la activación del usuario seleccionado que previamente 
+   * se habia dado de baja de forma lógica
+   * Finalmente retorna a la vista donde se enlistan los usuarios registrados
+   */
+  public function activateUser($usuario_id)
+  {
+    Usuario::withTrashed()
+      ->find($usuario_id)
+      ->restore();
+
+    return redirect()->route('tenant.showEmpleados');
+  }
 }
