@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Hyn\Tenancy\Traits\UsesTenantConnection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Producto_Servicio extends Authenticatable
 {
   use Notifiable, UsesTenantConnection;
+  use SoftDeletes;
 
   protected $table = "productos_servicios";
   protected $primaryKey = 'producto_servicio_id';

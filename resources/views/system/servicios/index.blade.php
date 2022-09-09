@@ -39,7 +39,15 @@
                 <a href="{{ route('tenant.showEditServicio', $servicio) }}" class="btn btn-warning">Editar</a>
               </td>
               <td>
-                <a href="{{ route('tenant.deleteServicio', ['servicio_id' => $servicio->producto_servicio_id]) }}" class="btn btn-danger">Eliminar</a>
+                @if ($servicio->deleted_at != NULL)
+                  <a href="{{ route('tenant.activateServicio', ['servicio_id' => $servicio->producto_servicio_id]) }}">
+                    <button type="button" class="btn btn-info text-white">Activar</button>
+                  </a>
+                @else
+                  <a href="{{ Route('tenant.deleteServicio', ['servicio_id' => $servicio->producto_servicio_id]) }}">
+                    <button type="button" class="btn btn-danger">Eliminar</button>
+                  </a>
+                @endif
               </td>
             </tr>
             @endforeach

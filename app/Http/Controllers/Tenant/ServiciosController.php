@@ -20,7 +20,7 @@ class ServiciosController extends Controller
     $usuario = [];
     array_push($usuario, ['name' => Auth::user()->name, 'NombreRol' => Auth::user()->rol->nombre_rol]);
     
-    $productosServicios = Producto_Servicio::all();
+    $productosServicios = Producto_Servicio::withTrashed()->get();
 
     return view('system.servicios.index', [
       'user' => $usuario,
@@ -80,8 +80,8 @@ class ServiciosController extends Controller
     $tiposProductoServicio = Tipo_Producto_Servicio::all();
     $unidadesDeMedida = Unidad_De_Medida::all();
     
-    $servicioFind = Producto_Servicio::find($servicio);
-    // dd($servicioFind);
+    $servicioFind = Producto_Servicio::withTrashed()->find($servicio);
+    
     return view('system.servicios.edit',[
       'tipos' => $tiposProductoServicio,
       'unidades' => $unidadesDeMedida,
@@ -100,7 +100,7 @@ class ServiciosController extends Controller
       'unidad' => 'required',
     ]);
 
-    $servicio = Producto_Servicio::find($servicioID);
+    $servicio = Producto_Servicio::withTrashed()->find($servicioID);
 
     // Se prepara la imágen para ser almacenada dentro de la carpeta 'images > productos_servicios/'
     $file = $request->file('imagen'); // Se obtiene la imagen
@@ -121,5 +121,20 @@ class ServiciosController extends Controller
     $servicio->update();
 
     return redirect()->route("tenant.showServicios");
+  }
+
+  public function deleteServicio($servicio_id){
+    Producto_Servicio::withTrashed()->find($servicio_id)
+                      ->delete();
+    return redirect()->route('tenant.showServicios');
+  }
+
+  public function activateServicio($servicio_id)
+  {
+    Producto_Servicio::withTrashed()
+      ->find($servicio_id)
+      ->restore();
+
+    return redirect()->route('tenant.showServicios');
   }
 }

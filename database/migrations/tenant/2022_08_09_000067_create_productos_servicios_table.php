@@ -27,8 +27,9 @@ class CreateProductosServiciosTable extends Migration
       
       $table->integer('unidad_medida_id')->unsigned();
       $table->foreign('unidad_medida_id')->references('unidad_medida_id')->on('unidades_de_medida');
-
+      
       $table->rememberToken();
+      $table->softDeletesTz('deleted_at');
       $table->timestamps();
     });
   }

@@ -30,5 +30,5 @@ Route::middleware(['web'])
         Route::get('/servicio/{servicio_id}/edit', [ServiciosController::class, 'showEditServicio'])->name('showEditServicio');
         Route::put('servicio/{servicio_id}', [ServiciosController::class, 'editServicio'])->name('editServicio');
         Route::get('/servicio/{servicio_id}/delete', [ServiciosController::class, 'deleteServicio'])->name('deleteServicio');
-        Route::get('/servicio/{servicio_id}/activate', [UsuariosController::class, 'activateServicio'])->name('activateServicio');
+        Route::get('/servicio/{servicio_id}/activate', [ServiciosController::class, 'activateServicio'])->name('activateServicio');
       });
