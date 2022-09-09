@@ -25,6 +25,7 @@
 </head>
 <body>
     <div id="app">
+      {{-- {{dd($user[0])}} --}}
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -82,11 +83,6 @@
                                     </form>
                                 </div>
                             </li>
-                            @if ((Auth::user()->rol_id === 1) && ($user[0]->NombreRol === 'Administrador General'))
-                              <li class="nav-item">
-                                <a href="{{ route('altaEmpresa') }}">Alta Empresa</a>
-                              </li>
-                            @endif
                         @endguest
                     </ul>
                 </div>
