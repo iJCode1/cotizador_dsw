@@ -33,8 +33,8 @@
               <td>{{$servicio->codigo}}</td>
               <td>{{$servicio->imagen}}</td>
               <td>{{$servicio->precio_bruto}}</td>
-              <td>{{$servicio->tipo_id}}</td>
-              <td>{{$servicio->unidad_medida_id}}</td>
+              <td>{{$servicio->tipo->nombre_tipo}}</td>
+              <td>{{Str::ucfirst($servicio->unidad->nombre_unidad)}}</td>
               <td>
                 <a href="{{ route('tenant.showEditServicio', $servicio) }}" class="btn btn-warning">Editar</a>
               </td>
