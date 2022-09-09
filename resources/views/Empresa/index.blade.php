@@ -3,11 +3,10 @@
 @section('content')
 
   <div class="container">
-    <h2>Home de la Empresa</h2>
-
-    {{-- {{dd(count($empresas))}} --}}
+    <h1 class="text-center mt-2 mb-4">Home de la Empresa</h1>
     @if (count($empresas) <= 0)
         <p>No hay empresas</p>
+        <img src="{{asset('images/illustrations/not_found.svg')}}" alt="No hay empresas" width="300">
     @else
         <p>Si hay empresas</p>
         <table class="table">
@@ -74,6 +73,7 @@
           </tbody>
         </table>
     @endif
+    <a href="{{route('altaEmpresa')}}" class="btn btn-block btn-primary my-4">Crear Empresa</a>
   </div>
 
 @endsection
