@@ -53,4 +53,7 @@ Homestead.json
 /.vagrant
 .phpunit.result.cache
 
+
+public/images/productos_servicios/*
+
 # End of https://mrkandreev.name/snippets/gitignore-generator/#macOS,Laravel
