@@ -1,5 +1,5 @@
 <li>
-  <a href="#" class="nav-link">Productos y/o Servicios</a>
+  <a href="{{route('tenant.showServicios')}}" class="nav-link">Productos y/o Servicios</a>
 </li>
 
 <li>
