@@ -66,7 +66,11 @@
                 <a href="{{ route('editarEmpresa', $empresa) }}" class="btn btn-warning">Editar</a>
               </td>
               <td>
-                <a href="{{ route('desactivarEmpresa', ['id' => $empresa->empresa_id]) }}" class="btn btn-danger">Eliminar</a>
+                <form id="deleteForm" action="{{ route('desactivarEmpresa', ['id' => $empresa->empresa_id]) }}">
+                  @method("DELETE")
+                  @csrf
+                  <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
               </td>
             </tr>
             @endforeach
@@ -76,4 +80,104 @@
     <a href="{{route('altaEmpresa')}}" class="btn btn-block btn-primary my-4">Crear Empresa</a>
   </div>
 
+  {{-- Script para mostrar alertas --}}
+  <script>
+
+    const d = document;
+
+    // Alerta al querer eliminar un registro
+    const deleteForms = d.querySelectorAll('#deleteForm');
+
+    deleteForms.forEach(form => {
+      form.addEventListener('click', function(event){
+        event.preventDefault();
+        Swal.fire({
+          title: '¿Estás seguro?',
+          text: "Se eliminara esta empresa",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '¡Si, eliminar!',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.submit();
+          }
+        })
+      })
+    });
+
+    // Alerta al querer activar un registro
+    const activateforms = d.querySelectorAll('#activateForm');
+
+    activateforms.forEach(form => {
+      form.addEventListener('click', function(event){
+        event.preventDefault();
+        Swal.fire({
+          title: '¿Estás seguro?',
+          text: "Se activara esta empresa",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '¡Si, activar!',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.submit();
+          }
+        })
+      })
+    });
+
+  </script>
+
+  {{-- Condicional para mostrar alerta de empleado creado --}}
+  @if (session('crear') === 'ok'){
+    <script>
+      Swal.fire(
+        'Registrado!',
+        'La empresa se ha registrado con éxtio!',
+        'success'
+      )
+    </script>
+  } 
+  @endif
+
+  {{-- Condicional para mostrar alerta de editado --}}
+  @if (session('editar') === 'ok'){
+    <script>
+      Swal.fire(
+        'Editado!',
+        'La empresa se ha editado correctamente!',
+        'success'
+      )
+    </script>
+  } 
+  @endif
+
+  {{-- Condicional para mostrar alerta de eliminado --}}
+  @if (session('eliminar') === 'ok'){
+    <script>
+      Swal.fire(
+        'Eliminado!',
+        'La empresa se ha eliminado con éxito!',
+        'success'
+      )
+    </script>
+  } 
+  @endif
+
+  {{-- Condicional para mostrar alerta de activado --}}
+  @if (session('activar') === 'ok'){
+    <script>
+      Swal.fire(
+        'Activado!',
+        'La empresa se ha activado con éxito!',
+        'success'
+      )
+    </script>
+  } 
+  @endif
 @endsection

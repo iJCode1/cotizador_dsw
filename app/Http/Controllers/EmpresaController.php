@@ -148,7 +148,8 @@ class EmpresaController extends Controller
     $_SESSION['password'] = $contraseña;
     $this->registered($request);
 
-    return redirect()->route('empresas');
+    return redirect()->route('empresas')
+                      ->with('crear', 'ok');
   }
 
   /**
@@ -278,7 +279,8 @@ class EmpresaController extends Controller
     $empresa->municipio_id = $request->municipio_id;
     $empresa->update();
 
-    return redirect()->route("empresas");
+    return redirect()->route("empresas")
+                      ->with('editar', 'ok');
   }
 
   /**
@@ -289,6 +291,7 @@ class EmpresaController extends Controller
   {
     Empresa::find($id)
       ->delete();
-    return redirect()->route('empresas');
+    return redirect()->route('empresas')
+                      ->with('eliminar', 'ok');
   }
 }
