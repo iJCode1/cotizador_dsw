@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\Models\Tenant\User;
 use App\Models\Tenant\Tipo_Producto_Servicio;
 use App\Models\Tenant\Unidad_De_Medida;
 
@@ -10,12 +9,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\Producto_Servicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
 
 
 class ServiciosController extends Controller
 {
+  /**
+   * Función index()
+   * Retorna la vista 'index' de servicios donde se enlistan
+   * los productos y/o servicios registrados
+   */
   public function index(){
     $usuario = [];
     array_push($usuario, ['name' => Auth::user()->name, 'NombreRol' => Auth::user()->rol->nombre_rol]);
@@ -28,6 +30,12 @@ class ServiciosController extends Controller
     ]);
   }
 
+  /**
+   * Función showRegisterServicio()
+   * Consulta las tablas de tipo y unidad de medida
+   * los retorna a la vista 'register' de servicios
+   * donde se muestra formulario para registrar un nuevo producto y/o servicio
+   */
   public function showRegisterServicio(){
     $tiposProductoServicio = Tipo_Producto_Servicio::all();
     $unidadesDeMedida = Unidad_De_Medida::all();
@@ -38,6 +46,12 @@ class ServiciosController extends Controller
     ]);
   }
 
+  /**
+   * Función registerServicio()
+   * hace las validaciones de los campos para registrar un producto y/o sevricio
+   * si las validaciones son correctas, se hace la alta del registro
+   * hace el redireccionamiento a la ruta 'showServicios'
+   */
   public function registerServicio(Request $request){
     // dd($request);
     $request->validate([
@@ -76,6 +90,13 @@ class ServiciosController extends Controller
     return redirect()->route('tenant.showServicios');
   }
 
+  /**
+   * Función showEditServicio()
+   * Consulta las tablas de tipo y unidad de medida
+   * Busca el producto y/o servicio que se quiere editar
+   * retorna todo a la vista 'edit' de servicios
+   * donde se muestra el formulario para editar el registro
+   */
   public function showEditServicio($servicio){
     $tiposProductoServicio = Tipo_Producto_Servicio::all();
     $unidadesDeMedida = Unidad_De_Medida::all();
@@ -89,6 +110,12 @@ class ServiciosController extends Controller
     ]);
   }
 
+  /**
+   * Función editServicio()
+   * hace las validaciones de los campos editados en el producto y/o servicio
+   * si las validaciones son correctas, se hace la actualización del registro
+   * hace el redireccionamiento a la ruta 'showServicios'
+   */
   public function editServicio(Request $request, $servicioID){
     $request->validate([
       'nombre' => 'required|min:1|max:100',
@@ -123,12 +150,25 @@ class ServiciosController extends Controller
     return redirect()->route("tenant.showServicios");
   }
 
+  /**
+   * Función deleteServicio()
+   * obtiene el servicio que se quiere dar de baja
+   * lo busca y hace la baja lógica
+   * hace el redireccionamiento a la ruta 'showServicios'
+   */
   public function deleteServicio($servicio_id){
     Producto_Servicio::withTrashed()->find($servicio_id)
                       ->delete();
+
     return redirect()->route('tenant.showServicios');
   }
 
+  /**
+   * Función activateServicio()
+   * obtiene el servicio que se quiere volver a activar (quitar baja lógica)
+   * lo busca y lo activa nuevamente
+   * hace el redireccionamiento a la ruta 'showServicios'
+   */
   public function activateServicio($servicio_id)
   {
     Producto_Servicio::withTrashed()
