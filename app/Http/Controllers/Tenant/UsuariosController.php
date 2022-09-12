@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Tenant\User as User;
 use App\Models\Tenant\Usuario;
+use Illuminate\Support\Facades\Session;
 
 class UsuariosController extends Controller
 {
@@ -102,7 +103,8 @@ class UsuariosController extends Controller
 
     \App\Models\Tenant\Usuario::create($usuario);
 
-    return redirect()->route('tenant.showEmpleados');
+    return redirect()->route('tenant.showEmpleados')
+                      ->with('crear', 'ok');
   }
 
   /**
@@ -152,7 +154,8 @@ class UsuariosController extends Controller
     $usuario->telefono = $request->telefono;
     $usuario->update();
 
-    return redirect()->route('tenant.showEmpleados');
+    return redirect()->route('tenant.showEmpleados')
+                      ->with('editar', 'ok');
   }
 
   /**
@@ -163,10 +166,10 @@ class UsuariosController extends Controller
   public function deleteUser($usuario_id)
   {
     $id = (int)$usuario_id;
-    // dd(Usuario::withTrashed()->find($id));
     Usuario::withTrashed()->find($id)
       ->delete();
-    return redirect()->route('tenant.showEmpleados');
+    return redirect()->route('tenant.showEmpleados')
+                      ->with('eliminar', 'ok');
   }
 
   /**
@@ -181,6 +184,7 @@ class UsuariosController extends Controller
       ->find($usuario_id)
       ->restore();
 
-    return redirect()->route('tenant.showEmpleados');
+    return redirect()->route('tenant.showEmpleados')
+                      ->with('activar', 'ok');;
   }
 }

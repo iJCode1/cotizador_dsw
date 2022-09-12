@@ -18,8 +18,6 @@
           <th scope="col">Correo Electronico</th>
           <th scope="col">Editar</th>
           <th scope="col">Eliminar</th>
-          {{-- <th scope="col">Contraseña</th> --}}
-          {{-- <th scope="col">Rol</th> --}}
         </tr>
       </thead>
       <tbody>
@@ -33,21 +31,22 @@
           <td>{{$usuario->telefono}}</td>
           <td>{{$usuario->correo_electronico}}</td>
           <td>
-            {{-- <a href="{{ route('editarEmpresa', $empresa) }}" class="btn btn-warning">Editar</a> --}}
             <a href=" {{ route('tenant.showEditUser', ['usuario_id' => $usuario->usuario_id]) }} ">
               <button type="button" class="btn btn-warning">Editar</button>
             </a>
           </td>
           <td>
-            {{-- <a href="{{ route('desactivarEmpresa', ['id' => $empresa->empresa_id]) }}" class="btn btn-danger">Eliminar</a> --}}
             @if ($usuario->deleted_at != NULL)
-              <a href="{{ route('tenant.activateUser', ['usuario_id' => $usuario->usuario_id]) }}">
-                <button type="button" class="btn btn-info text-white">Activar</button>
-              </a>
+            <form id="activateForm" action="{{ route('tenant.activateUser', ['usuario_id' => $usuario->usuario_id]) }}">
+              @csrf
+              <button type="submit" class="btn btn-info text-white">Activar</button>
+            </form>
             @else
-              <a href="{{ Route('tenant.deleteUser', ['usuario_id' => $usuario->usuario_id]) }}">
-                <button type="button" class="btn btn-danger">Eliminar</button>
-              </a>
+              <form id="deleteForm" action="{{ route('tenant.deleteUser', ['usuario_id' => $usuario->usuario_id]) }}">
+                @method("DELETE")
+                @csrf
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+              </form>
             @endif
           </td>
         </tr>
@@ -58,4 +57,104 @@
     <a href="{{route('tenant.showRegister')}}" class="btn btn-block btn-primary mb-">Crear Usuario</a>
   </div>
 
+  {{-- Script para mostrar alertas --}}
+  <script>
+
+    const d = document;
+
+    // Alerta al querer eliminar un registro
+    const deleteForms = d.querySelectorAll('#deleteForm');
+
+    deleteForms.forEach(form => {
+      form.addEventListener('click', function(event){
+        event.preventDefault();
+        Swal.fire({
+          title: '¿Estás seguro?',
+          text: "Se eliminara este empleado",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '¡Si, eliminar!',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.submit();
+          }
+        })
+      })
+    });
+
+    // Alerta al querer activar un registro
+    const activateforms = d.querySelectorAll('#activateForm');
+
+    activateforms.forEach(form => {
+      form.addEventListener('click', function(event){
+        event.preventDefault();
+        Swal.fire({
+          title: '¿Estás seguro?',
+          text: "Se activara este empleado",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '¡Si, activar!',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.submit();
+          }
+        })
+      })
+    });
+
+  </script>
+
+  {{-- Condicional para mostrar alerta de empleado creado --}}
+  @if (session('crear') === 'ok'){
+    <script>
+      Swal.fire(
+        'Registrado!',
+        'El empleado se ha registrado con éxtio!',
+        'success'
+      )
+    </script>
+  } 
+  @endif
+
+  {{-- Condicional para mostrar alerta de editado --}}
+  @if (session('editar') === 'ok'){
+    <script>
+      Swal.fire(
+        'Editado!',
+        'El empleado se ha editado correctamente!',
+        'success'
+      )
+    </script>
+  } 
+  @endif
+
+  {{-- Condicional para mostrar alerta de eliminado --}}
+  @if (session('eliminar') === 'ok'){
+    <script>
+      Swal.fire(
+        'Eliminado!',
+        'El empleado se ha eliminado con éxito!',
+        'success'
+      )
+    </script>
+  } 
+  @endif
+
+  {{-- Condicional para mostrar alerta de activado --}}
+  @if (session('activar') === 'ok'){
+    <script>
+      Swal.fire(
+        'Activado!',
+        'El empleado se ha activado con éxito!',
+        'success'
+      )
+    </script>
+  } 
+  @endif
 @endsection()
