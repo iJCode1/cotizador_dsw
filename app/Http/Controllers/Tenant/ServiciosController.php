@@ -87,7 +87,8 @@ class ServiciosController extends Controller
 
     Producto_Servicio::create($producto_servicio);
 
-    return redirect()->route('tenant.showServicios');
+    return redirect()->route('tenant.showServicios')
+                      ->with('crear', 'ok');
   }
 
   /**
@@ -147,7 +148,8 @@ class ServiciosController extends Controller
     $servicio->unidad_medida_id = $request->unidad;
     $servicio->update();
 
-    return redirect()->route("tenant.showServicios");
+    return redirect()->route("tenant.showServicios")
+                      ->with('editar', 'ok');
   }
 
   /**
@@ -160,7 +162,8 @@ class ServiciosController extends Controller
     Producto_Servicio::withTrashed()->find($servicio_id)
                       ->delete();
 
-    return redirect()->route('tenant.showServicios');
+    return redirect()->route('tenant.showServicios')
+                      ->with('eliminar', 'ok');
   }
 
   /**
@@ -175,6 +178,7 @@ class ServiciosController extends Controller
       ->find($servicio_id)
       ->restore();
 
-    return redirect()->route('tenant.showServicios');
+    return redirect()->route('tenant.showServicios')
+                      ->with('activar', 'ok');
   }
 }
