@@ -88,6 +88,8 @@
                 </div>
             </div>
         </nav>
+        {{-- Sweet Alert 2 --}}
+        <script src="{{asset('./js/app.js')}}"></script>
 
         <main class="py-4">
             @yield('content')
