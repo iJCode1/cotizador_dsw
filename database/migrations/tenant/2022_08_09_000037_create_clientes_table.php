@@ -23,6 +23,10 @@ class CreateClientesTable extends Migration
       $table->string('correo_electronico', 100);
       $table->string('contraseña', 50);
       
+      // Llave foranea
+      $table->bigInteger('rol_id')->unsigned();
+      $table->foreign('rol_id')->references('rol_id')->on('roles');
+      
       $table->rememberToken();
       $table->timestamps();
     });
