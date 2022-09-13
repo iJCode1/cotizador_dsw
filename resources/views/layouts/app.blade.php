@@ -48,10 +48,10 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
+                            @if (\Hyn\Tenancy\Facades\TenancyFacade::website())
+                              <li class="nav-item">
+                                <a class="nav-link" href="{{ route('tenant.register') }}">{{ __('Registrarse') }}</a>
+                              </li>
                             @endif
                         @else
                             @if ((Auth::user()->rol->nombre_rol === "Administrador General"))

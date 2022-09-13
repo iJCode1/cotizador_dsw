@@ -75,9 +75,9 @@
                     @else 
                         <a href="{{ route('login') }}">Login</a>
 
-                        {{-- @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif --}}
+                        @if (\Hyn\Tenancy\Facades\TenancyFacade::website())
+                        <a class="nav-link" href="{{ route('tenant.register') }}">{{ __('Registrarse') }}</a>
+                      @endif
                     @endauth
                 </div>
             @endif

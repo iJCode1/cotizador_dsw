@@ -86,4 +86,17 @@
         </div>
     </div>
 </div>
+
+{{-- Condicional para mostrar alerta de empleado creado --}}
+@if (session('cliente') === 'ok'){
+  <script>
+    Swal.fire(
+      'Registrado!',
+      'Te has registrado con éxtio!',
+      'success'
+    )
+  </script>
+} 
+@endif
+
 @endsection
