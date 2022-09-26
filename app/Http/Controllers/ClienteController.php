@@ -5,12 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Tenant\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class ClienteController extends Controller
 {
+  protected $user;
   public function __construct()
   {
-    $this->middleware('guest');
+    // $this->middleware('guest');
+    $this->middleware('cliente');
+    $this->middleware(function ($request, $next) {
+
+      $this->user = Auth::guard('cliente')->user();
+
+      return $next($request);
+  });
     $hostname = app(\Hyn\Tenancy\Environment::class)->hostname();
     if ($hostname) {
       $fqdn = $hostname->fqdn;
@@ -65,5 +74,11 @@ class ClienteController extends Controller
 
     return redirect()->route('login')
       ->with('cliente', 'ok');
+  }
+
+  public function index(){
+    // dd($this->user->rol->nombre_rol);
+    // dd($this->user->rol->nombre_rol);
+    // dd("Hola");
   }
 }

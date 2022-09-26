@@ -40,7 +40,7 @@ class LoginCustomerController extends Controller
     public function __construct()
     {
             $this->middleware('guest')->except('logout');
-            $this->middleware('guest:admin')->except('logout');
+            $this->middleware('guest:cliente')->except('logout');
             // $this->middleware('guest:blogger')->except('logout');
     }
 
@@ -56,7 +56,7 @@ class LoginCustomerController extends Controller
             'password' => 'required|min:6'
         ]);
 
-        if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+        if (Auth::guard('cliente')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
 
             return redirect()->intended('/admin');
         }

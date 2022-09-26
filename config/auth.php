@@ -46,9 +46,9 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
-        'admin' => [
+        'cliente' => [
           'driver' => 'session',
-          'provider' => 'admins'
+          'provider' => 'clientes'
         ]
     ],
 
@@ -75,7 +75,7 @@ return [
         'model' => App\User::class,
       ],
       
-      'admins' => [
+      'clientes' => [
           'driver' => 'eloquent',
           'model' => App\Models\Tenant\Cliente::class,
       ],

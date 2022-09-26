@@ -48,8 +48,12 @@ Route::middleware(['web'])
         Route::post('/login/admin', 'LoginCustomerController@adminLogin');
         Route::post('/register/admin', 'RegisterCustomerController@createAdmin');
 
-        Route::group(['middleware' => 'auth:admin'], function () {
+        Route::group(['middleware' => 'auth:cliente'], function () {
           Auth::routes();
+          // dd(Auth::user());
           Route::view('/admin', 'admin');
         });
+
+        Route::get('admin/index', [ClienteController::class, 'index'])->name('index');
+
       });
