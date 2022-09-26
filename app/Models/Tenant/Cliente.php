@@ -11,9 +11,11 @@ class Cliente extends Authenticatable
 {
   use Notifiable, UsesTenantConnection;
 
+  protected $guard = 'admin';
+
   protected $table = "clientes";
   protected $primaryKey = 'cliente_id';
-  protected $fillable = ['cliente_id', 'nombre', 'apellido_p', 'apellido_m', 'direccion', 'telefono', 'correo_electronico', 'contraseña', 'rol_id'];
+  protected $fillable = ['cliente_id', 'nombre', 'apellido_p', 'apellido_m', 'direccion', 'telefono', 'email', 'password', 'rol_id'];
 
   public function rol()
   {

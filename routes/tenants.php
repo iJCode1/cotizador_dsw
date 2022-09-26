@@ -8,6 +8,7 @@ use App\Http\Controllers\Tenant\ServiciosController;
 use App\Http\Controllers\Tenant\UsuariosController;
 use App\Models\Tenant\Cliente;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::middleware(['web'])
       ->namespace('App\Http\Controllers')
@@ -40,4 +41,15 @@ Route::middleware(['web'])
          */
         Route::get('register', [ClienteController::class, 'showRegistrationForm'])->name('register');
         Route::post('register', [ClienteController::class, 'registerCustomer']);
+
+        Route::get('/login/admin', 'LoginCustomerController@showAdminLoginForm');
+        Route::get('/register/admin', 'RegisterCustomerController@showAdminRegisterForm');
+
+        Route::post('/login/admin', 'LoginCustomerController@adminLogin');
+        Route::post('/register/admin', 'RegisterCustomerController@createAdmin');
+
+        Route::group(['middleware' => 'auth:admin'], function () {
+          Auth::routes();
+          Route::view('/admin', 'admin');
+        });
       });

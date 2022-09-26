@@ -20,8 +20,8 @@ class CreateClientesTable extends Migration
       $table->string('apellido_m', 45);
       $table->string('direccion', 255);
       $table->string('telefono', 10);
-      $table->string('correo_electronico', 100);
-      $table->string('contraseña', 50);
+      $table->string('email', 100);
+      $table->string('password');
       
       // Llave foranea
       $table->bigInteger('rol_id')->unsigned();

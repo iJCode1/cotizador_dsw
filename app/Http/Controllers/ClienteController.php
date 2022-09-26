@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tenant\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ClienteController extends Controller
 {
@@ -42,10 +43,12 @@ class ClienteController extends Controller
       'apm' => 'required|max:45',
       'direccion' => 'required|max:255',
       'telefono' => 'required|min:10|max:10',
-      'correo' => 'required|email|unique:tenant.clientes,correo_electronico',
+      'correo' => 'required|email|unique:tenant.clientes,email',
       'contraseña' => 'required|digits_between:8,45',
       'confirmar_contraseña' => 'required|digits_between:8,45',
     ]);
+
+    $contraseñaEncriptada = Hash::make($request->contraseña);
 
     $cliente = [
       'nombre' => $request->nombre,
@@ -53,8 +56,8 @@ class ClienteController extends Controller
       'apellido_m' => $request->apm,
       'direccion' => $request->direccion,
       'telefono' => $request->telefono,
-      'correo_electronico' => $request->correo,
-      'contraseña' => $request->contraseña,
+      'email' => $request->correo,
+      'password' => $contraseñaEncriptada,
       'rol_id' => 3,
     ];
 

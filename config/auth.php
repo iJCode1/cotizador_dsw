@@ -41,17 +41,15 @@ return [
             'provider' => 'users',
         ],
 
-        // Guard para el ingreso de usuarios de la tabla 'usuarios' de inquilino(empresa) 
-        'usuarios' => [
-          'driver' => 'session',
-          'provider' => 'usuarios',
-        ],
-
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
         ],
+        'admin' => [
+          'driver' => 'session',
+          'provider' => 'admins'
+        ]
     ],
 
     /*
@@ -76,15 +74,11 @@ return [
         'driver' => 'eloquent',
         'model' => App\User::class,
       ],
-      'usuarios' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\Tenant\Usuarios::class,
-      ],
       
-      // 'users' => [
-      //     'driver' => 'database',
-      //     'table' => 'users',
-      // ],
+      'admins' => [
+          'driver' => 'eloquent',
+          'model' => App\Models\Tenant\Cliente::class,
+      ],
     ],
 
     /*

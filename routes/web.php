@@ -43,8 +43,8 @@ Route::post('login', [LoginController::class, 'login']);
 
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
-// Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-// Route::post('register', [RegisterController::class, 'register']);
+Route::get('register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [RegisterController::class, 'register']);
 
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
@@ -59,3 +59,17 @@ Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify']
 Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Auth::routes();
+
+// Route::get('/login/blogger', 'Auth\LoginController@showBloggerLoginForm');
+// Route::get('/register/blogger', 'Auth\RegisterController@showBloggerRegisterForm');
+
+
+// Route::post('/login/blogger', 'Auth\LoginController@bloggerLogin');
+// Route::post('/register/blogger', 'Auth\RegisterController@createBlogger');
+
+// Route::group(['middleware' => 'auth:blogger'], function () {
+//   Auth::routes();
+//   Route::view('/blogger', 'blogger');
+// });

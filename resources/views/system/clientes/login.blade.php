@@ -5,23 +5,19 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"> {{ isset($url) ? ucwords($url) : ""}} {{ __('Login') }}</div>
+                <div class="card-header">{{ __('Cliente Login') }}</div>
 
                 <div class="card-body">
-                    @isset($url)
-                    <form method="POST" action='{{ url("login/$url") }}' aria-label="{{ __('Login') }}">
-                    @else
-                    <form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
-                    @endisset
+                    <form method="POST" action="{{ route('tenant.loginCustomer') }}">
                         @csrf
-                        
+
                         <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+                            <label for="correo_electronico" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="correo_electronico" type="email" class="form-control @error('correo_electronico') is-invalid @enderror" name="correo_electronico" value="{{ old('correo_electronico') }}" required autocomplete="email" autofocus>
 
-                                @error('email')
+                                @error('correo_electronico')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -30,10 +26,10 @@
                         </div>
 
                         <div class="form-group row" x-data="{show: false}">
-                          <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                          <label for="contraseña" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                           <div class="col-md-6">
-                              <input id="password" :type="show ? 'text' : 'password'" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                              <input id="contraseña" :type="show ? 'text' : 'password'" class="form-control @error('contraseña') is-invalid @enderror" name="contraseña" required autocomplete="current-password">
                               {{-- Show password icon --}}
                               <div class="mt-2">
                                 <button type="button" @click="show = !show" :class="{ 'd-none': !show, 'd-block': show }">
@@ -51,7 +47,7 @@
                                 </button>
                               </div>
 
-                              @error('password')
+                              @error('contraseña')
                                   <span class="invalid-feedback" role="alert">
                                       <strong>{{ $message }}</strong>
                                   </span>
@@ -91,16 +87,5 @@
     </div>
 </div>
 
-{{-- Condicional para mostrar alerta de empleado creado --}}
-@if (session('cliente') === 'ok'){
-  <script>
-    Swal.fire(
-      'Registrado!',
-      'Te has registrado con éxtio!',
-      'success'
-    )
-  </script>
-} 
-@endif
 
 @endsection
