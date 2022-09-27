@@ -20,6 +20,6 @@ class ClienteMiddleware
     if (($guard->check()) && ($guard->user()->rol_id === 3) && ($guard->user()->rol->nombre_rol === 'Cliente')) {
       return $next($request);
     }
-    return redirect('login/cliente');
+    return redirect('login');
   }
 }

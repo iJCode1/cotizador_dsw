@@ -37,9 +37,11 @@ Route::get('/empresa/{id}/desactivar', [EmpresaController::class, 'desactivarEmp
 Route::get('/empresa/{id}/editar', [EmpresaController::class, 'editarEmpresa'])->name('editarEmpresa');
 Route::put('empresa/{id}', [EmpresaController::class, 'actualizarEmpresa'])->name('actualizarEmpresa');
 
-// Auth::routes();
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
+/**
+ * Rutas de Autenticación (Administrador y Empleados de empresa)
+ */
+Route::get('login/admin', [LoginController::class, 'showLoginForm'])->name('loginAdmin');
+Route::post('login/admin', [LoginController::class, 'login']);
 
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -59,17 +61,3 @@ Route::get('email/verify/{id}/{hash}', [VerificationController::class, 'verify']
 Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-// Auth::routes();
-
-// Route::get('/login/blogger', 'Auth\LoginController@showBloggerLoginForm');
-// Route::get('/register/blogger', 'Auth\RegisterController@showBloggerRegisterForm');
-
-
-// Route::post('/login/blogger', 'Auth\LoginController@bloggerLogin');
-// Route::post('/register/blogger', 'Auth\RegisterController@createBlogger');
-
-// Route::group(['middleware' => 'auth:blogger'], function () {
-//   Auth::routes();
-//   Route::view('/blogger', 'blogger');
-// });

@@ -44,8 +44,8 @@ Route::middleware(['web'])
     Route::get('register', [RegisterCustomerController::class, 'showRegistrationForm'])->name('register');
     Route::post('register', [RegisterCustomerController::class, 'registerCustomer']);
 
-    Route::get('/login/cliente', [LoginCustomerController::class, 'showCustomerLoginForm'])->name('login');
-    Route::post('/login/cliente', [LoginCustomerController::class, 'customerLogin']);
+    Route::get('/login', [LoginCustomerController::class, 'showCustomerLoginForm'])->name('login');
+    Route::post('/login', [LoginCustomerController::class, 'customerLogin']);
 
     Route::get('/cliente', [ClienteController::class, 'showCliente']);
 

@@ -46,7 +46,7 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('tenant.login') }}">{{ __('Login') }}</a>
                             </li>
                             @if (\Hyn\Tenancy\Facades\TenancyFacade::website())
                               <li class="nav-item">
