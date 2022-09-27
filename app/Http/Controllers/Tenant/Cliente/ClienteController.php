@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Tenant\Cliente;
 
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class ClienteController extends Controller
 {

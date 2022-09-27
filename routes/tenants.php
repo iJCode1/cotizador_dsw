@@ -1,16 +1,11 @@
 <?php
 
-// use App\Models\Tenant\Usuario;
-
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\ClienteController;
-use App\Http\Controllers\Tenant\Empleado\LoginCustomerController;
-use App\Http\Controllers\Tenant\Empleado\RegisterCustomerController;
+use App\Http\Controllers\Tenant\Cliente\ClienteController;
+use App\Http\Controllers\Tenant\Cliente\LoginCustomerController;
+use App\Http\Controllers\Tenant\Cliente\RegisterCustomerController;
 use App\Http\Controllers\Tenant\ServiciosController;
 use App\Http\Controllers\Tenant\UsuariosController;
-use App\Models\Tenant\Cliente;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 
 Route::middleware(['web'])
   ->namespace('App\Http\Controllers')
