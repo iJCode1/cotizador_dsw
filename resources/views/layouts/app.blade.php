@@ -45,13 +45,17 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('tenant.login') }}">{{ __('Login') }}</a>
-                            </li>
                             @if (\Hyn\Tenancy\Facades\TenancyFacade::website())
+                              <li class="nav-item">
+                                <a class="nav-link" href="{{ route('tenant.login') }}">{{ __('Login') }}</a>
+                              </li>
                               <li class="nav-item">
                                 <a class="nav-link" href="{{ route('tenant.register') }}">{{ __('Registrarse') }}</a>
                               </li>
+                            @else
+                            <li class="nav-item">
+                              <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
                             @endif
                         @else
                             @if ((Auth::user()->rol->nombre_rol === "Administrador General"))

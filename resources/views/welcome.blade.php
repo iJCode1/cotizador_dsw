@@ -66,20 +66,29 @@
     <body>
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                        @if ((Auth::user()->rol_id === 1) && (Auth::user()->rol->nombre_rol === 'Administrador General'))
-                          <a href="{{ route('altaEmpresa') }}">Alta Empresa</a>
-                        @endif
-                    @else 
-                        <a href="{{ route('login') }}">Login</a>
+              <div class="top-right links">
 
-                        @if (\Hyn\Tenancy\Facades\TenancyFacade::website())
-                        <a class="nav-link" href="{{ route('tenant.register') }}">{{ __('Registrarse') }}</a>
+                  @auth
+                      <a href="{{ url('/home') }}">Home</a>
+                      @if ((Auth::user()->rol_id === 1) && (Auth::user()->rol->nombre_rol === 'Administrador General'))
+                        <a href="{{ route('altaEmpresa') }}">Alta Empresa</a>
                       @endif
-                    @endauth
-                </div>
+                  @else 
+                      <a href="{{ route('login') }}">Login</a>
+
+                      {{-- @if (\Hyn\Tenancy\Facades\TenancyFacade::website())
+                        <a class="nav-link" href="{{ route('tenant.register') }}">{{ __('Registrarse') }}</a>
+                      @endif --}}
+                  @endauth
+              </div>
+            @else
+            <div class="top-right links">
+              <a href="{{ route('tenant.login') }}">Login</a>
+
+              @if (\Hyn\Tenancy\Facades\TenancyFacade::website())
+                <a class="nav-link" href="{{ route('tenant.register') }}">{{ __('Registrarse') }}</a>
+              @endif
+            </div>
             @endif
 
             <div class="content">
