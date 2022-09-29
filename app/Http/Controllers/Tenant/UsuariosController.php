@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\Rol;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,15 +60,9 @@ class UsuariosController extends Controller
    */
   public function showRegister()
   {
-    $id = Auth::user()->id ?? 0; // ID del usuario logueado
-    // Consulta entre 2 tablas - Users y Roles
-    $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
-      ->select('users.name', 'roles.nombre_rol AS NombreRol')
-      ->where('users.id', "=", $id)
-      ->get();
-
+    $roles = Rol::limit(2)->get();
     return view('system.empleados.register', [
-      'user' => $user
+      'roles' => $roles
     ]);
   }
 
@@ -85,6 +80,7 @@ class UsuariosController extends Controller
       'apm' => 'required|max:45',
       'direccion' => 'required|max:255',
       'telefono' => 'required|min:10|max:10',
+      'rol' => 'required',
       'correo' => 'required|email|unique:tenant.usuarios,correo_electronico',
       'contraseña' => 'required|digits_between:8,45',
       'confirmar_contraseña' => 'required|digits_between:8,45',
@@ -98,34 +94,28 @@ class UsuariosController extends Controller
       'telefono' => $request->telefono,
       'correo_electronico' => $request->correo,
       'contraseña' => $request->contraseña,
-      'rol_id' => 2,
+      'rol_id' => $request->rol,
     ];
 
     \App\Models\Tenant\Usuario::create($usuario);
 
     return redirect()->route('tenant.showEmpleados')
-                      ->with('crear', 'ok');
+      ->with('crear', 'ok');
   }
 
   /**
    * Función showEditUser()
-   * Retorna la vista de edición de usuario seleccionado
+   * Busca al usuario que se desea editar, obtiene su información 
+   * Retorna la vista de edición de usuario junto a la información del usuario seleccionado
    */
   public function showEditUser($usuario_id)
   {
-    $id = Auth::user()->id ?? 0; // ID del usuario logueado
-    // Consulta entre 2 tablas - Users y Roles
-    $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
-      ->select('users.name', 'roles.nombre_rol AS NombreRol')
-      ->where('users.id', "=", $id)
-      ->get();
-
     $usuarioFind = Usuario::withTrashed()->find($usuario_id);
-    // $usuarioFind = Usuario::find($usuario_id);
+    $roles = Rol::limit(2)->get();
 
     return view('system.empleados.edit', [
-      'user' => $user,
       'usuarioFind' => $usuarioFind,
+      'roles' => $roles,
     ]);
   }
 
@@ -137,13 +127,13 @@ class UsuariosController extends Controller
    */
   public function editUser(Request $request, $usuario_id)
   {
-
     $request->validate([
       'nombre' => 'required|max:45',
       'app' => 'required|max:45',
       'apm' => 'required|max:45',
       'direccion' => 'required|max:255',
       'telefono' => 'required|min:10|max:10',
+      'rol' => 'required',
     ]);
 
     $usuario = Usuario::withTrashed()->find($usuario_id);
@@ -152,10 +142,11 @@ class UsuariosController extends Controller
     $usuario->apellido_m = $request->apm;
     $usuario->direccion = $request->direccion;
     $usuario->telefono = $request->telefono;
+    $usuario->rol_id = $request->rol;
     $usuario->update();
 
     return redirect()->route('tenant.showEmpleados')
-                      ->with('editar', 'ok');
+      ->with('editar', 'ok');
   }
 
   /**
@@ -169,7 +160,7 @@ class UsuariosController extends Controller
     Usuario::withTrashed()->find($id)
       ->delete();
     return redirect()->route('tenant.showEmpleados')
-                      ->with('eliminar', 'ok');
+      ->with('eliminar', 'ok');
   }
 
   /**
@@ -185,6 +176,6 @@ class UsuariosController extends Controller
       ->restore();
 
     return redirect()->route('tenant.showEmpleados')
-                      ->with('activar', 'ok');;
+      ->with('activar', 'ok');;
   }
 }

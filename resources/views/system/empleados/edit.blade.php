@@ -87,6 +87,35 @@
                               @enderror
                           </div>
                         </div>
+                        
+                        {{-- Tipo de Rol --}}
+                        <div class="form-group row">
+                          <label for="rol" class="col-md-4 col-form-label text-md-right">{{ __('Tipo de usuario') }}</label>
+                          <div class="col-md-6">
+                            <select name="rol" id="rol" class="form-control rol @error('rol') is-invalid @enderror" autofocus>
+                              <option selected disabled value="">Seleccione un tipo de usuario</option>
+                              @foreach($roles as $rol)
+                                @if (old('rol'))
+                                  @if (old('rol') == $rol->rol_id)
+                                    <option selected value="{{$rol->rol_id}}">{{$rol->nombre_rol}}</option>
+                                    @continue
+                                  @endif
+                                @else
+                                  @if ($usuarioFind->rol_id == $rol->rol_id)
+                                    <option selected value="{{$rol->rol_id}}">{{$rol->nombre_rol}}</option>
+                                    @continue
+                                  @endif
+                                @endif
+                                <option value="{{$rol->rol_id}}">{{$rol->nombre_rol}}</option>  
+                              @endforeach
+                            </select>
+                            @error('rol')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                          </div>
+                        </div>
 
                         {{-- Boton de registrar --}}
                         <div class="form-group row mb-0">
