@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-if(!isset($_SESSION)) {
+if (!isset($_SESSION)) {
   session_start();
 } else {
   session_destroy();
@@ -70,13 +70,22 @@ class EmpresaController extends Controller
       ->where('users.id', "=", $id)
       ->get();
 
-    $empresas = Empresa::all();
+    $empresas = Empresa::withTrashed()->get();
     $municipios = Municipio::all();
     $estados = Estado::all();
-    $hostname = Hostname::all();
+    $hostnames = Hostname::all();
+    $websites = Website::withTrashed()->get();
     $users = User::all();
 
-    return view('Empresa.index', ['user' => $user, 'empresas' => $empresas, 'municipios' => $municipios, 'estados' => $estados, 'hostnames' => $hostname, 'users' => $users]);
+    return view('Empresa.index', [
+      'user' => $user,
+      'empresas' => $empresas,
+      'municipios' => $municipios,
+      'estados' => $estados,
+      'hostnames' => $hostnames,
+      'websites' => $websites,
+      'users' => $users
+    ]);
   }
 
   /**
@@ -121,22 +130,22 @@ class EmpresaController extends Controller
       'municipio_id' => 'required',
       'number' => 'required|digits_between:1,5',
       'rfc' => 'required|min:13|max:13',
-      'nameContact' => 'required','regex: /^[A-Z][A-Z,a-z,\s, á, é, í, ó, ú, ü]+$/',
+      'nameContact' => 'required', 'regex: /^[A-Z][A-Z,a-z,\s, á, é, í, ó, ú, ü]+$/',
       'phone' => 'required|min:10|max:10',
       'email' => 'required|email|unique:Empresas,correo_electronico',
       'password' => 'required|digits_between:8,45',
       'password_confirmation' => 'required',
     ]);
     // $this->validate($request, [
-            // 'fqdn' => ['required', 'string', 'max:20', Rule::unique('hostnames')->where(function ($query) use ($fqdn) {
-            //   return $query->where('fqdn', $fqdn);
-            // })],
+    // 'fqdn' => ['required', 'string', 'max:20', Rule::unique('hostnames')->where(function ($query) use ($fqdn) {
+    //   return $query->where('fqdn', $fqdn);
+    // })],
     //   'address' => ['required', 'string',],
     //   'postal' => ['required', 'string', 'regex: /^[0-9]{5}$/'],
     //   'number' => ['required', 'string', 'regex: /^[0-9]*$/', 'max:10'],
-            // 'estado' => ['required'],
+    // 'estado' => ['required'],
     //   'municipio' => ['required'],
-            // 'rfc' => ['required', 'string', 'regex: /^[0-9][A-Z,a-z]{13}$/'],
+    // 'rfc' => ['required', 'string', 'regex: /^[0-9][A-Z,a-z]{13}$/'],
     //   'nameContact' => ['required', 'string', 'max:50'],
     //   'phone' => ['required', 'string', 'regex: /^[0-9]{10}$/'],
     //   'email' => ['required', 'string', 'email', 'max:50', 'unique:users'],
@@ -149,7 +158,7 @@ class EmpresaController extends Controller
     $this->registered($request);
 
     return redirect()->route('empresas')
-                      ->with('crear', 'ok');
+      ->with('crear', 'ok');
   }
 
   /**
@@ -161,10 +170,10 @@ class EmpresaController extends Controller
    * @return mixed
    */
 
-   /**
-    * Función registered()
-    * Esta función hace el registro de un website y un hostname
-    */
+  /**
+   * Función registered()
+   * Esta función hace el registro de un website y un hostname
+   */
   protected function registered($request)
   {
     // Se concatena: fqdn.APP_DOMAIN
@@ -263,7 +272,7 @@ class EmpresaController extends Controller
       'postal' => 'required|min:5|max:5',
       'number' => 'required|digits_between:1,5',
       'rfc' => 'required|min:13|max:13',
-      'nameContact' => 'required','regex: /^[A-Z][A-Z,a-z,\s, á, é, í, ó, ú, ü]+$/',
+      'nameContact' => 'required', 'regex: /^[A-Z][A-Z,a-z,\s, á, é, í, ó, ú, ü]+$/',
       'phone' => 'required|min:10|max:10',
       'municipio_id' => 'required',
       'estado' => 'required',
@@ -280,7 +289,7 @@ class EmpresaController extends Controller
     $empresa->update();
 
     return redirect()->route("empresas")
-                      ->with('editar', 'ok');
+      ->with('editar', 'ok');
   }
 
   /**
@@ -289,9 +298,30 @@ class EmpresaController extends Controller
    */
   public function desactivarEmpresa($id)
   {
-    Empresa::find($id)
+    date_default_timezone_set('America/Mexico_City');
+
+    $website_id = Empresa::find($id)->hostname->website->id;
+    Website::withTrashed()
+      ->find($website_id)
       ->delete();
+
     return redirect()->route('empresas')
-                      ->with('eliminar', 'ok');
+      ->with('eliminar', 'ok');
+  }
+
+  /**
+   * Función activateEmpresa()
+   * obtiene el id del website que se quiere volver a activar (quitar baja lógica)
+   * lo busca y lo activa nuevamente
+   * hace el redireccionamiento a la ruta 'empresas'
+   */
+  public function activateEmpresa($website_id)
+  {
+    Website::withTrashed()
+      ->find($website_id)
+      ->restore();
+
+    return redirect()->route('empresas')
+      ->with('activar', 'ok');
   }
 }

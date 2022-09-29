@@ -65,13 +65,24 @@
               <td>
                 <a href="{{ route('editarEmpresa', $empresa) }}" class="btn btn-warning">Editar</a>
               </td>
-              <td>
-                <form id="deleteForm" action="{{ route('desactivarEmpresa', ['id' => $empresa->empresa_id]) }}">
-                  @method("DELETE")
-                  @csrf
-                  <button type="submit" class="btn btn-danger">Eliminar</button>
-                </form>
-              </td>
+              @foreach ($websites as $website)
+                @if ($empresa->hostname->website_id === $website->id)
+                <td>
+                  @if ($website->deleted_at != NULL)
+                    <form id="activateForm" action="{{ route('activateEmpresa', ['id' => $website->id]) }}">
+                      @csrf
+                      <button type="submit" class="btn btn-info text-white">Activar</button>
+                    </form>
+                  @else
+                    <form id="deleteForm" action="{{ Route('desactivarEmpresa', ['id' => $website->id]) }}">
+                      @method("DELETE")
+                      @csrf
+                      <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                  @endif
+                </td>
+                @endif
+              @endforeach
             </tr>
             @endforeach
           </tbody>
