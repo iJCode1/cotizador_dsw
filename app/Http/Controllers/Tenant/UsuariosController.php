@@ -39,17 +39,9 @@ class UsuariosController extends Controller
    */
   public function index()
   {
-    $usuarios = Usuario::withTrashed()->get();
-    // $usuarios = Usuario::all();
-    $id = Auth::user()->id ?? 0; // ID del usuario logueado
-    // Consulta entre 2 tablas - Users y Roles
-    $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
-      ->select('users.name', 'roles.nombre_rol AS NombreRol')
-      ->where('users.id', "=", $id)
-      ->get();
+    $usuarios = User::withTrashed()->get();
 
     return view('system.empleados.index', [
-      'user' => $user,
       'usuarios' => $usuarios,
     ]);
   }
@@ -92,12 +84,12 @@ class UsuariosController extends Controller
       'apellido_m' => $request->apm,
       'direccion' => $request->direccion,
       'telefono' => $request->telefono,
-      'correo_electronico' => $request->correo,
-      'contraseña' => $request->contraseña,
+      'email' => $request->correo,
+      'password' => $request->contraseña,
       'rol_id' => $request->rol,
     ];
 
-    \App\Models\Tenant\Usuario::create($usuario);
+    \App\Models\Tenant\User::create($usuario);
 
     return redirect()->route('tenant.showEmpleados')
       ->with('crear', 'ok');
@@ -110,7 +102,7 @@ class UsuariosController extends Controller
    */
   public function showEditUser($usuario_id)
   {
-    $usuarioFind = Usuario::withTrashed()->find($usuario_id);
+    $usuarioFind = User::withTrashed()->find($usuario_id);
     $roles = Rol::limit(2)->get();
 
     return view('system.empleados.edit', [
@@ -136,7 +128,7 @@ class UsuariosController extends Controller
       'rol' => 'required',
     ]);
 
-    $usuario = Usuario::withTrashed()->find($usuario_id);
+    $usuario = User::withTrashed()->find($usuario_id);
     $usuario->nombre = $request->nombre;
     $usuario->apellido_p = $request->app;
     $usuario->apellido_m = $request->apm;
@@ -157,7 +149,7 @@ class UsuariosController extends Controller
   public function deleteUser($usuario_id)
   {
     $id = (int)$usuario_id;
-    Usuario::withTrashed()->find($id)
+    User::withTrashed()->find($id)
       ->delete();
     return redirect()->route('tenant.showEmpleados')
       ->with('eliminar', 'ok');
@@ -171,7 +163,7 @@ class UsuariosController extends Controller
    */
   public function activateUser($usuario_id)
   {
-    Usuario::withTrashed()
+    User::withTrashed()
       ->find($usuario_id)
       ->restore();
 

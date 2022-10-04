@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Models\Rol;
 use App\Models\Tenant\User as User2;
+use App\Models\Website;
 
 class HomeController extends Controller
 {
@@ -17,14 +18,23 @@ class HomeController extends Controller
    */
 
   protected $tenantName = null;
+  protected $website_id = null;
+  protected $website = null;
 
   public function __construct()
   {
-    $this->middleware('auth');
+    // $this->middleware('adminEmpresa');
+    // $this->middleware('cliente');
     $hostname = app(\Hyn\Tenancy\Environment::class)->hostname();
     if ($hostname) {
+      // $this->middleware('auth');
+      // $this->middleware('cliente');
+      $this->website_id = app(\Hyn\Tenancy\Environment::class)->hostname()->website_id;
+      $this->website = Website::withTrashed()->find($this->website_id);
       $fqdn = $hostname->fqdn;
       $this->tenantName = explode('.', $fqdn)[0];
+    }else{
+      $this->middleware('auth');
     }
   }
 
@@ -36,28 +46,18 @@ class HomeController extends Controller
   public function index()
   {
     if (!$this->tenantName) {
-      $id = Auth::user()->id; // ID del usuario logueado
-      // Consulta entre 2 tablas - Users y Roles
-      $consulta = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
-        ->select('users.name', 'roles.nombre_rol AS NombreRol')
-        ->where('users.id', "=", $id)
-        ->get();
-      // echo($id);
-      echo(Auth::user());
-      echo($consulta);
-      return view('home', ['user' => $consulta]);
+      echo(Auth::user().'<br>');
+      echo(Auth::user()->rol->nombre_rol);
+      return view('home');
     } else {
-      $id = Auth::user()->id; // ID del usuario logueado
-      // Consulta entre 2 tablas - Users y Roles
-      $consulta = User2::join('roles', 'users.rol_id', '=', 'roles.rol_id')
-        ->select('users.name', 'roles.nombre_rol AS NombreRol')
-        ->where('users.id', "=", $id)
-        ->get();
-      // echo($id);
-      echo(Auth::user());
-      echo "</br>";
-      echo($consulta);
-      return view('home', ['user' => $consulta]);
+      if (Auth::guard('cliente')->user()) {
+        echo(Auth::guard('cliente')->user().'<br>');
+        echo(Auth::guard('cliente')->user()->rol->nombre_rol);
+      }else{
+        echo(Auth::user().'<br>');
+        echo(Auth::user()->rol->nombre_rol);
+      }
+      return view('home');
     }
   }
 }

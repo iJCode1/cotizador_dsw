@@ -44,50 +44,59 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                        @guest
-                            @if (\Hyn\Tenancy\Facades\TenancyFacade::website())
+                        @if ( app(\Hyn\Tenancy\Environment::class)->hostname() )
+                          
+                          @if ( Auth::guard('cliente')->user() || Auth::user() )
+
+                              @if ( Auth::guard('cliente')->user() )
+
+                                @if (( Auth::guard('cliente')->user()->rol->nombre_rol === "Cliente" ))
+                                  @include('layouts.partials.tenant._cliente')
+                                @endif
+
+                                @include('layouts.partials._logout', ['authName' => Auth::guard('cliente')->user()->nombre])
+
+                              @endif
+                              
+                              @if ( Auth::user() )
+                                                                  
+                                @if ((Auth::user()->rol->nombre_rol === "Administrador Empresa"))
+                                  @include('layouts.partials.tenant._adminEmpresa')
+                                @endif
+
+                                @if ((Auth::user()->rol->nombre_rol === "Empleado"))
+                                  @include('layouts.partials.tenant._empleado')
+                                @endif
+
+                                @include('layouts.partials._logout', ['authName' => Auth::user()->nombre])
+
+                              @endif
+                          @else
+
                               <li class="nav-item">
                                 <a class="nav-link" href="{{ route('tenant.login') }}">{{ __('Login') }}</a>
                               </li>
+                              
                               <li class="nav-item">
                                 <a class="nav-link" href="{{ route('tenant.register') }}">{{ __('Registrarse') }}</a>
                               </li>
-                            @else
-                            <li class="nav-item">
-                              <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @endif
+                              
+                          @endif
                         @else
-                            @if ((Auth::user()->rol->nombre_rol === "Administrador General"))
-                              @include('layouts.partials._app')
-                            @endif
-                            @if ((Auth::user()->rol->nombre_rol === "Administrador Empresa"))
-                              @include('layouts.partials.tenant._adminEmpresa')
-                            @endif
-                            @if ((Auth::user()->rol->nombre_rol === "Empleado"))
-                              @include('layouts.partials.tenant._empleado')
-                            @endif
-                            @if ((Auth::user()->rol->nombre_rol === "Cliente"))
-                              @include('layouts.partials.tenant._cliente')
-                            @endif
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                            @guest
+                              <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                              </li>
+                            @else
+                              @if ((Auth::user()->rol->nombre_rol === "Administrador General"))
+                                @include('layouts.partials._app')
+                              @endif
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
+                              @include('layouts.partials._logout', ['authName' => Auth::user()->name])
+                            @endguest
+                        @endif
+                        
                     </ul>
                 </div>
             </div>

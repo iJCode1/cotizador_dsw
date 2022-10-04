@@ -5,10 +5,16 @@ namespace App\Models\Tenant;
 use Hyn\Tenancy\Traits\UsesTenantConnection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
+  use SoftDeletes;
   use Notifiable, UsesTenantConnection;
+
+  protected $table = "users";
+
+  protected $primaryKey = 'user_id';
 
   /**
    * The attributes that are mass assignable.
@@ -16,7 +22,7 @@ class User extends Authenticatable
    * @var array
    */
   protected $fillable = [
-    'name', 'email', 'password',
+    'user_id', 'nombre', 'apellido_p', 'apellido_m', 'direccion', 'telefono', 'email', 'password', 'rol_id',
   ];
 
   /**

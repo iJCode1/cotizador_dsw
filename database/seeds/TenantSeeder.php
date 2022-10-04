@@ -70,7 +70,7 @@ class TenantSeeder extends Seeder
   {
     if (isset($_SESSION)) {
       DB::table('users')->insert([
-        'name' => $_SESSION['name'],
+        'nombre' => $_SESSION['name'],
         'email' => $_SESSION['email'],
         'password' => $_SESSION['password'],
         'rol_id' => 1,

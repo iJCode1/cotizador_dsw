@@ -23,26 +23,26 @@
       <tbody>
         @foreach ($usuarios as $usuario)
         <tr>
-          <th scope="row">{{$usuario->usuario_id}}</th>
+          <th scope="row">{{$usuario->user_id}}</th>
           <td>{{$usuario->nombre}}</td>
           <td>{{$usuario->apellido_p}}</td>
           <td>{{$usuario->apellido_m}}</td>
           <td>{{$usuario->direccion}}</td>
           <td>{{$usuario->telefono}}</td>
-          <td>{{$usuario->correo_electronico}}</td>
+          <td>{{$usuario->email}}</td>
           <td>
-            <a href=" {{ route('tenant.showEditUser', ['usuario_id' => $usuario->usuario_id]) }} ">
+            <a href=" {{ route('tenant.showEditUser', ['usuario_id' => $usuario->user_id]) }} ">
               <button type="button" class="btn btn-warning">Editar</button>
             </a>
           </td>
           <td>
             @if ($usuario->deleted_at != NULL)
-            <form id="activateForm" action="{{ route('tenant.activateUser', ['usuario_id' => $usuario->usuario_id]) }}">
+            <form id="activateForm" action="{{ route('tenant.activateUser', ['usuario_id' => $usuario->user_id]) }}">
               @csrf
               <button type="submit" class="btn btn-info text-white">Activar</button>
             </form>
             @else
-              <form id="deleteForm" action="{{ route('tenant.deleteUser', ['usuario_id' => $usuario->usuario_id]) }}">
+              <form id="deleteForm" action="{{ route('tenant.deleteUser', ['usuario_id' => $usuario->user_id]) }}">
                 @method("DELETE")
                 @csrf
                 <button type="submit" class="btn btn-danger">Eliminar</button>
