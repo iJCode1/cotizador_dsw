@@ -3,6 +3,7 @@
 use App\Http\Controllers\Tenant\Cliente\ClienteController;
 use App\Http\Controllers\Tenant\Cliente\LoginCustomerController;
 use App\Http\Controllers\Tenant\Cliente\RegisterCustomerController;
+use App\Http\Controllers\Tenant\Cotizaciones\CotizacionesController;
 use App\Http\Controllers\Tenant\ServiciosController;
 use App\Http\Controllers\Tenant\UsuariosController;
 use Illuminate\Support\Facades\Route;
@@ -45,4 +46,11 @@ Route::middleware(['web'])
     Route::get('/cliente', [ClienteController::class, 'showCliente']);
 
     Route::get('cliente/index', [ClienteController::class, 'index'])->name('index');
+
+    /**
+     * Rutas de cotizaciones para todos
+     */
+    Route::get('/cotizaciones', [CotizacionesController::class, 'index'])->name('cotizaciones');
+    Route::get('/cotizacion', [CotizacionesController::class, 'showCotizacionForm'])->name('cotizacion');
+    Route::post('/cotizacion', [CotizacionesController::class, 'createCotizacion']);
   });

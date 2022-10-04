@@ -7,5 +7,5 @@
 </li>
 
 <li>
-  <a href="#" class="nav-link">Cotizaciones</a>
+  <a href="{{route('tenant.cotizaciones')}}" class="nav-link">Cotizaciones</a>
 </li>
