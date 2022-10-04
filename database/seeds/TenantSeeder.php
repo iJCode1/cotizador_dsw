@@ -20,6 +20,7 @@ class TenantSeeder extends Seeder
     $this->roles();
     $this->unidadesDeMedida();
     $this->tiposProductosYServicios();
+    $this->estatusCotizaciones();
     $this->sesion();
   }
 
@@ -55,11 +56,24 @@ class TenantSeeder extends Seeder
     }
   }
 
-  public function tiposProductosYServicios(){
+  public function tiposProductosYServicios()
+  {
     $tipos = ["Producto", "Servicio"];
     foreach ($tipos as $nombreTipo) {
       DB::table('tipo_productos_servicios')->insert([
         'nombre_tipo' => $nombreTipo,
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s')
+      ]);
+    }
+  }
+
+  private function estatusCotizaciones()
+  {
+    $estatus = ["Iniciado", "Enviada", "Aprobada"];
+    foreach ($estatus as $estatu) {
+      DB::table('estatus_cotizaciones')->insert([
+        'estatus' => $estatu,
         'created_at' => date('Y-m-d H:i:s'),
         'updated_at' => date('Y-m-d H:i:s')
       ]);
