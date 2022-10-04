@@ -14,4 +14,19 @@ class Cotizacion extends Authenticatable
   protected $table = "cotizaciones";
   protected $primaryKey = 'cotizacion_id';
   protected $fillable = ['cotizacion_id', 'nombre_cotizacion', 'descripcion', 'fecha_creacion', 'vigencia', 'usuario_id', 'estatus_cotizacion_id', 'cliente_id'];
+
+  public function estatus_cotizacion()
+  {
+    return $this->belongsTo('App\Models\Tenant\Estatus_Cotizacion', 'estatus_cotizacion_id', 'estatus_cotizacion_id');
+  }
+
+  public function cliente()
+  {
+    return $this->belongsTo('App\Models\Tenant\Cliente', 'cliente_id', 'cliente_id');
+  }
+
+  public function user()
+  {
+    return $this->belongsTo('App\Models\Tenant\User', 'usuario_id', 'user_id');
+  }
 }
