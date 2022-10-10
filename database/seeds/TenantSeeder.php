@@ -40,10 +40,10 @@ class TenantSeeder extends Seeder
   {
     $unidades = array(
       array("unidad", "UN"),
-      array("gramos", "G"),
-      array("kilogramos", "KG"),
-      array("mililitros", "ML"),
-      array("litros", "L"),
+      // array("gramos", "G"),
+      // array("kilogramos", "KG"),
+      // array("mililitros", "ML"),
+      // array("litros", "L"),
     );
     // var_dump($unidades);
     foreach ($unidades as $unidad) {
@@ -70,7 +70,7 @@ class TenantSeeder extends Seeder
 
   private function estatusCotizaciones()
   {
-    $estatus = ["Iniciado", "Enviada", "Aprobada"];
+    $estatus = ["Enviado", "Aprobado", "Rechazado", "Pagado"];
     foreach ($estatus as $estatu) {
       DB::table('estatus_cotizaciones')->insert([
         'estatus' => $estatu,
