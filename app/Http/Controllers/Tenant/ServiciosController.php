@@ -100,7 +100,7 @@ class ServiciosController extends Controller
    */
   public function showEditServicio($servicio){
     $tiposProductoServicio = Tipo_Producto_Servicio::all();
-    $unidadesDeMedida = Unidad_De_Medida::all();
+    $unidadesDeMedida = Unidad_De_Medida::withTrashed()->get();
     
     $servicioFind = Producto_Servicio::withTrashed()->find($servicio);
     

@@ -24,6 +24,6 @@ class Producto_Servicio extends Authenticatable
 
   public function unidad()
   {
-    return $this->belongsTo('App\Models\Tenant\Unidad_De_Medida', 'unidad_medida_id', 'unidad_medida_id');
+    return $this->belongsTo('App\Models\Tenant\Unidad_De_Medida', 'unidad_medida_id', 'unidad_medida_id')->withTrashed();
   }
 }
