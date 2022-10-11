@@ -9,3 +9,7 @@
 <li>
   <a href="{{route('tenant.cotizaciones')}}" class="nav-link">Cotizaciones</a>
 </li>
+
+<li>
+  <a class="nav-link" href="{{route('tenant.unidades')}}">Unidades</a>
+</li>

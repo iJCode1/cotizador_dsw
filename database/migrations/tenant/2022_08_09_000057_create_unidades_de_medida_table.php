@@ -19,6 +19,8 @@ class CreateUnidadesDeMedidaTable extends Migration
       $table->string('abrev', 5);
 
       $table->rememberToken();
+
+      $table->softDeletesTz('deleted_at');
       $table->timestamps();
     });
   }

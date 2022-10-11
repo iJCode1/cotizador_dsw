@@ -5,6 +5,7 @@ use App\Http\Controllers\Tenant\Cliente\LoginCustomerController;
 use App\Http\Controllers\Tenant\Cliente\RegisterCustomerController;
 use App\Http\Controllers\Tenant\Cotizaciones\CotizacionesController;
 use App\Http\Controllers\Tenant\ServiciosController;
+use App\Http\Controllers\Tenant\UnidadesDeMedidaController;
 use App\Http\Controllers\Tenant\UsuariosController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,17 @@ Route::middleware(['web'])
     Route::put('servicio/{servicio_id}', [ServiciosController::class, 'editServicio'])->name('editServicio');
     Route::get('/servicio/{servicio_id}/delete', [ServiciosController::class, 'deleteServicio'])->name('deleteServicio');
     Route::get('/servicio/{servicio_id}/activate', [ServiciosController::class, 'activateServicio'])->name('activateServicio');
+
+    /**
+     * Rutas para unidades de medida (Administrador y Empleado)
+     */
+    Route::get('/unidades', [UnidadesDeMedidaController::class, 'index'])->name('unidades');
+    Route::get('/unidad', [UnidadesDeMedidaController::class, 'showRegisterUnidad'])->name('showRegisterUnidad');
+    Route::post('/unidad/register', [UnidadesDeMedidaController::class, 'registerUnidad'])->name('registerUnidad');
+    Route::get('/unidad/{unidad_id}/edit', [UnidadesDeMedidaController::class, 'showEditUnidad'])->name('showEditUnidad');
+    Route::put('/unidad/{unidad_id}', [UnidadesDeMedidaController::class, 'editUnidad'])->name('editUnidad');
+    Route::get('/unidad/{unidad_id}/delete', [UnidadesDeMedidaController::class, 'deleteUnidad'])->name('deleteUnidad');
+    Route::get('/unidad/{unidad_id}/activate', [UnidadesDeMedidaController::class, 'activateUnidad'])->name('activateUnidad');
 
     /**
      * Rutas para clientes

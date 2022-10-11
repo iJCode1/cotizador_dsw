@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Hyn\Tenancy\Traits\UsesTenantConnection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Unidad_De_Medida extends Authenticatable
 {
+  use SoftDeletes;
   use Notifiable, UsesTenantConnection;
 
   protected $table = "unidades_de_medida";
