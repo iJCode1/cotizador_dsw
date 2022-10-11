@@ -9,6 +9,10 @@ use Illuminate\Validation\Rule;
 
 class UnidadesDeMedidaController extends Controller
 {
+  /**
+   * Función index()
+   * Muestra las unidades de medida que se han registrado
+   */
   public function index()
   {
     $unidades = Unidad_De_Medida::withTrashed()
@@ -19,13 +23,20 @@ class UnidadesDeMedidaController extends Controller
     ]);
   }
 
+  /**
+   * Función showRegisterUnidad()
+   * Retorna la vista de registro de unidades de medida
+   */
   public function showRegisterUnidad()
   {
-    // $unidades = Unidad_De_Medida::all();
-    // dd(count($unidades));
     return view('system.unidades.register');
   }
 
+  /**
+   * Función registerUnidad()
+   * Hace la validación de los campos al registrar una nueva unidad de medida
+   * Si los datos son validos, registra la unidad de medida
+   */
   public function registerUnidad(Request $request)
   {
     $request->validate([
@@ -44,6 +55,10 @@ class UnidadesDeMedidaController extends Controller
       ->with('crear', 'ok');
   }
 
+  /**
+   * Función showEditUnidad()
+   * Retorna la vista para editar la unidad de medida seleccionada
+   */
   public function showEditUnidad($unidad)
   {
 
@@ -53,6 +68,11 @@ class UnidadesDeMedidaController extends Controller
     ]);
   }
 
+  /**
+   * Función editUnidad()
+   * Valida que los nuevos datos de la unidad sean validos
+   * Si los datos son validos, actualiza el registro en la BD
+   */
   public function editUnidad(Request $request, $unidadID)
   {
     // dd($request);
@@ -72,6 +92,10 @@ class UnidadesDeMedidaController extends Controller
       ->with('editar', 'ok');
   }
 
+  /**
+   * Función deleteUnidad()
+   * Hace una baja lógica de la unidad de medida seleccionada
+   */
   public function deleteUnidad($unidad_id)
   {
     Unidad_De_Medida::withTrashed()->find($unidad_id)
@@ -80,6 +104,10 @@ class UnidadesDeMedidaController extends Controller
       ->with('eliminar', 'ok');
   }
 
+  /**
+   * Función activateUnidad()
+   * Quita la baja lógica del registro seleccionado
+   */
   public function activateUnidad($unidad_id)
   {
     Unidad_De_Medida::withTrashed()
