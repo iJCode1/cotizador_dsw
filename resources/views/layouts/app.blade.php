@@ -22,6 +22,13 @@
     {{-- Alpine --}}
     <script defer src="https://unpkg.com/alpinejs@3.2.4/dist/cdn.min.js"></script>
 
+    <link
+    {{-- href="https://code.jquery.com/ui/1.12.1/themes/hot-sneaks/jquery-ui.css" --}}
+    {{-- href="https://code.jquery.com/ui/1.13.2/themes/cupertino/jquery-ui.css" --}}
+    href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+      rel="stylesheet"
+    />
+
 </head>
 <body>
     <div id="app">
@@ -103,6 +110,21 @@
         </nav>
         {{-- Sweet Alert 2 --}}
         <script src="{{asset('./js/app.js')}}"></script>
+
+        <!-- jQuery -->
+        <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"
+        ></script>
+
+        <!-- jQuery UI -->
+        <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"
+        integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+        ></script>
 
         <main class="py-4">
             @yield('content')
