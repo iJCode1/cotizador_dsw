@@ -129,7 +129,7 @@
               <div class="col-md-2">
                 <label for="servicio_id" class="form-label">{{ __('ID') }}</label>
                 <div class="form-group">
-                    <input type="text" readonly class="form-control" id="servicio_id" name="servicio_id" value="{{old('servicio_id')}}">
+                    <input type="text" readonly class="form-control" id="servicio_id" name="servicio_id" value="{{old('servicio_id')}}" required>
                     @error('servicio_id')
                     <small class="text-danger">{{$message}}</small>
                     @enderror
@@ -140,7 +140,7 @@
               <div class="col-md-5">
                 <label for="nombre_serv" class="form-label">{{ __('Nombre') }}</label>
                 <div class="form-group">
-                    <input type="text" readonly class="form-control" id="nombre_serv" name="nombre_serv" value="{{old('nombre_serv')}}">
+                    <input type="text" readonly class="form-control" id="nombre_serv" name="nombre_serv" value="{{old('nombre_serv')}}" required>
                     @error('nombre_serv')
                     <small class="text-danger">{{$message}}</small>
                     @enderror
@@ -151,7 +151,7 @@
               <div class="col-md-5">
                 <label for="descripcion" class="form-label">{{ __('Descripción') }}</label>
                 <div class="form-group">
-                    <input type="text" readonly class="form-control" id="descripcion" name="descripcion" value="{{old('descripcion')}}">
+                    <input type="text" readonly class="form-control" id="descripcion" name="descripcion" value="{{old('descripcion')}}" required>
                     @error('descripcion')
                     <small class="text-danger">{{$message}}</small>
                     @enderror
@@ -165,7 +165,7 @@
               <div class="col-md-4">
                 <label for="tipo" class="form-label">{{ __('Tipo') }}</label>
                 <div class="form-group">
-                    <input type="text" readonly class="form-control" id="tipo" name="tipo" value="{{old('tipo')}}">
+                    <input type="text" readonly class="form-control" id="tipo" name="tipo" value="{{old('tipo')}}" required>
                     @error('tipo')
                     <small class="text-danger">{{$message}}</small>
                     @enderror
@@ -176,7 +176,7 @@
               <div class="col-md-4">
                 <label for="precio" class="form-label">{{ __('Precio') }}</label>
                 <div class="form-group">
-                    <input type="text" class="form-control  @error('precio') is-invalid @enderror" id="precio" name="precio" value="{{old('precio')}}">
+                    <input type="text" class="form-control  @error('precio') is-invalid @enderror" id="precio" name="precio" value="{{old('precio')}}" required>
                     @error('precio')
                     <small class="text-danger">{{$message}}</small>
                     @enderror
@@ -188,7 +188,7 @@
               <div class="col-md-4">
                 <label for="cantidad" class="form-label">{{ __('Cantidad') }}</label>
                 <div class="form-group">
-                    <input type="number" value="1" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{old('cantidad')}}" min="1" max="1000" step="1" onkeyup="validarNumero(this)"/>
+                    <input type="number" value="1" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{old('cantidad')}}" min="1" max="1000" step="1" onkeyup="validarNumero(this)" required/>
                     @error('cantidad')
                     <small class="text-danger">{{$message}}</small>
                     @enderror
@@ -200,7 +200,7 @@
             <div class="form-group row mb-5">
               {{-- <div class="col-md-6 offset-md-4"> --}}
               <div class="col">
-                <button type="button" id="btn_add" class="btn btn-block btn-primary">
+                <button type="submit" id="btn_add" class="btn btn-block btn-primary">
                   {{ __('Agregar') }}
                 </button>
               </div>
@@ -249,7 +249,7 @@
 
 function validarNumero(value) {
    var valor = $(value).val();
-    if (!isNaN(valor) && valor >= 0){
+    if (!isNaN(valor) && valor >= 1){
       $(value).val(valor);
     }else{
       $(value).val(1);
@@ -320,11 +320,6 @@ $(document).ready(function () {
     });
   });
 
-  $('#btn_add').click(function(){
-    agregarProducto();
-    console.log("Click");
-  });
-
   let arrayServicios = [];
 
   function agregarProducto(){
@@ -336,18 +331,19 @@ $(document).ready(function () {
     let precioIva = (Number(precioBruto) * .16).toFixed(2);
     let subtotal = (Number(precioIva) + parseFloat(precioBruto)).toFixed(2);
 
+    let UUID = generarUUID();
 
     arrayServicios.push({
       servicioId,
+      UUID,
       precioBruto: precioBruto,
       precioIva: precioIva,
       subtotal: subtotal,
     });
 
-    // console.log(arrayServicios);
-
     const fila = `<tr id="fila"> 
       <td><input class="form-control" type="number" id="servicio_id" name="servicio_id[]" value="${servicioId}" readonly></td>
+      <td style="display: none;"><input class="form-control" type="number" id="servicio_uuid" name="servicio_uuid[]" data-uuid="${UUID}" readonly></td>
       <td><input class="form-control" type="text" id="nombre" name="nombre[]" value="${nombre}" readonly></td>
       <td><input class="form-control" type="number" id="precio_inicial" name="precio_inicial[]" value="${precioInicial}" readonly></td>
       <td><input class="form-control" type="number" id="numero_servicios" name="numero_servicios[]" value="${numeroServicios}" readonly></td>
@@ -357,6 +353,7 @@ $(document).ready(function () {
       <td><button type="button" class="btn btn-danger delete" value="Eliminar">X</button></td>
       </tr>; `
 
+    limpiarCampos();
     $('#detalles').append(fila);
 
     let {
@@ -389,12 +386,37 @@ $(document).ready(function () {
     }
   }
 
+  function generarUUID() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxxxxxx7xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+
+    return uuid;
+  }
+
+  function limpiarCampos(){
+    $("#servicio").val("");
+    $("#servicio_id").val("");
+    $("#nombre_serv").val("");
+    $("#descripcion").val("");
+    $("#tipo").val("");
+    $("#precio").val("");
+    $("#cantidad").val(1);
+  }
+
+  $('#btn_add').click(function(){
+    agregarProducto();
+    console.log("Click");
+  });
+
   $(document).on('click', '.delete', function(event) {
-    // event.preventDefault();
-    servicio_id = $(this).closest('tr')[0].getElementsByTagName('td')[0].getElementsByTagName('input')[0].value;
-    
-    arrayServicios = arrayServicios.filter((el => el.servicioId !== servicio_id));
-    // console.log(arrayServicios);
+    let inputUUID = $(this).closest('tr')[0].getElementsByTagName('td')[1].getElementsByTagName('input')[0];
+    let UUID = $(inputUUID).data("uuid")
+
+    arrayServicios = arrayServicios.filter((el => el.UUID !== UUID));
     $(this).closest('tr').remove();
 
     let {
