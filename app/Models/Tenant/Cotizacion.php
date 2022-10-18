@@ -27,6 +27,11 @@ class Cotizacion extends Authenticatable
 
   public function user()
   {
-    return $this->belongsTo('App\Models\Tenant\User', 'usuario_id', 'user_id');
+    return $this->belongsTo(User::class, 'usuario_id', 'user_id');
+  }
+
+  public function cotizaciones()
+  {
+    return $this->belongsTo(Detalle_Cotizacion::class, 'cotizacion_id', 'detalle_cotizacion_id');
   }
 }

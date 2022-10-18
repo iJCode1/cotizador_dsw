@@ -11,15 +11,16 @@
         <div class="card-body">
           <form method="POST" action="{{ route('tenant.cotizacion') }}">
             @csrf
+            @method('post')
 
             {{-- Nombre de la Cotización --}}
             <div class="form-group row">
-              <label for="nombre_cot" class="col-md-4 col-form-label text-md-right">{{ __('Nombre de la cotización') }}</label>
+              <label for="nombre_cotizacion" class="col-md-4 col-form-label text-md-right">{{ __('Nombre de la cotización') }}</label>
 
               <div class="col-md-6">
-                <input id="nombre_cot" type="text" class="form-control @error('nombre_cot') is-invalid @enderror" name="nombre_cot" value="{{ old('nombre_cot') }}" autocomplete="nombre_cot" autofocus>
+                <input id="nombre_cotizacion" type="text" class="form-control @error('nombre_cotizacion') is-invalid @enderror" name="nombre_cotizacion" value="{{ old('nombre_cotizacion') }}" autocomplete="nombre_cotizacion" autofocus>
 
-                @error('nombre_cot')
+                @error('nombre_cotizacion')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
@@ -29,12 +30,12 @@
 
             {{-- Descripcion --}}
             <div class="form-group row">
-              <label for="descripcion_cot" class="col-md-4 col-form-label text-md-right">{{ __('Descripcion') }}</label>
+              <label for="descripcion" class="col-md-4 col-form-label text-md-right">{{ __('Descripcion') }}</label>
 
               <div class="col-md-6">
-                <input id="descripcion_cot" type="text" class="form-control @error('descripcion_cot') is-invalid @enderror" name="descripcion_cot" value="{{ old('descripcion_cot') }}" autocomplete="text" autofocus>
+                <input id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" value="{{ old('descripcion') }}" autocomplete="text" autofocus>
 
-                @error('descripcion_cot')
+                @error('descripcion')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
@@ -77,14 +78,14 @@
 
             {{-- Estatus de Cotización --}}
             <div class="form-group row">
-              <label for="estatus" class="col-md-4 col-form-label text-md-right">{{ __('Estatus de la cotización') }}</label>
+              <label for="estatus_cotizacion_id" class="col-md-4 col-form-label text-md-right">{{ __('Estatus de la cotización') }}</label>
 
               <div class="col-md-6">
-                <select name="estatus" id="estatus" class="form-control estatus @error('estatus') is-invalid @enderror" autofocus>
+                <select name="estatus_cotizacion_id" id="estatus_cotizacion_id" class="form-control estatus_cotizacion_id @error('estatus_cotizacion_id') is-invalid @enderror" autofocus>
                   
                   <option selected disabled value="">Selecciona el status</option>
                   @foreach($estatus as $estatu)
-                    @if (old('estatus') == $estatu->estatus_cotizacion_id)
+                    @if (old('estatus_cotizacion_id') == $estatu->estatus_cotizacion_id)
                       {{-- {{dd("Algo")}} --}}
                       <option selected value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
                       @continue
@@ -92,7 +93,7 @@
                   <option value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
                   @endforeach
                   
-                  @error('estatus')
+                  @error('estatus_cotizacion_id')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -129,7 +130,7 @@
               <div class="col-md-2">
                 <label for="servicio_id" class="form-label">{{ __('ID') }}</label>
                 <div class="form-group">
-                    <input type="text" readonly class="form-control" id="servicio_id" name="servicio_id" value="{{old('servicio_id')}}" required>
+                    <input type="text" readonly class="form-control" id="servicio_id" name="servicio_id" value="{{old('servicio_id')}}">
                     @error('servicio_id')
                     <small class="text-danger">{{$message}}</small>
                     @enderror
@@ -140,7 +141,7 @@
               <div class="col-md-5">
                 <label for="nombre_serv" class="form-label">{{ __('Nombre') }}</label>
                 <div class="form-group">
-                    <input type="text" readonly class="form-control" id="nombre_serv" name="nombre_serv" value="{{old('nombre_serv')}}" required>
+                    <input type="text" readonly class="form-control" id="nombre_serv" name="nombre_serv" value="{{old('nombre_serv')}}">
                     @error('nombre_serv')
                     <small class="text-danger">{{$message}}</small>
                     @enderror
@@ -149,10 +150,10 @@
 
               {{-- Descripción --}}
               <div class="col-md-5">
-                <label for="descripcion" class="form-label">{{ __('Descripción') }}</label>
+                <label for="descripcion_cotizacion" class="form-label">{{ __('Descripción') }}</label>
                 <div class="form-group">
-                    <input type="text" readonly class="form-control" id="descripcion" name="descripcion" value="{{old('descripcion')}}" required>
-                    @error('descripcion')
+                    <input type="text" readonly class="form-control" id="descripcion_cotizacion" name="descripcion_cotizacion" value="{{old('descripcion_cotizacion')}}">
+                    @error('descripcion_cotizacion')
                     <small class="text-danger">{{$message}}</small>
                     @enderror
                 </div>
@@ -165,7 +166,7 @@
               <div class="col-md-4">
                 <label for="tipo" class="form-label">{{ __('Tipo') }}</label>
                 <div class="form-group">
-                    <input type="text" readonly class="form-control" id="tipo" name="tipo" value="{{old('tipo')}}" required>
+                    <input type="text" readonly class="form-control" id="tipo" name="tipo" value="{{old('tipo')}}">
                     @error('tipo')
                     <small class="text-danger">{{$message}}</small>
                     @enderror
@@ -176,7 +177,7 @@
               <div class="col-md-4">
                 <label for="precio" class="form-label">{{ __('Precio') }}</label>
                 <div class="form-group">
-                    <input type="text" class="form-control  @error('precio') is-invalid @enderror" id="precio" name="precio" value="{{old('precio')}}" required>
+                    <input type="text" class="form-control  @error('precio') is-invalid @enderror" id="precio" name="precio" value="{{old('precio')}}">
                     @error('precio')
                     <small class="text-danger">{{$message}}</small>
                     @enderror
@@ -188,7 +189,7 @@
               <div class="col-md-4">
                 <label for="cantidad" class="form-label">{{ __('Cantidad') }}</label>
                 <div class="form-group">
-                    <input type="number" value="1" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{old('cantidad')}}" min="1" max="1000" step="1" onkeyup="validarNumero(this)" required/>
+                    <input type="number" value="1" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{old('cantidad')}}" min="1" max="1000" step="1" onkeyup="validarNumero(this)"/>
                     @error('cantidad')
                     <small class="text-danger">{{$message}}</small>
                     @enderror
@@ -200,7 +201,7 @@
             <div class="form-group row mb-5">
               {{-- <div class="col-md-6 offset-md-4"> --}}
               <div class="col">
-                <button type="submit" id="btn_add" class="btn btn-block btn-primary">
+                <button type="button" id="btn_add" class="btn btn-block btn-primary">
                   {{ __('Agregar') }}
                 </button>
               </div>
@@ -236,6 +237,11 @@
                   </tfoot>
                 </table>
               </div>
+            </div>
+
+            {{-- CTA Cotizar --}}
+            <div class="col-md-12" id="cotizar">
+              <button type="submit" class="btn btn-primary">Cotizar</button>
             </div>
 
           </form>
@@ -313,7 +319,7 @@ $(document).ready(function () {
         
         $("#servicio_id").val(data.producto_servicio_id ?? "Sin datos")
         $("#nombre_serv").val(data.nombre ?? "Sin datos")
-        $("#descripcion").val(data.descripcion ?? "Sin datos")
+        $("#descripcion_cotizacion").val(data.descripcion ?? "Sin datos")
         $("#tipo").val(tipoDelPS ?? "Sin datos")
         $("#precio").val(data.precio_bruto ?? "Sin datos")
       }
@@ -343,7 +349,7 @@ $(document).ready(function () {
 
     const fila = `<tr id="fila"> 
       <td><input class="form-control" type="number" id="servicio_id" name="servicio_id[]" value="${servicioId}" readonly></td>
-      <td style="display: none;"><input class="form-control" type="number" id="servicio_uuid" name="servicio_uuid[]" data-uuid="${UUID}" readonly></td>
+      <td style="display: none;"><input class="form-control" type="text" id="servicio_uuid" name="servicio_uuid[]" data-uuid="${UUID}" value="${UUID}" readonly></td>
       <td><input class="form-control" type="text" id="nombre" name="nombre[]" value="${nombre}" readonly></td>
       <td><input class="form-control" type="number" id="precio_inicial" name="precio_inicial[]" value="${precioInicial}" readonly></td>
       <td><input class="form-control" type="number" id="numero_servicios" name="numero_servicios[]" value="${numeroServicios}" readonly></td>
@@ -389,6 +395,7 @@ $(document).ready(function () {
   function generarUUID() {
     var d = new Date().getTime();
     var uuid = 'xxxxxxxxxxxx7xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    // var uuid = 'x7y'.replace(/[xy]/g, function (c) {
       var r = (d + Math.random() * 16) % 16 | 0;
       d = Math.floor(d / 16);
       return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
@@ -401,7 +408,7 @@ $(document).ready(function () {
     $("#servicio").val("");
     $("#servicio_id").val("");
     $("#nombre_serv").val("");
-    $("#descripcion").val("");
+    $("#descripcion_cotizacion").val("");
     $("#tipo").val("");
     $("#precio").val("");
     $("#cantidad").val(1);
