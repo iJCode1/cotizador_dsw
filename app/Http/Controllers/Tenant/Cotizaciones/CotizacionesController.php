@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tenant\Cotizaciones;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CotizacionRequest;
+use App\Models\Tenant\Cliente;
 use App\Models\Tenant\Cotizacion;
 use App\Models\Tenant\Estatus_Cotizacion;
 use App\Models\Tenant\Producto_Servicio;
@@ -46,6 +47,20 @@ class CotizacionesController extends Controller
       "estatus" => $estatus,
       "tipos" => $tipos,
     ]);
+  }
+
+  public function buscarCliente(Request $request)
+  {
+    $term = $request->get('term');
+    $buscarCliente = Cliente::where('email', 'like', "%$term%")->get();
+    return response()->json($buscarCliente);
+  }
+
+  public function seleccionarCliente(Request $request)
+  {
+    // echo($request);
+    $cliente = Cliente::where('email', $request->cliente)->first();
+    return response()->json($cliente);
   }
 
   public function buscarServicio(Request $request)
@@ -103,14 +118,11 @@ class CotizacionesController extends Controller
     // // return redirect()->route('tenant.cotizaciones');
     // // dd("Hey");
     return DB::transaction(function () use ($request) {
-      $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id] + ['cliente_id' => 1]);
-      // dd($cotizacion);
-      // echo "YES";
-      // dd($request->all());
+      $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id]);
+
       foreach ($request->servicio_id as $index => $servicio_id) {
         $cotizacion->cotizaciones()->create([
           'cantidad' => $request->numero_servicios[$index],
-          // 'fecha_estimadaentrega' => Carbon::now(),
           'precio_bruto' => $request->precio_bruto[$index],
           'iva' => $request->precio_iva[$index],
           'subtotal' => $request->subtotal[$index],
@@ -119,9 +131,7 @@ class CotizacionesController extends Controller
           'producto_servicio_id' => $servicio_id,
         ]);
       }
-      // dd("Hey");
 
-      // return redirect()
       //   ->route('cotizaciones.index')->withSuccess("La cotizacion $cotizacion->nombre_proyecto se creo exitosamente");
       return redirect()
         ->route('tenant.cotizaciones');

@@ -13,6 +13,54 @@
             @csrf
             @method('post')
 
+            {{-- Cliente --}}
+            <div class="form-group row justify-content-center">
+              <div class="col-md-6">
+                <label for="cliente">Buscar cliente</label>
+                <div class="input-group">
+                    <input type="search" name="cliente" id="cliente" class="form-control @error('cliente') is-invalid @enderror" value="{{old('cliente')}}" placeholder="cliente@cliente.com" aria-label="Search">
+                    <span class="input-group-btn">
+                      <button type="button" id="selectCliente" class="btn btn-primary">
+                        Seleccionar
+                      </button>
+                    </span>
+                </div>
+                <div>
+                  @error('cliente')
+                  <small class="text-danger">{{$message}}</small>
+                  @enderror
+                </div>
+              </div>
+            </div>
+
+            <div class="row justify-content-center">
+
+              {{-- ID --}}
+              <div class="col-md-4 my-3" style="display: none;">
+                <label for="cliente_id" class="form-label">ID Cliente</label>
+                <div class="form-group">
+                  <input type="text" readonly class="form-control" id="cliente_id" name="cliente_id" value="{{old('cliente_id')}}">
+                </div>
+              </div>
+
+              {{-- Nombre --}}
+              <div class="col-md-4 my-3">
+                <label for="nombreCliente" class="form-label">Nombre Cliente</label>
+                <div class="form-group">
+                  <input type="text" readonly class="form-control" id="nombreCliente" name="nombreCliente" value="{{old('nombreCliente')}}">
+                </div>
+              </div>
+  
+              {{-- Correo --}}
+              <div class="col-md-4 my-3">
+                <label for="correoCliente" class="form-label">Correo Cliente</label>
+                <div class="form-group">
+                  <input type="text" readonly class="form-control" id="correoCliente" name="correoCliente" value="{{old('correoCliente')}}">
+                </div>
+              </div>
+
+            </div>
+
             {{-- Nombre de la Cotización --}}
             <div class="form-group row">
               <label for="nombre_cotizacion" class="col-md-4 col-form-label text-md-right">{{ __('Nombre de la cotización') }}</label>
@@ -264,9 +312,47 @@ function validarNumero(value) {
 
 $(document).ready(function () {
 
+  $("#cliente").autocomplete({
+    source: function(request, response) {
+      $.ajax({
+        url: "{{route('tenant.buscarCliente')}}",
+        type: 'POST',
+        data: {
+          term: request.term,
+          _token: $("input[name=_token]").val()
+        },
+        dataType: 'json',
+        success: function(data) {
+          let resp = $.map(data, function(obj) {
+            return obj.email;
+            response(data);
+          });
+          response(resp);
+        }
+      })
+    },
+    minLength: 1,
+  })
+
+  $("#selectCliente").click(function() {
+    const cliente = $('#cliente').val()
+    $.ajax({
+      url: "{{route('tenant.seleccionarCliente')}}",
+      type: "POST",
+      data: {
+        cliente: cliente,
+        _token: $("input[name=_token]").val()
+      },
+      success: function(data) {
+        $("#cliente_id").val(data.cliente_id ?? "Sin datos")
+        $("#nombreCliente").val(data.nombre ?? "Sin datos")
+        $("#correoCliente").val(data.email ?? "Sin datos")
+      }
+    })
+  })
+
   $('#servicio').autocomplete({
     source: function(request, response){
-      // console.log(response);
       $.ajax({
         url: "{{route('tenant.buscarServicio')}}",
         type: "POST",
