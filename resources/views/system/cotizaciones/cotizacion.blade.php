@@ -428,6 +428,7 @@ $(document).ready(function () {
     arrayServicios.push({
       servicioId,
       UUID,
+      numeroServicios,
       precioBruto: precioBruto,
       precioIva: precioIva,
       subtotal: subtotal,
@@ -438,7 +439,7 @@ $(document).ready(function () {
       <td style="display: none;"><input class="form-control" type="text" id="servicio_uuid" name="servicio_uuid[]" data-uuid="${UUID}" value="${UUID}" readonly></td>
       <td><input class="form-control" type="text" id="nombre" name="nombre[]" value="${nombre}" readonly></td>
       <td><input class="form-control" type="number" id="precio_inicial" name="precio_inicial[]" value="${precioInicial}" readonly></td>
-      <td><input class="form-control" type="number" id="numero_servicios" name="numero_servicios[]" value="${numeroServicios}" readonly></td>
+      <td><input class="form-control number" type="number" id="number" name="numero_servicios[]" value="${numeroServicios}" min="1"></td>
       <td><input class="form-control" type="text" id="precio_bruto" name="precio_bruto[]" value="${precioBruto}" readonly></td>
       <td><input class="form-control" type="text" id="precio_iva" name="precio_iva[]" value="${precioIva}" readonly></td>
       <td><input class="form-control" type="number" id="subtotal" name="subtotal[]" value="${subtotal}" readonly></td> 
@@ -447,6 +448,11 @@ $(document).ready(function () {
 
     limpiarCampos();
     $('#detalles').append(fila);
+
+    $(".number").bind("keyup keydown change", function(){
+      let fila = $(this).closest("#fila");
+      calcularCostos(fila);
+    });
 
     let {
       inicial,
@@ -476,6 +482,42 @@ $(document).ready(function () {
       iva: iva.toFixed(2),
       total: total.toFixed(2)
     }
+  }
+
+  function calcularCostos(fila){
+    let servicioId = $(fila).find('td > input#servicio_id').val();
+    let UUID = $(fila).find('td > input#servicio_uuid').data("uuid")
+    let precioInicial = $(fila).find('td > input#precio_inicial').val();
+    let numeroServicios = $(fila).find('td > input#number').val();
+    
+    let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
+    let precioIva = (Number(precioBruto) * .16).toFixed(2);
+    let subtotal = (Number(precioIva) + parseFloat(precioBruto)).toFixed(2);
+    
+    $(fila).find('td > input#precio_bruto').val(precioBruto);
+    $(fila).find('td > input#precio_iva').val(precioIva);
+    $(fila).find('td > input#subtotal').val(subtotal);
+
+    arrayServicios = arrayServicios.filter((el => el.UUID !== UUID));
+
+    arrayServicios.push({
+      servicioId,
+      UUID,
+      numeroServicios,
+      precioBruto,
+      precioIva,
+      subtotal,
+    });
+
+    let {
+      inicial,
+      iva,
+      total
+    } = sumarCostos(arrayServicios);
+    
+    $("#total_inicial").html("$" + inicial);
+    $("#total_iva").html("$" + iva);
+    $("#total_total").html("$" + total);
   }
 
   function generarUUID() {
