@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CotizacionRequest;
 use App\Models\Tenant\Cliente;
 use App\Models\Tenant\Cotizacion;
+use App\Models\Tenant\Detalle_Cotizacion;
 use App\Models\Tenant\Estatus_Cotizacion;
 use App\Models\Tenant\Producto_Servicio;
 use App\Models\Tenant\Tipo_Producto_Servicio;
@@ -134,7 +135,58 @@ class CotizacionesController extends Controller
 
       //   ->route('cotizaciones.index')->withSuccess("La cotizacion $cotizacion->nombre_proyecto se creo exitosamente");
       return redirect()
-        ->route('tenant.cotizaciones');
+        ->route('tenant.cotizaciones')
+        ->with('crear', 'ok');
     });
+  }
+
+  public function showCotizacionEditForm($cotizacion_id)
+  {
+    // dd($cotizacion_id);
+
+    $cotizacion = Cotizacion::find($cotizacion_id);
+    $estatus = Estatus_Cotizacion::all();
+    // $servicios = ;
+    // $servicios = DB::select("SELECT dco.detalle_cotizacion_id, dco.cantidad, dco.precio_bruto, dco.iva, dco.subtotal, serv.nombre, serv.descripcion
+    // FROM detalle_cotizaciones AS dco
+    // INNER JOIN productos_servicios AS serv
+    // ON dco.producto_servicio_id = serv.producto_servicio_id
+    // WHERE cotizacion_id = $cotizacion_id");
+
+    $servicios = Detalle_Cotizacion::select('detalle_cotizaciones.detalle_cotizacion_id', 'detalle_cotizaciones.cantidad', 'detalle_cotizaciones.precio_bruto', 'detalle_cotizaciones.iva', 'detalle_cotizaciones.subtotal', 'productos_servicios.nombre', 'productos_servicios.descripcion')
+      ->join('productos_servicios', 'detalle_cotizaciones.producto_servicio_id', '=', 'productos_servicios.producto_servicio_id')
+      ->where("detalle_cotizaciones.cotizacion_id", "=", $cotizacion_id)
+      ->get();
+
+    // dd("heyy");
+
+    return view('system.cotizaciones.edit', [
+      'cotizacion' => $cotizacion,
+      'estatus' => $estatus,
+      'servicios' => $servicios,
+    ]);
+  }
+
+  public function editCotizacion(Request $request, $cotizacion_id)
+  {
+    $request->validate([
+      'nombre_cotizacion' => 'required|min:1|max:100',
+      'descripcion' => 'required|min:1|max:255',
+      'estatus_cotizacion_id' => 'required',
+    ]);
+
+
+    $cotizacion = Cotizacion::find($cotizacion_id);
+    // dd($request);
+
+    $cotizacion->nombre_cotizacion = $request->nombre_cotizacion;
+    $cotizacion->descripcion = $request->descripcion;
+    $cotizacion->estatus_cotizacion_id = $request->estatus_cotizacion_id;
+    $cotizacion->update();
+
+    // dd($request);
+    return redirect()
+      ->route('tenant.cotizaciones')
+      ->with('editar', 'ok');
   }
 }
