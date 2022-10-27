@@ -6,7 +6,7 @@
   <div class="row justify-content-center">
     <div class="col-md-12">
       <div class="card">
-        <div class="card-header">{{ __('Crear Cotizacion') }}</div>
+        <div class="card-header">{{ __('Crear Cotización') }}</div>
 
         <div class="card-body">
           <form method="POST" action="{{ route('tenant.cotizacion') }}">
@@ -24,11 +24,11 @@
                         Seleccionar
                       </button>
                     </span>
-                </div>
-                <div>
-                  @error('cliente')
-                  <small class="text-danger">{{$message}}</small>
-                  @enderror
+                    @error('cliente')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
                 </div>
               </div>
             </div>
@@ -47,7 +47,12 @@
               <div class="col-md-4 my-3">
                 <label for="nombreCliente" class="form-label">Nombre Cliente</label>
                 <div class="form-group">
-                  <input type="text" readonly class="form-control" id="nombreCliente" name="nombreCliente" value="{{old('nombreCliente')}}">
+                  <input type="text" readonly class="form-control @error('nombreCliente') is-invalid @enderror" id="nombreCliente" name="nombreCliente" value="{{old('nombreCliente')}}">
+                  @error('nombreCliente')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
                 </div>
               </div>
   
@@ -55,7 +60,12 @@
               <div class="col-md-4 my-3">
                 <label for="correoCliente" class="form-label">Correo Cliente</label>
                 <div class="form-group">
-                  <input type="text" readonly class="form-control" id="correoCliente" name="correoCliente" value="{{old('correoCliente')}}">
+                  <input type="text" readonly class="form-control @error('correoCliente') is-invalid @enderror" id="correoCliente" name="correoCliente" value="{{old('correoCliente')}}">
+                  @error('correoCliente')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
                 </div>
               </div>
 
@@ -141,12 +151,12 @@
                   <option value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
                   @endforeach
                   
-                  @error('estatus_cotizacion_id')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                  @enderror
                 </select>
+                @error('estatus_cotizacion_id')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
               </div>
             </div>
 
@@ -268,7 +278,7 @@
             {{-- Productos/Servicios cotizados --}}
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <div class="table-responsive">
-                <table id="detalles" class="table table-striped table-bordered condensed table-hover">
+                <table id="detalles" name="servicio_uuid" class="table table-striped table-bordered condensed table-hover @error('servicio_uuid') is-invalid @enderror">
                   <thead class="thead-dark">
                     <th>ID servicio</th>
                     <th>Nombre servicio</th>
@@ -295,6 +305,11 @@
                     </td>
                   </tfoot>
                 </table>
+                @error('servicio_uuid')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                @enderror
               </div>
             </div>
 
@@ -309,6 +324,18 @@
     </div>
   </div>
 </div>
+
+{{-- Condicional para mostrar alerta de que no se pudo cotizar --}}
+@if (session('sinProductos') === 'yes'){
+  <script>
+    Swal.fire({
+      icon: 'error',
+      title: 'Error...',
+      text: 'No se ha agregado nada para cotizar',
+    })
+  </script>
+} 
+@endif
 
 <script>
 
@@ -364,9 +391,11 @@ $(document).ready(function () {
         _token: $("input[name=_token]").val()
       },
       success: function(data) {
-        $("#cliente_id").val(data.cliente_id ?? "Sin datos")
-        $("#nombreCliente").val(data.nombre ?? "Sin datos")
-        $("#correoCliente").val(data.email ?? "Sin datos")
+        if(Object.entries(data).length !== 0){
+          $("#cliente_id").val(data.cliente_id ?? "Sin datos")
+          $("#nombreCliente").val(data.nombre ?? "Sin datos")
+          $("#correoCliente").val(data.email ?? "Sin datos")
+        }
       }
     })
   })
@@ -403,23 +432,29 @@ $(document).ready(function () {
         _token: $("input[name=_token]").val()
       },
       success: function(data) {
-        let tiposPHP = '<?= json_encode($tipos) ?>'
-        let tiposJson = JSON.parse(tiposPHP)
-        let tipo_id = data.tipo_id
-
-        let tipoDePS = tiposJson.filter((tipo) => {
-          return tipo.tipo_id === tipo_id;
-        })
-
-        let tipoDelPS;
-
-        tipoDelPS = (tipoDePS[0]) ? tipoDePS[0].nombre_tipo : "No definido";
-        
-        $("#servicio_id").val(data.producto_servicio_id ?? "Sin datos")
-        $("#nombre_serv").val(data.nombre ?? "Sin datos")
-        $("#descripcion_cotizacion").val(data.descripcion ?? "Sin datos")
-        $("#tipo").val(tipoDelPS ?? "Sin datos")
-        $("#precio").val(data.precio_bruto ?? "Sin datos")
+        if(Object.entries(data).length !== 0){
+          let tiposPHP = '<?= json_encode($tipos) ?>'
+          let tiposJson = JSON.parse(tiposPHP)
+          let tipo_id = data.tipo_id
+          let tipoDePS = tiposJson.filter((tipo) => {
+            return tipo.tipo_id === tipo_id;
+          })
+  
+          let tipoDelPS;
+  
+          tipoDelPS = (tipoDePS[0]) ? tipoDePS[0].nombre_tipo : "No definido";
+          
+          $("#servicio_id").val(data.producto_servicio_id ?? "Sin datos")
+          $("#nombre_serv").val(data.nombre ?? "Sin datos")
+          $("#descripcion_cotizacion").val(data.descripcion ?? "Sin datos")
+          $("#tipo").val(tipoDelPS ?? "Sin datos")
+          $("#precio").val(data.precio_bruto ?? "Sin datos") 
+        }
+        // Swal.fire({
+        //   icon: 'error',
+        //   title: 'Error...',
+        //   text: 'No se ha seleccionado nada!',
+        // })
       }
     });
   });
@@ -563,10 +598,31 @@ $(document).ready(function () {
     $("#tipo").val("");
     $("#precio").val("");
     $("#cantidad").val(1);
+    $("#descuento").val(0);
+  }
+
+  function validarProductoServicio(){
+    let servicio_id = $("#servicio_id").val();
+    let nombre = $("#nombre_serv").val();
+    let descripcion = $("#descripcion_cotizacion").val();
+    let tipo = $("#tipo").val();
+    let precio = $("#precio").val();
+    let descuento = $("#descuento").val();
+    let cantidad = $("#cantidad").val();
+
+    if(servicio_id && nombre && descripcion && tipo && precio && descuento && cantidad){
+      agregarProducto();
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Error...',
+        text: 'Faltan datos por registrar!',
+      })
+    }
   }
 
   $('#btn_add').click(function(){
-    agregarProducto();
+    validarProductoServicio();
     // console.log("Click");
   });
 

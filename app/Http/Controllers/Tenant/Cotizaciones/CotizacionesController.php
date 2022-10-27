@@ -79,28 +79,79 @@ class CotizacionesController extends Controller
 
   public function createCotizacion(Request $request)
   {
+    // dd($request['servicio_uuid']);
+
+    // if($request['servicio_uuid'] === null){
+    //   // dd("Nullo");
+    //   return redirect()->back()->with('success', 'your message,here');   
+    // }else{
+    //   dd("No es nullo");
+    // }
+
+    // dd($request);
+    $rules = [
+      'cliente' => 'required',
+      'nombreCliente' => 'required',
+      'correoCliente' => 'required',
+      'nombre_cotizacion' => 'required',
+      'descripcion' => 'required',
+      'fecha_creacion' => 'required',
+      'vigencia' => 'required',
+      'estatus_cotizacion_id' => 'required',
+      'servicio_uuid' => 'required',
+    ];
+
+    $customMessages = [
+      'cliente.required' => 'Se debe buscar un cliente.',
+      'nombreCliente.required' => 'El nombre del cliente es obligatorio.',
+      'correoCliente.required' => 'El correo del cliente es obligatorio.',
+      'nombre_cotizacion.required' => 'El folio de la cotización es obligatorio.',
+      'descripcion.required' => 'La descripción de la cotización es obligatorio.',
+      'fecha_creacion.required' => 'La fecha de creación es obligatoro.',
+      'vigencia.required' => 'La vigencia de la cotización es obligatorio.',
+      'estatus_cotizacion_id.required' => 'El estatus de la cotización es obligatorio.',
+      'servicio_uuid.required' => 'No se ha seleccionado nada para cotizar.',
+      // 'servicio_id' => 'required',
+    ];
+    
+
+    $validatedData = $request->validate($rules, $customMessages);
+    // dd($validatedData);
+
     // $request->validate([
-    //   // 'nombre_cot' => 'required',
-    //   // 'descripcion_cot' => 'required',
-    //   // 'fecha_creacion' => 'required',
-    //   // 'vigencia' => 'required',
-    //   // 'estatus' => 'required',
+      
     //   // 'servicio' => 'required',
     //   // 'nombre_serv' => 'required',
     //   // 'descripcion' => 'required',
     //   // 'tipo' => 'required',
     //   // 'precio' => 'required',
     //   // 'cantidad' => 'required',
-    //   'servicio_id' => 'required',
-    //   'servicio_uuid' => 'required',¿
-    //   'nombre' => 'required',
-    //   'precio_inicial' => 'required',
-    //   'numero_servicios' => 'required',
-    //   'precio_bruto' => 'required',
-    //   'precio_iva' => 'required',
-    //   'subtotal' => 'required',
+      // 'servicio_id' => 'required',
+      // 'servicio_uuid' => 'required',
+      // 'nombre' => 'required',
+      // 'precio_inicial' => 'required',
+      // 'descuento_aplicado' => 'required',
+      // 'numero_servicios' => 'required',
+      // 'precio_bruto' => 'required',
+      // 'precio_iva' => 'required',
+      // 'subtotal' => 'required',
     // ]);
 
+    // $uuid = $request['servicio_uuid'];
+    // $nombre = $request['nombre'];
+    // $precioIni = $request['precio_inicial'];
+    // $descuento = $request['descuento_aplicado'];
+    // $numero = $request['numero_servicios'];
+    // $precioB = $request['precio_bruto'];
+    // $precioI = $request['precio_iva'];
+    // $subtotal = $request['subtotal'];
+
+    // if($uuid === null || $nombre === null || $precioIni === null || $descuento === null || $numero === null || $precioB === null || $precioI === null || $subtotal === null){
+    //   return redirect()->back()->with('sinProductos', 'yes');   
+    // }
+
+
+    // dd("coti");
     // dd($request->all() + ['usuario_id' => Auth::user()->user_id] + ['cliente_id' => 1]);
     // dd(Auth::user()->user_id);
     // dd(Cotizacion);
@@ -117,7 +168,7 @@ class CotizacionesController extends Controller
     // Cotizacion::create($cot);
 
     // // return redirect()->route('tenant.cotizaciones');
-    // // dd("Hey");
+    
     return DB::transaction(function () use ($request) {
       $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id]);
 
