@@ -232,9 +232,19 @@
                 </div>
               </div>
   
-  
+              {{-- Descuento --}}
+              <div class="col-md-2">
+                <label for="descuento" class="form-label">{{ __('Descuento (porcentaje)') }}</label>
+                <div class="form-group">
+                    <input type="number" value="0" class="form-control @error('descuento') is-invalid @enderror" id="descuento" name="descuento" value="{{old('descuento')}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
+                    @error('descuento')
+                    <small class="text-danger">{{$message}}</small>
+                    @enderror
+                </div>
+              </div>
+
               {{-- Cantidad --}}
-              <div class="col-md-4">
+              <div class="col-md-2">
                 <label for="cantidad" class="form-label">{{ __('Cantidad') }}</label>
                 <div class="form-group">
                     <input type="number" value="1" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{old('cantidad')}}" min="1" max="1000" step="1" onkeyup="validarNumero(this)"/>
@@ -263,6 +273,7 @@
                     <th>ID servicio</th>
                     <th>Nombre servicio</th>
                     <th>Precio inicial</th>
+                    <th>Descuento</th>
                     <th>Cantidad</th>
                     <th>Precio unitario</th>
                     <th>IVA</th>
@@ -270,7 +281,7 @@
                     <th>Opciones</th>
                   </thead>
                   <tfoot>
-                    <td colspan="4">Total</td>
+                    <td colspan="5">Total</td>
 
                     <td>
                         <h4 id="total_inicial" name="total_inicial">$0.00</h4>
@@ -302,12 +313,21 @@
 <script>
 
 function validarNumero(value) {
-   var valor = $(value).val();
-    if (!isNaN(valor) && valor >= 1){
-      $(value).val(valor);
-    }else{
-      $(value).val(1);
-    }
+  let valor = $(value).val();
+  if (!isNaN(valor) && valor >= 1){
+    $(value).val(valor);
+  }else{
+    $(value).val(1);
+  }
+}
+
+function validarDescuento(value) {
+  let valor = $(value).val();
+  if (!isNaN(valor) && valor >= 0 && valor<=100){
+    $(value).val(valor);
+  }else{
+    $(value).val(0);
+  }
 }
 
 $(document).ready(function () {
@@ -375,7 +395,6 @@ $(document).ready(function () {
 
   $("#selectServicio").click(function() {
     const servicio = $('#servicio').val()
-    // console.log(servicio);
     $.ajax({
       url: "{{route('tenant.seleccionarServicio')}}",
       type: "POST",
@@ -384,8 +403,6 @@ $(document).ready(function () {
         _token: $("input[name=_token]").val()
       },
       success: function(data) {
-        // var jsvar = 'hola';
-        // console.log(jsvar);
         let tiposPHP = '<?= json_encode($tipos) ?>'
         let tiposJson = JSON.parse(tiposPHP)
         let tipo_id = data.tipo_id
@@ -397,11 +414,6 @@ $(document).ready(function () {
         let tipoDelPS;
 
         tipoDelPS = (tipoDePS[0]) ? tipoDePS[0].nombre_tipo : "No definido";
-
-        // console.log(tipoDelPS);
-
-        // console.log( tiposJson ); 
-        // console.log( valor ); 
         
         $("#servicio_id").val(data.producto_servicio_id ?? "Sin datos")
         $("#nombre_serv").val(data.nombre ?? "Sin datos")
@@ -419,7 +431,11 @@ $(document).ready(function () {
     let servicioId = $('#servicio_id').val();
     let precioInicial = $('#precio').val();
     let numeroServicios = $('#cantidad').val();
+    let descuento = $('#descuento').val();
     let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
+    let precioBruto2 = precioBruto;
+    precioBruto = descuento > 0 ? ((precioBruto2 - (precioBruto2 * Number(0+"."+descuento)))).toFixed(2) : precioBruto2;
+    
     let precioIva = (Number(precioBruto) * .16).toFixed(2);
     let subtotal = (Number(precioIva) + parseFloat(precioBruto)).toFixed(2);
 
@@ -429,6 +445,7 @@ $(document).ready(function () {
       servicioId,
       UUID,
       numeroServicios,
+      descuento,
       precioBruto: precioBruto,
       precioIva: precioIva,
       subtotal: subtotal,
@@ -437,8 +454,9 @@ $(document).ready(function () {
     const fila = `<tr id="fila"> 
       <td><input class="form-control" type="number" id="servicio_id" name="servicio_id[]" value="${servicioId}" readonly></td>
       <td style="display: none;"><input class="form-control" type="text" id="servicio_uuid" name="servicio_uuid[]" data-uuid="${UUID}" value="${UUID}" readonly></td>
-      <td><input class="form-control" type="text" id="nombre" name="nombre[]" value="${nombre}" readonly></td>
+      <td><input class="form-control" type="text" id="nombre" name="nombre[]" value="${nombre}" readonly></td>r
       <td><input class="form-control" type="number" id="precio_inicial" name="precio_inicial[]" value="${precioInicial}" readonly></td>
+      <td><input class="form-control" type="number" id="descuento_aplicado" name="descuento_aplicado[]" value="${descuento}" readonly></td>
       <td><input class="form-control number" type="number" id="number" name="numero_servicios[]" value="${numeroServicios}" min="1"></td>
       <td><input class="form-control" type="text" id="precio_bruto" name="precio_bruto[]" value="${precioBruto}" readonly></td>
       <td><input class="form-control" type="text" id="precio_iva" name="precio_iva[]" value="${precioIva}" readonly></td>
@@ -489,8 +507,12 @@ $(document).ready(function () {
     let UUID = $(fila).find('td > input#servicio_uuid').data("uuid")
     let precioInicial = $(fila).find('td > input#precio_inicial').val();
     let numeroServicios = $(fila).find('td > input#number').val();
+    let descuento = $(fila).find('td > input#descuento_aplicado').val();
     
     let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
+    let precioBruto2 = precioBruto;
+    precioBruto = descuento > 0 ? ((precioBruto2 - (precioBruto2 * Number(0+"."+descuento)))).toFixed(2) : precioBruto2;
+    
     let precioIva = (Number(precioBruto) * .16).toFixed(2);
     let subtotal = (Number(precioIva) + parseFloat(precioBruto)).toFixed(2);
     
@@ -504,6 +526,7 @@ $(document).ready(function () {
       servicioId,
       UUID,
       numeroServicios,
+      descuento,
       precioBruto,
       precioIva,
       subtotal,
@@ -544,7 +567,7 @@ $(document).ready(function () {
 
   $('#btn_add').click(function(){
     agregarProducto();
-    console.log("Click");
+    // console.log("Click");
   });
 
   $(document).on('click', '.delete', function(event) {
