@@ -27,8 +27,7 @@ class CotizacionesController extends Controller
    */
   public function __construct()
   {
-    // $this->middleware('guest');
-    // $this->middleware('guest:cliente');
+    $this->middleware('cotizaciones');
   }
   public function index()
   {
