@@ -169,20 +169,34 @@ class CotizacionesController extends Controller
     // // return redirect()->route('tenant.cotizaciones');
     
     return DB::transaction(function () use ($request) {
-      $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id]);
 
+      // $cotizacion = [
+      //   'nombre_cotizacion' => $request['nombre_cotizacion'],
+      //   'descripcion' => $request['descripcion'],
+      //   'fecha_creacion' => $request['fecha_creacion'],
+      //   'vigencia' => $request['vigencia'],
+      //   'usuario_id' =>  Auth::user()->user_id,
+      //   'estatus_cotizacion_id' => $request['estatus_cotizacion_id'],
+      //   'cliente_id' => $request['cliente_id'],
+      // ];
+  
+      // dd($cotizacion);
+      // Cotizacion::create($cotizacion);
+
+      $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id]);
+      // dd("Cotizdo");
       foreach ($request->servicio_id as $index => $servicio_id) {
         $cotizacion->cotizaciones()->create([
           'cantidad' => $request->numero_servicios[$index],
+          'precio_inicial' => $request->precio_inicial[$index],
           'precio_bruto' => $request->precio_bruto[$index],
           'iva' => $request->precio_iva[$index],
           'subtotal' => $request->subtotal[$index],
-          'descuento' => 0,
+          'descuento' => $request->descuento_aplicado[$index],
           'cotizacion_id' => $cotizacion->cotizacion_id,
           'producto_servicio_id' => $servicio_id,
         ]);
       }
-
       //   ->route('cotizaciones.index')->withSuccess("La cotizacion $cotizacion->nombre_proyecto se creo exitosamente");
       return redirect()
         ->route('tenant.cotizaciones')
@@ -203,12 +217,13 @@ class CotizacionesController extends Controller
     // ON dco.producto_servicio_id = serv.producto_servicio_id
     // WHERE cotizacion_id = $cotizacion_id");
 
-    $servicios = Detalle_Cotizacion::select('detalle_cotizaciones.detalle_cotizacion_id', 'detalle_cotizaciones.cantidad', 'detalle_cotizaciones.precio_bruto', 'detalle_cotizaciones.iva', 'detalle_cotizaciones.subtotal', 'productos_servicios.nombre', 'productos_servicios.descripcion')
+    $servicios = Detalle_Cotizacion::select('detalle_cotizaciones.detalle_cotizacion_id', 'detalle_cotizaciones.cantidad', 'detalle_cotizaciones.descuento', 'detalle_cotizaciones.precio_inicial', 'detalle_cotizaciones.precio_bruto', 'detalle_cotizaciones.iva', 'detalle_cotizaciones.subtotal', 'productos_servicios.nombre', 'productos_servicios.descripcion')
       ->join('productos_servicios', 'detalle_cotizaciones.producto_servicio_id', '=', 'productos_servicios.producto_servicio_id')
       ->where("detalle_cotizaciones.cotizacion_id", "=", $cotizacion_id)
       ->get();
 
     // dd("heyy");
+    // dd($servicios);
 
     return view('system.cotizaciones.edit', [
       'cotizacion' => $cotizacion,

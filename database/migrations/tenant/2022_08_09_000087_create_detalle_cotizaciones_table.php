@@ -16,6 +16,7 @@ class CreateDetalleCotizacionesTable extends Migration
     Schema::create('detalle_cotizaciones', function(Blueprint $table){
       $table->increments('detalle_cotizacion_id');
       $table->integer('cantidad')->unsigned();
+      $table->float('precio_inicial');
       $table->float('precio_bruto', );
       $table->float('subtotal', );
       $table->float('iva', );
