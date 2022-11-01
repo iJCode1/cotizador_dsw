@@ -467,10 +467,12 @@ $(document).ready(function () {
     let precioInicial = $('#precio').val();
     let numeroServicios = $('#cantidad').val();
     let descuento = $('#descuento').val();
+    descuento = descuento == 100 ? 1 : (descuento < 10) ? `0.0${descuento}` : `0.${descuento}`;
+
     let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
     let precioBruto2 = precioBruto;
-    precioBruto = descuento > 0 ? ((precioBruto2 - (precioBruto2 * Number(0+"."+descuento)))).toFixed(2) : precioBruto2;
-    
+    precioBruto = descuento > 0 ? ((precioBruto2 - (precioBruto2 * Number(descuento)))).toFixed(2) : precioBruto2;
+
     let precioIva = (Number(precioBruto) * .16).toFixed(2);
     let subtotal = (Number(precioIva) + parseFloat(precioBruto)).toFixed(2);
 
@@ -543,10 +545,11 @@ $(document).ready(function () {
     let precioInicial = $(fila).find('td > input#precio_inicial').val();
     let numeroServicios = $(fila).find('td > input#number').val();
     let descuento = $(fila).find('td > input#descuento_aplicado').val();
+    descuento = descuento == 100 ? 1 : (descuento < 10) ? `0.0${descuento}` : `0.${descuento}`;
     
     let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
     let precioBruto2 = precioBruto;
-    precioBruto = descuento > 0 ? ((precioBruto2 - (precioBruto2 * Number(0+"."+descuento)))).toFixed(2) : precioBruto2;
+    precioBruto = descuento > 0 ? ((precioBruto2 - (precioBruto2 * Number(descuento)))).toFixed(2) : precioBruto2;
     
     let precioIva = (Number(precioBruto) * .16).toFixed(2);
     let subtotal = (Number(precioIva) + parseFloat(precioBruto)).toFixed(2);
