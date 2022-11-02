@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class CotizacionesController extends Controller
 {
@@ -58,7 +60,6 @@ class CotizacionesController extends Controller
 
   public function seleccionarCliente(Request $request)
   {
-    // echo($request);
     $cliente = Cliente::where('email', $request->cliente)->first();
     return response()->json($cliente);
   }
@@ -74,6 +75,80 @@ class CotizacionesController extends Controller
   {
     $servicio = Producto_Servicio::where('nombre', $request->servicio)->first();
     return response()->json($servicio);
+  }
+
+  public function registrarCliente(Request $request)
+  {
+    // echo($request);
+    // $nombre = $request->get('nombre');
+    // echo($nombre);
+    // $request->validate([
+    //   'nombre' => 'required|max:45',
+      // 'apep' => 'required|max:45',
+      // 'apm' => 'required|max:45',
+      // 'direccion' => 'required|max:255',
+      // 'telefono' => 'required|min:10|max:10',
+      // 'correo' => 'required|email|unique:tenant.clientes,email',
+      // 'contraseña' => 'required|digits_between:8,45',
+      // 'confirmar_contraseña' => 'required|digits_between:8,45',
+    // ]);
+
+    $rules = [
+      'nombre' => 'required',
+      'apep' => 'required',
+      'apm' => 'required',
+      'direccion' => 'required',
+      'telefono' => 'required',
+      'correo' => 'required|email|unique:tenant.clientes,email',
+      'contraseña' => 'required',
+      'confirmar_contraseña' => 'required',
+    ];
+
+    $customMessages = [
+      'nombre.required' => 'El nombre del cliente es obligatorio.',
+      'apep.required' => 'El apellido paterno es obligatorio.',
+      'apm.required' => 'El apellido materno es obligatorio.',
+      'direccion.required' => 'La dirección del cliente es obligatorio.',
+      'telefono.required' => 'El telefono del cliente es obligatorio.',
+      'correo.required' => 'El correo del cliente es obligatoro.',
+      'correo.unique' => 'El correo ingresado ya está registrado',
+      'contraseña.required' => 'La contraseña del cliente es obligatorio.',
+      'confirmar_contraseña.required' => 'Confirmar la contraseña es obligatorio.',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $customMessages);
+
+    
+    if ($validator->passes()) {
+      $contraseñaEncriptada = Hash::make($request->get('contraseña'));
+      $cliente = [
+        'nombre' => $request->get('nombre'),
+        'apellido_p' => $request->get('apep'),
+        'apellido_m' => $request->get('apm'),
+        'direccion' => $request->get('direccion'),
+        'telefono' => $request->get('telefono'),
+        'email' => $request->get('correo'),
+        'password' => $contraseñaEncriptada,
+        'rol_id' => 3,
+      ];
+  
+      Cliente::create($cliente);
+      return response()->json([
+        'type' => 'validate',
+        'errors' => false
+      ]);
+    }else{
+      return response()->json([
+        'type' => 'validate',
+        'errors' => $validator->errors()
+      ]);
+    
+    }
+
+    
+    // $term = $request->get('term');
+    // $buscarCliente = Cliente::where('email', 'like', "%$term%")->get();
+    // return response()->json($buscarCliente);
   }
 
   public function createCotizacion(Request $request)

@@ -9,6 +9,36 @@
         <div class="card-header">{{ __('Crear Cotización') }}</div>
 
         <div class="card-body">
+
+           <!-- Button trigger modal -->
+           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">
+            Launch demo modal
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form method="POST" id="añadirUsuario">
+                  @csrf
+                  <div class="modal-body">
+                    @include('layouts.partials.tenant._registroCliente')
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
           <form method="POST" action="{{ route('tenant.cotizacion') }}">
             @csrf
             @method('post')
@@ -358,15 +388,16 @@ function validarDescuento(value) {
 }
 
 $(document).ready(function () {
-
+  
   $("#cliente").autocomplete({
     source: function(request, response) {
+      let _token = $("input[name=_token]").val();
       $.ajax({
         url: "{{route('tenant.buscarCliente')}}",
         type: 'POST',
         data: {
           term: request.term,
-          _token: $("input[name=_token]").val()
+          _token,
         },
         dataType: 'json',
         success: function(data) {
@@ -382,13 +413,15 @@ $(document).ready(function () {
   })
 
   $("#selectCliente").click(function() {
+    let _token = $("input[name=_token]").val();
+
     const cliente = $('#cliente').val()
     $.ajax({
       url: "{{route('tenant.seleccionarCliente')}}",
       type: "POST",
       data: {
         cliente: cliente,
-        _token: $("input[name=_token]").val()
+        _token,
       },
       success: function(data) {
         if(Object.entries(data).length !== 0){
@@ -402,12 +435,14 @@ $(document).ready(function () {
 
   $('#servicio').autocomplete({
     source: function(request, response){
+    let _token = $("input[name=_token]").val();
+
       $.ajax({
         url: "{{route('tenant.buscarServicio')}}",
         type: "POST",
         data: {
           term: request.term,
-          _token: $("input[name=_token]").val()
+          _token
         },
         dataType: 'json',
         success: function(data){
@@ -423,13 +458,15 @@ $(document).ready(function () {
   });
 
   $("#selectServicio").click(function() {
+    let _token = $("input[name=_token]").val();
+
     const servicio = $('#servicio').val()
     $.ajax({
       url: "{{route('tenant.seleccionarServicio')}}",
       type: "POST",
       data: {
         servicio: servicio,
-        _token: $("input[name=_token]").val()
+        _token
       },
       success: function(data) {
         if(Object.entries(data).length !== 0){
@@ -457,6 +494,70 @@ $(document).ready(function () {
         // })
       }
     });
+  });
+
+  // añadirUsuario
+  $("#añadirUsuario").submit(function(e){
+    e.preventDefault(); 
+
+    let nombre = $("#nombre").val();
+    let apep = $("#apep").val();
+    let apm = $("#apm").val();
+    let direccion = $("#direccion").val();
+    let telefono = $("#telefono").val();
+    let correo = $("#correo").val();
+    let contraseña = $("#contraseña").val();
+    let confirmar_contraseña = $("#confirmar_contraseña").val();
+    let _token = $("input[name=_token]").val();
+
+
+    // console.log({
+    //   nombre, app, apm, direccion, telefono, correo, contraseña, confirmar_contraseña, _token
+    // }); 
+
+    $.ajax({
+      url: "{{route('tenant.registrarCliente')}}",
+      type: 'POST',
+      data: {
+        nombre, 
+        apep, 
+        apm, 
+        direccion, 
+        telefono, 
+        correo, 
+        contraseña, 
+        confirmar_contraseña, 
+        _token
+      },
+      dataType: 'json',
+      success: function(response) {
+        $(`span#nombre-error`).css('display','none');
+        $(`span#apep-error`).css('display','none');
+        $(`span#apm-error`).css('display','none');
+        $(`span#direccion-error`).css('display','none');
+        $(`span#telefono-error`).css('display','none');
+        $(`span#correo-error`).css('display','none');
+        $(`span#contraseña-error`).css('display','none');
+        $(`span#confirmar_contraseña-error`).css('display','none');
+        if (response.errors) {
+          for (const prop in response.errors) {
+            $(`#${prop} + span#${prop}-error`).css('display','block');
+            $(`#${prop} + span#${prop}-error > strong`).text(response.errors[prop][0])
+          }
+        }else{
+          $("#nombre").val("");
+          $("#apep").val("");
+          $("#apm").val("");
+          $("#direccion").val("");
+          $("#telefono").val("");
+          $("#correo").val("");
+          $("#contraseña").val("");
+          $("#confirmar_contraseña").val("");
+
+          $("#modal .close").click()
+        }
+      }
+    })
   });
 
   let arrayServicios = [];

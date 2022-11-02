@@ -69,6 +69,7 @@ Route::middleware(['web'])
     Route::post('/seleccionarCliente', [CotizacionesController::class, 'seleccionarCliente'])->name('seleccionarCliente');
     Route::post('/buscarServicio', [CotizacionesController::class, 'buscarServicio'])->name('buscarServicio');
     Route::post('/seleccionarServicio', [CotizacionesController::class, 'seleccionarServicio'])->name('seleccionarServicio');
+    Route::post('/registrarCliente', [CotizacionesController::class, 'registrarCliente'])->name('registrarCliente');
     Route::get('/cotizacion/{id}/editar', [CotizacionesController::class, 'showCotizacionEditForm'])->name('showCotizacionEditForm');
     Route::put('/cotizacion/{id}', [CotizacionesController::class, 'editCotizacion'])->name('editCotizacion');
 
