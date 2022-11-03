@@ -64,47 +64,45 @@
 </div>
 
 {{-- Tipo --}}
-{{-- <div class="form-group row">
-<label for="tipo" class="col-md-4 col-form-label text-md-right">{{ __('Tipo') }}</label>
+<div class="form-group row">
+<label for="tipoServicio" class="col-md-4 col-form-label text-md-right">{{ __('Tipo') }}</label>
 
 <div class="col-md-6">
-  <select name="tipo" id="tipo" class="form-control @error('tipo') is-invalid @enderror" autofocus>
+  <select name="tipoServicio" id="tipoServicio" class="form-control @error('tipoServicio') is-invalid @enderror" autofocus>
     <option selected disabled value="">Seleccione un tipo</option>
     @foreach($tipos as $tipo)
-      @if (old('tipo') == $tipo->tipo_id)
+      @if (old('tipoServicio') == $tipo->tipo_id)
         <option selected value="{{$tipo->tipo_id}}">{{$tipo->nombre_tipo}}</option>
         @continue
       @endif
     <option value="{{$tipo->tipo_id}}">{{$tipo->nombre_tipo}}</option>
     @endforeach
-
-    <span id="nombreServicio-error" class="invalid-feedback" role="alert" style="display: none">
-      <strong></strong>
-    </span>
-
-  </select>            
+  </select>    
+          
+  <span id="tipoServicio-error" class="invalid-feedback" role="alert" style="display: none">
+    <strong></strong>
+  </span>
 </div>
-</div> --}}
+</div>
 
 {{-- Unidad de Medida --}}
-{{-- <div class="form-group row">
-<label for="unidad" class="col-md-4 col-form-label text-md-right">{{ __('Unidad de medida') }}</label>
+<div class="form-group row">
+<label for="unidadServicio" class="col-md-4 col-form-label text-md-right">{{ __('Unidad de medida') }}</label>
 
 <div class="col-md-6">
-  <select name="unidad" id="unidad" class="form-control @error('unidad') is-invalid @enderror" autofocus>
+  <select name="unidadServicio" id="unidadServicio" class="form-control @error('unidadServicio') is-invalid @enderror" autofocus>
     <option selected disabled value="">Seleccione una unidad de medida</option>
     @foreach($unidades as $unidad)
-      @if (old('unidad') == $unidad->unidad_medida_id)
+      @if (old('unidadServicio') == $unidad->unidad_medida_id)
         <option selected value="{{$unidad->unidad_medida_id}}">{{$unidad->nombre_unidad}}</option>
         @continue
       @endif
     <option value="{{$unidad->unidad_medida_id}}">{{$unidad->nombre_unidad}}</option>
     @endforeach
-
-    <span id="nombreServicio-error" class="invalid-feedback" role="alert" style="display: none">
-      <strong></strong>
-    </span>
-
-  </select>            
+  </select>    
+          
+  <span id="unidadServicio-error" class="invalid-feedback" role="alert" style="display: none">
+    <strong></strong>
+  </span>
 </div>
-</div> --}}
+</div>

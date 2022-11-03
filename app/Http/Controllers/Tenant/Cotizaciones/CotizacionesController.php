@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Tenant\Cotizaciones;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CotizacionRequest;
 use App\Models\Tenant\Cliente;
 use App\Models\Tenant\Cotizacion;
 use App\Models\Tenant\Detalle_Cotizacion;
@@ -44,10 +43,12 @@ class CotizacionesController extends Controller
   {
     $estatus = Estatus_Cotizacion::all();
     $tipos = Tipo_Producto_Servicio::all();
+    $unidades = Unidad_De_Medida::all();
 
     return view('system.cotizaciones.cotizacion', [
       "estatus" => $estatus,
       "tipos" => $tipos,
+      "unidades" => $unidades,
     ]);
   }
 
@@ -79,47 +80,45 @@ class CotizacionesController extends Controller
 
   public function registrarCliente(Request $request)
   {
-    // echo($request);
-    // $nombre = $request->get('nombre');
-    // echo($nombre);
-    // $request->validate([
-    //   'nombre' => 'required|max:45',
-      // 'apep' => 'required|max:45',
-      // 'apm' => 'required|max:45',
-      // 'direccion' => 'required|max:255',
-      // 'telefono' => 'required|min:10|max:10',
-      // 'correo' => 'required|email|unique:tenant.clientes,email',
-      // 'contraseña' => 'required|digits_between:8,45',
-      // 'confirmar_contraseña' => 'required|digits_between:8,45',
-    // ]);
-
     $rules = [
-      'nombre' => 'required',
-      'apep' => 'required',
-      'apm' => 'required',
-      'direccion' => 'required',
-      'telefono' => 'required',
+      'nombre' => 'required|max:45',
+      'apep' => 'required|max:45',
+      'apm' => 'required|max:45',
+      'direccion' => 'required|max:255',
+      'telefono' => 'required|digits_between:10,10',
       'correo' => 'required|email|unique:tenant.clientes,email',
-      'contraseña' => 'required',
+      'contraseña' => 'required|min:8',
       'confirmar_contraseña' => 'required',
     ];
 
     $customMessages = [
       'nombre.required' => 'El nombre del cliente es obligatorio.',
+      'nombre.max' => 'El nombre no debe contener más de 45 caracteres.',
       'apep.required' => 'El apellido paterno es obligatorio.',
+      'apep.max' => 'El apellido paterno no debe contener más de 45 caracteres.',
       'apm.required' => 'El apellido materno es obligatorio.',
+      'apm.max' => 'El apellido materno no debe contener más de 45 caracteres.',
       'direccion.required' => 'La dirección del cliente es obligatorio.',
+      'direccion.max' => 'La dirección no debe contener más de 255 caracteres.',
       'telefono.required' => 'El telefono del cliente es obligatorio.',
+      'telefono.digits_between' => 'El telefono debe ser de 10 digitos.',
       'correo.required' => 'El correo del cliente es obligatoro.',
-      'correo.unique' => 'El correo ingresado ya está registrado',
+      'correo.email' => 'El formato del correo es incorrecto.',
+      'correo.unique' => 'El correo ingresado ya está registrado.',
       'contraseña.required' => 'La contraseña del cliente es obligatorio.',
+      'contraseña.min' => 'La contraseña no puede ser menor a 8 digitos.',
       'confirmar_contraseña.required' => 'Confirmar la contraseña es obligatorio.',
     ];
 
     $validator = Validator::make($request->all(), $rules, $customMessages);
 
     
-    if ($validator->passes()) {
+    if ($validator->fails()) {
+      return response()->json([
+        'type' => 'validate',
+        'errors' => $validator->errors()
+      ]);
+    }else{
       $contraseñaEncriptada = Hash::make($request->get('contraseña'));
       $cliente = [
         'nombre' => $request->get('nombre'),
@@ -137,31 +136,19 @@ class CotizacionesController extends Controller
         'type' => 'validate',
         'errors' => false
       ]);
-    }else{
-      return response()->json([
-        'type' => 'validate',
-        'errors' => $validator->errors()
-      ]);
-    
     }
-
-    
-    // $term = $request->get('term');
-    // $buscarCliente = Cliente::where('email', 'like', "%$term%")->get();
-    // return response()->json($buscarCliente);
   }
 
   public function registrarServicio(Request $request)
   {
-
     $rules = [
       'nombreServicio' => 'required|min:1|max:100',
       'descripcionServicio' => 'required|min:1|max:255',
       'codigoServicio' => 'required|min:1|max:45',
       'precioServicio' => 'required',
       // 'imagen' => 'image|mimes:gif,jpeg,png,svg',
-      // 'tipo' => 'required',
-      // 'unidad' => 'required',
+      'tipoServicio' => 'required',
+      'unidadServicio' => 'required',
     ];
 
     $customMessages = [
@@ -176,8 +163,8 @@ class CotizacionesController extends Controller
       'codigoServicio.max' => 'El codigo no debe contener más de 45 caracteres.',
       'precioServicio.required' => 'El precio es obligatorio.',
       // 'imagen.required' => 'La imagen es obligatorio.',
-      // 'tipo.required' => 'El correo del cliente es obligatoro.',
-      // 'unidad.unique' => 'El correo ingresado ya está registrado',
+      'tipoServicio.required' => 'Se debe seleccionar un tipo.',
+      'unidadServicio.required' => 'Se debe seleccionar una unidad.',
     ];
 
     $validator = Validator::make($request->all(), $rules, $customMessages);
@@ -186,8 +173,13 @@ class CotizacionesController extends Controller
     // echo($request->get('imagenServicio'));
     // echo( $_FILES['imagen']['tmp_name'] );
 
-    if ($validator->passes()) {
+    if ($validator->fails()) {
     
+      return response()->json([
+        'type' => 'validate',
+        'errors' => $validator->errors()
+      ]);
+    }else{
       // Se prepara la imágen para ser almacenada dentro de la carpeta 'images > productos_servicios/'
       // if($request->file->get('imagenServicio')){
       //   $file = $request->file->get('imagenServicio'); // Se obtiene la imagen
@@ -209,8 +201,8 @@ class CotizacionesController extends Controller
         'codigo' => $request->get('codigoServicio'),
         'imagen' => "sinImagen.svg",
         'precio_bruto' => $request->get('precioServicio'),
-        'tipo_id' => 1,
-        'unidad_medida_id' => 1,
+        'tipo_id' => $request->get('tipoServicio'),
+        'unidad_medida_id' => $request->get('unidadServicio'),
       ];
   
       Producto_Servicio::create($producto_servicio);
@@ -219,12 +211,6 @@ class CotizacionesController extends Controller
         'type' => 'validate',
         'errors' => false
       ]);
-    }else{
-      return response()->json([
-        'type' => 'validate',
-        'errors' => $validator->errors()
-      ]);
-    
     }
   }
 

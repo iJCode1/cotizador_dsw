@@ -12,7 +12,7 @@
 
           <!-- Button trigger modal -->
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">
-          Registrar cliente
+          Registrar Cliente
           </button>
 
           <!-- Modal -->
@@ -20,7 +20,7 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Registrar Cliente</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -31,8 +31,8 @@
                     @include('layouts.partials.tenant._registroCliente')
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button id="closeModalCliente" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Registrar</button>
                   </div>
                 </form>
               </div>
@@ -49,7 +49,7 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Registrar Producto y/o Servicio</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -58,11 +58,10 @@
                   @csrf
                   <div class="modal-body">
                     @include('layouts.partials.tenant._registroServicio')
-                    {{-- <p>Holas</p> --}}
                   </div>
                   <div class="modal-footer">
-                    <button id="closeModalServicio" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button id="closeModalServicio" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Registrar</button>
                   </div>
                 </form>
               </div>
@@ -587,17 +586,42 @@ $(document).ready(function () {
     })
   });
 
+  $('#closeModalCliente').click(function() {
+    $(`span#nombre-error`).css('display','none');
+    $(`span#apep-error`).css('display','none');
+    $(`span#apm-error`).css('display','none');
+    $(`span#direccion-error`).css('display','none');
+    $(`span#telefono-error`).css('display','none');
+    $(`span#correo-error`).css('display','none');
+    $(`span#contraseña-error`).css('display','none');
+    $(`span#confirmar_contraseña-error`).css('display','none');
+
+    $("#nombre").val("");
+    $("#apep").val("");
+    $("#apm").val("");
+    $("#direccion").val("");
+    $("#telefono").val("");
+    $("#correo").val("");
+    $("#contraseña").val("");
+    $("#confirmar_contraseña").val("");
+  })
+
   $('#closeModalServicio').click(function(){
 
     $(`span#nombreServicio-error`).css('display','none');
     $(`span#descripcionServicio-error`).css('display','none');
     $(`span#codigoServicio-error`).css('display','none');
     $(`span#precioServicio-error`).css('display','none');
+    $(`span#tipoServicio-error`).css('display','none');
+    $(`span#unidadServicio-error`).css('display','none');
 
     $("#nombreServicio").val("");
     $("#descripcionServicio").val("");
     $("#codigoServicio").val("");
+    $("#imagenServicio").val("");
     $("#precioServicio").val("");
+    $("#tipoServicio").val("");
+    $("#unidadServicio").val("");
   })
 
   // añadirServicio
@@ -609,6 +633,8 @@ $(document).ready(function () {
     let codigoServicio = $("#codigoServicio").val();
     // let imagenServicio = $("#imagenServicio")[0].files[0];
     let precioServicio = $("#precioServicio").val();
+    let tipoServicio = $("#tipoServicio").val();
+    let unidadServicio = $("#unidadServicio").val();
     let _token = $("input[name=_token]").val();
 
     $.ajax({
@@ -619,6 +645,8 @@ $(document).ready(function () {
         descripcionServicio, 
         codigoServicio, 
         precioServicio,
+        tipoServicio,
+        unidadServicio,
         _token
       },
       dataType: 'json',
@@ -628,11 +656,8 @@ $(document).ready(function () {
         $(`span#codigoServicio-error`).css('display','none');
         $(`span#imagenServicio-error`).css('display','none');
         $(`span#precioServicio-error`).css('display','none');
-
-        // $(`span#telefono-error`).css('display','none');
-        // $(`span#correo-error`).css('display','none');
-        // $(`span#contraseña-error`).css('display','none');
-        // $(`span#confirmar_contraseña-error`).css('display','none');
+        $(`span#tipoServicio-error`).css('display','none');
+        $(`span#unidadServicio-error`).css('display','none');
 
         if (response.errors) {
           for (const prop in response.errors) {
@@ -647,6 +672,8 @@ $(document).ready(function () {
           $("#codigoServicio").val("");
           $("#imagenServicio").val("");
           $("#precioServicio").val("");
+          $("#tipoServicio").val("");
+          $("#unidadServicio").val("");
 
           $("#modalServicio .close").click()
         }
