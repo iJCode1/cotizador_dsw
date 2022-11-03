@@ -10,9 +10,9 @@
 
         <div class="card-body">
 
-           <!-- Button trigger modal -->
-           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">
-            Launch demo modal
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">
+          Registrar cliente
           </button>
 
           <!-- Modal -->
@@ -32,6 +32,36 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalServicio">
+            Registrar Servicio
+          </button>
+
+          <!-- Modal de Producto y/o Servicio -->
+          <div class="modal fade" id="modalServicio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form method="POST" id="añadirServicio" enctype="multipart/form-data">
+                  @csrf
+                  <div class="modal-body">
+                    @include('layouts.partials.tenant._registroServicio')
+                    {{-- <p>Holas</p> --}}
+                  </div>
+                  <div class="modal-footer">
+                    <button id="closeModalServicio" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save changes</button>
                   </div>
                 </form>
@@ -209,9 +239,6 @@
               </div>
             </div>
 
-            
-            
-            
             <div class="row justify-content-center">
               
               {{-- producto_servicio_id --}}
@@ -555,6 +582,73 @@ $(document).ready(function () {
           $("#confirmar_contraseña").val("");
 
           $("#modal .close").click()
+        }
+      }
+    })
+  });
+
+  $('#closeModalServicio').click(function(){
+
+    $(`span#nombreServicio-error`).css('display','none');
+    $(`span#descripcionServicio-error`).css('display','none');
+    $(`span#codigoServicio-error`).css('display','none');
+    $(`span#precioServicio-error`).css('display','none');
+
+    $("#nombreServicio").val("");
+    $("#descripcionServicio").val("");
+    $("#codigoServicio").val("");
+    $("#precioServicio").val("");
+  })
+
+  // añadirServicio
+  $("#añadirServicio").submit(function(e){
+    e.preventDefault(); 
+
+    let nombreServicio = $("#nombreServicio").val();
+    let descripcionServicio = $("#descripcionServicio").val();
+    let codigoServicio = $("#codigoServicio").val();
+    // let imagenServicio = $("#imagenServicio")[0].files[0];
+    let precioServicio = $("#precioServicio").val();
+    let _token = $("input[name=_token]").val();
+
+    $.ajax({
+      url: "{{route('tenant.registrarServicio')}}",
+      type: 'POST',
+      data: {
+        nombreServicio, 
+        descripcionServicio, 
+        codigoServicio, 
+        precioServicio,
+        _token
+      },
+      dataType: 'json',
+      success: function(response) {
+        $(`span#nombreServicio-error`).css('display','none');
+        $(`span#descripcionServicio-error`).css('display','none');
+        $(`span#codigoServicio-error`).css('display','none');
+        $(`span#imagenServicio-error`).css('display','none');
+        $(`span#precioServicio-error`).css('display','none');
+
+        // $(`span#telefono-error`).css('display','none');
+        // $(`span#correo-error`).css('display','none');
+        // $(`span#contraseña-error`).css('display','none');
+        // $(`span#confirmar_contraseña-error`).css('display','none');
+
+        if (response.errors) {
+          for (const prop in response.errors) {
+            $(`#${prop} + span#${prop}-error`).css('display','block');
+            // console.log($(`#${prop} + span#${prop}-error`));
+            $(`#${prop} + span#${prop}-error > strong`).text(response.errors[prop][0])
+            // console.log($(`#${prop} + span#${prop}-error > strong`));
+          }
+        }else{
+          $("#nombreServicio").val("");
+          $("#descripcionServicio").val("");
+          $("#codigoServicio").val("");
+          $("#imagenServicio").val("");
+          $("#precioServicio").val("");
+
+          $("#modalServicio .close").click()
         }
       }
     })

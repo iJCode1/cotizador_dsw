@@ -151,6 +151,83 @@ class CotizacionesController extends Controller
     // return response()->json($buscarCliente);
   }
 
+  public function registrarServicio(Request $request)
+  {
+
+    $rules = [
+      'nombreServicio' => 'required|min:1|max:100',
+      'descripcionServicio' => 'required|min:1|max:255',
+      'codigoServicio' => 'required|min:1|max:45',
+      'precioServicio' => 'required',
+      // 'imagen' => 'image|mimes:gif,jpeg,png,svg',
+      // 'tipo' => 'required',
+      // 'unidad' => 'required',
+    ];
+
+    $customMessages = [
+      'nombreServicio.required' => 'El nombre es obligatorio.',
+      'nombreServicio.min' => 'El nombre debe contener al menos un carácter.',
+      'nombreServicio.max' => 'El nombre no debe contener más de 100 caracteres.',
+      'descripcionServicio.required' => 'La descripción es obligatoria.',
+      'descripcionServicio.min' => 'La descripcion debe contener al menos un carácter.',
+      'descripcionServicio.max' => 'La descripcion no debe contener más de 255 caracteres.',
+      'codigoServicio.required' => 'El código es obligatorio.',
+      'codigoServicio.min' => 'El codigo debe contener al menos un carácter.',
+      'codigoServicio.max' => 'El codigo no debe contener más de 45 caracteres.',
+      'precioServicio.required' => 'El precio es obligatorio.',
+      // 'imagen.required' => 'La imagen es obligatorio.',
+      // 'tipo.required' => 'El correo del cliente es obligatoro.',
+      // 'unidad.unique' => 'El correo ingresado ya está registrado',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $customMessages);
+
+    // echo($request->get('nombreServicio'));
+    // echo($request->get('imagenServicio'));
+    // echo( $_FILES['imagen']['tmp_name'] );
+
+    if ($validator->passes()) {
+    
+      // Se prepara la imágen para ser almacenada dentro de la carpeta 'images > productos_servicios/'
+      // if($request->file->get('imagenServicio')){
+      //   $file = $request->file->get('imagenServicio'); // Se obtiene la imagen
+      //   if($file!= ""){ // Si la imagen es diferente de vacio
+      //     $imgDestination = 'images/productos_servicios/';
+      //     $img = $file->getClientOriginalName(); // Se obtiene el nombre de la imagen
+      //     $img2 = time(). '-' . $img; // Se concatena el nombre de la imagen
+      //     $request->file('imagenServicio')->move($imgDestination, $img2);
+      //   }else{
+      //     $img2 = 'sinImagen.svg';
+      //   }
+      // }else{
+      //   $img2 = 'sinImagen.svg';
+      // }
+
+      $producto_servicio = [
+        'nombre' => $request->get('nombreServicio'),
+        'descripcion' => $request->get('descripcionServicio'),
+        'codigo' => $request->get('codigoServicio'),
+        'imagen' => "sinImagen.svg",
+        'precio_bruto' => $request->get('precioServicio'),
+        'tipo_id' => 1,
+        'unidad_medida_id' => 1,
+      ];
+  
+      Producto_Servicio::create($producto_servicio);
+
+      return response()->json([
+        'type' => 'validate',
+        'errors' => false
+      ]);
+    }else{
+      return response()->json([
+        'type' => 'validate',
+        'errors' => $validator->errors()
+      ]);
+    
+    }
+  }
+
   public function createCotizacion(Request $request)
   {
     // dd($request['servicio_uuid']);
