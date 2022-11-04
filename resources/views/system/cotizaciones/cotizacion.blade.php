@@ -347,18 +347,31 @@
                     <th>Opciones</th>
                   </thead>
                   <tfoot>
-                    <td colspan="5">Total</td>
-
-                    <td>
-                        <h4 id="total_inicial" name="total_inicial">$0.00</h4>
-                    </td>
-                    <td>
-                        <h4 id="total_iva" name="total_iva">$0.00</h4>
-                    </td>
-
-                    <td>
-                        <h4 id="total_total" name="total_total">$0.00</h4>
-                    </td>
+                    <tr>
+                      <td colspan="8">
+                        <div class="form-group d-flex mb-0">
+                          <label for="descuentoGeneral" class="form-label">{{ __('Descuento general (porcentaje)') }}</label>
+                          <input type="number" value="0" class="form-control descuentoGeneral @error('descuentoGeneral') is-invalid @enderror" id="descuentoGeneral" name="descuentoGeneral" value="{{old('descuentoGeneral')}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
+                          
+                          @error('descuentoGeneral')
+                          <small class="text-danger">{{$message}}</small>
+                          @enderror
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="5">Total</td>
+                      <td>
+                          <h4 id="total_inicial" name="total_inicial">$0.00</h4>
+                      </td>
+                      <td>
+                          <h4 id="total_iva" name="total_iva">$0.00</h4>
+                      </td>
+  
+                      <td>
+                          <h4 id="total_total" name="total_total">$0.00</h4>
+                      </td>
+                    </tr>
                   </tfoot>
                 </table>
                 @error('servicio_uuid')
@@ -682,6 +695,7 @@ $(document).ready(function () {
   });
 
   let arrayServicios = [];
+  let arrayCostosFinales = [];
 
   function agregarProducto(){
     let nombre = $('#nombre_serv').val();
@@ -735,12 +749,22 @@ $(document).ready(function () {
       inicial,
       iva,
       total
-    } = sumarCostos(arrayServicios);
+    } = sumarCostosFinal(arrayServicios);
     
     $("#total_inicial").html("$" + inicial);
     $("#total_iva").html("$" + iva);
     $("#total_total").html("$" + total);
 
+    // let UUIDC = generarUUID();
+
+    // arrayCostosFinales.push({
+    //   UUIDC,
+    //   inicial,
+    //   iva,
+    //   total,
+    // });
+
+    // sumarCostosFinal(arrayCostosFinales);
   }
 
   function sumarCostos(array){
@@ -758,6 +782,54 @@ $(document).ready(function () {
       inicial: inicial.toFixed(2),
       iva: iva.toFixed(2),
       total: total.toFixed(2)
+    }
+  }
+
+  $(".descuentoGeneral").bind("keyup keydown change", function(){
+    if (arrayServicios.length > 0) {
+      let {
+        inicial,
+        iva,
+        total
+      } = sumarCostosFinal(arrayServicios);
+      
+      $("#total_inicial").html("$" + inicial);
+      $("#total_iva").html("$" + iva);
+      $("#total_total").html("$" + total);
+    }
+  });
+
+  function sumarCostosFinal(array){
+
+    let inicialC = 0;
+    let ivaC = 0;
+    let totalC = 0;
+
+    let inicialDescuento = 0;
+    let ivaDescuento = 0;
+    let totalDescuento = 0;
+
+    let descuentoGeneral = $("#descuentoGeneral").val();
+    descuentoGeneral = descuentoGeneral == 100 ? 1 : (descuentoGeneral < 10) ? `0.0${descuentoGeneral}` : `0.${descuentoGeneral}`;
+
+    array.forEach((costo) => {
+      inicialC += Number(costo.precioBruto),
+      ivaC += Number(costo.precioIva),
+      totalC += Number(costo.subtotal)
+    })
+
+    inicialDescuento = inicialC;
+    ivaDescuento = ivaC;
+    totalDescuento = totalC;
+
+    inicialC = descuentoGeneral > 0 ? ((inicialDescuento - (inicialDescuento * Number(descuentoGeneral)))) : inicialDescuento;
+    ivaC = descuentoGeneral > 0 ? ((ivaDescuento - (ivaDescuento * Number(descuentoGeneral)))): ivaDescuento;
+    totalC = descuentoGeneral > 0 ? ((totalDescuento - (totalDescuento * Number(descuentoGeneral)))) : totalDescuento;
+
+    return {
+      inicial: inicialC.toFixed(2),
+      iva: ivaC.toFixed(2),
+      total: totalC.toFixed(2)
     }
   }
 
@@ -862,7 +934,7 @@ $(document).ready(function () {
       inicial,
       iva,
       total
-    } = sumarCostos(arrayServicios);
+    } = sumarCostosFinal(arrayServicios);
     
     $("#total_inicial").html("$" + inicial);
     $("#total_iva").html("$" + iva);
