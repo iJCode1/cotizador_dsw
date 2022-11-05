@@ -330,6 +330,7 @@ class CotizacionesController extends Controller
           'precio_bruto' => $request->precio_bruto[$index],
           'iva' => $request->precio_iva[$index],
           'subtotal' => $request->subtotal[$index],
+          'descuento_general' => $request->descuento_general,
           'descuento' => $request->descuento_aplicado[$index],
           'cotizacion_id' => $cotizacion->cotizacion_id,
           'producto_servicio_id' => $servicio_id,
@@ -355,7 +356,7 @@ class CotizacionesController extends Controller
     // ON dco.producto_servicio_id = serv.producto_servicio_id
     // WHERE cotizacion_id = $cotizacion_id");
 
-    $servicios = Detalle_Cotizacion::select('detalle_cotizaciones.detalle_cotizacion_id', 'detalle_cotizaciones.cantidad', 'detalle_cotizaciones.descuento', 'detalle_cotizaciones.precio_inicial', 'detalle_cotizaciones.precio_bruto', 'detalle_cotizaciones.iva', 'detalle_cotizaciones.subtotal', 'productos_servicios.nombre', 'productos_servicios.descripcion')
+    $servicios = Detalle_Cotizacion::select('detalle_cotizaciones.detalle_cotizacion_id', 'detalle_cotizaciones.cantidad', 'detalle_cotizaciones.descuento', 'detalle_cotizaciones.descuento_general', 'detalle_cotizaciones.precio_inicial', 'detalle_cotizaciones.precio_bruto', 'detalle_cotizaciones.iva', 'detalle_cotizaciones.subtotal', 'productos_servicios.nombre', 'productos_servicios.descripcion')
       ->join('productos_servicios', 'detalle_cotizaciones.producto_servicio_id', '=', 'productos_servicios.producto_servicio_id')
       ->where("detalle_cotizaciones.cotizacion_id", "=", $cotizacion_id)
       ->get();
@@ -372,20 +373,45 @@ class CotizacionesController extends Controller
 
   public function editCotizacion(Request $request, $cotizacion_id)
   {
+    // dd($request);
     $request->validate([
       'nombre_cotizacion' => 'required|min:1|max:100',
       'descripcion' => 'required|min:1|max:255',
       'estatus_cotizacion_id' => 'required',
+      // 'descuento_general' => 'required',
     ]);
 
 
     $cotizacion = Cotizacion::find($cotizacion_id);
-    // dd($request);
+    // dd($request);  
 
     $cotizacion->nombre_cotizacion = $request->nombre_cotizacion;
     $cotizacion->descripcion = $request->descripcion;
     $cotizacion->estatus_cotizacion_id = $request->estatus_cotizacion_id;
     $cotizacion->update();
+
+    foreach ($request->servicio_id as $index => $servicio_id) {
+      $detalle_cotizacion = Detalle_Cotizacion::find($servicio_id);
+      $detalle_cotizacion->precio_inicial = $request->precio_inicial[$index];
+      $detalle_cotizacion->cantidad = $request->cantidad[$index];
+      $detalle_cotizacion->descuento = $request->descuento[$index];
+      $detalle_cotizacion->descuento_general = $request->descuento_general;
+      $detalle_cotizacion->precio_bruto = $request->precio_bruto[$index];
+      $detalle_cotizacion->iva = $request->precio_iva[$index];
+      $detalle_cotizacion->subtotal = $request->subtotal[$index];
+      $detalle_cotizacion->update();
+      // $cotizacion->cotizaciones()->create([
+      //   'cantidad' => $request->numero_servicios[$index],
+      //   'precio_inicial' => $request->precio_inicial[$index],
+      //   'precio_bruto' => $request->precio_bruto[$index],
+      //   'iva' => $request->precio_iva[$index],
+      //   'subtotal' => $request->subtotal[$index],
+      //   'descuento_general' => $request->descuento_general,
+      //   'descuento' => $request->descuento_aplicado[$index],
+      //   'cotizacion_id' => $cotizacion->cotizacion_id,
+      //   'producto_servicio_id' => $servicio_id,
+      // ]);
+    }
 
     // dd($request);
     return redirect()

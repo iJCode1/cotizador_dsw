@@ -13,7 +13,7 @@ class Detalle_Cotizacion extends Authenticatable
 
   protected $table = "detalle_cotizaciones";
   protected $primaryKey = 'detalle_cotizacion_id';
-  protected $fillable = ['detalle_cotizacion_id', 'cantidad', 'precio_inicial', 'precio_bruto', 'subtotal', 'iva', 'descuento', 'cotizacion_id', 'producto_servicio_id'];
+  protected $fillable = ['detalle_cotizacion_id', 'cantidad', 'precio_inicial', 'precio_bruto', 'subtotal', 'iva', 'descuento', 'descuento_general', 'cotizacion_id', 'producto_servicio_id'];
 
   public function cotizacion()
   {

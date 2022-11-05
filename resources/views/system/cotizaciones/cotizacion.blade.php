@@ -350,10 +350,10 @@
                     <tr>
                       <td colspan="8">
                         <div class="form-group d-flex mb-0">
-                          <label for="descuentoGeneral" class="form-label">{{ __('Descuento general (porcentaje)') }}</label>
-                          <input type="number" value="0" class="form-control descuentoGeneral @error('descuentoGeneral') is-invalid @enderror" id="descuentoGeneral" name="descuentoGeneral" value="{{old('descuentoGeneral')}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
+                          <label for="descuento_general" class="form-label">{{ __('Descuento general (porcentaje)') }}</label>
+                          <input type="number" value="0" class="form-control descuento_general @error('descuento_general') is-invalid @enderror" id="descuento_general" name="descuento_general" value="{{old('descuento_general')}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
                           
-                          @error('descuentoGeneral')
+                          @error('descuento_general')
                           <small class="text-danger">{{$message}}</small>
                           @enderror
                         </div>
@@ -703,6 +703,7 @@ $(document).ready(function () {
     let precioInicial = $('#precio').val();
     let numeroServicios = $('#cantidad').val();
     let descuento = $('#descuento').val();
+    let _descuento = descuento;
     descuento = descuento == 100 ? 1 : (descuento < 10) ? `0.0${descuento}` : `0.${descuento}`;
 
     let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
@@ -718,7 +719,7 @@ $(document).ready(function () {
       servicioId,
       UUID,
       numeroServicios,
-      descuento,
+      _descuento,
       precioBruto: precioBruto,
       precioIva: precioIva,
       subtotal: subtotal,
@@ -729,7 +730,7 @@ $(document).ready(function () {
       <td style="display: none;"><input class="form-control" type="text" id="servicio_uuid" name="servicio_uuid[]" data-uuid="${UUID}" value="${UUID}" readonly></td>
       <td><input class="form-control" type="text" id="nombre" name="nombre[]" value="${nombre}" readonly></td>r
       <td><input class="form-control" type="number" id="precio_inicial" name="precio_inicial[]" value="${precioInicial}" readonly></td>
-      <td><input class="form-control" type="number" id="descuento_aplicado" name="descuento_aplicado[]" value="${descuento}" readonly></td>
+      <td><input class="form-control" type="number" id="descuento_aplicado" name="descuento_aplicado[]" value="${_descuento}" readonly></td>
       <td><input class="form-control number" type="number" id="number" name="numero_servicios[]" value="${numeroServicios}" min="1"></td>
       <td><input class="form-control" type="text" id="precio_bruto" name="precio_bruto[]" value="${precioBruto}" readonly></td>
       <td><input class="form-control" type="text" id="precio_iva" name="precio_iva[]" value="${precioIva}" readonly></td>
@@ -785,7 +786,7 @@ $(document).ready(function () {
     }
   }
 
-  $(".descuentoGeneral").bind("keyup keydown change", function(){
+  $(".descuento_general").bind("keyup keydown change", function(){
     if (arrayServicios.length > 0) {
       let {
         inicial,
@@ -809,7 +810,7 @@ $(document).ready(function () {
     let ivaDescuento = 0;
     let totalDescuento = 0;
 
-    let descuentoGeneral = $("#descuentoGeneral").val();
+    let descuentoGeneral = $("#descuento_general").val();
     descuentoGeneral = descuentoGeneral == 100 ? 1 : (descuentoGeneral < 10) ? `0.0${descuentoGeneral}` : `0.${descuentoGeneral}`;
 
     array.forEach((costo) => {
@@ -839,6 +840,7 @@ $(document).ready(function () {
     let precioInicial = $(fila).find('td > input#precio_inicial').val();
     let numeroServicios = $(fila).find('td > input#number').val();
     let descuento = $(fila).find('td > input#descuento_aplicado').val();
+    let _descuento = descuento;
     descuento = descuento == 100 ? 1 : (descuento < 10) ? `0.0${descuento}` : `0.${descuento}`;
     
     let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
@@ -858,7 +860,7 @@ $(document).ready(function () {
       servicioId,
       UUID,
       numeroServicios,
-      descuento,
+      _descuento,
       precioBruto,
       precioIva,
       subtotal,

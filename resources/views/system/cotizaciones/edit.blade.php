@@ -165,25 +165,48 @@
                               @foreach($servicios as $servicio)
                               {{-- {{dd($servicio)}} --}}
                               <tr id="fila">
-                                <td style="display: none" id="servicio_id">{{$servicio->detalle_cotizacion_id}}</td>
+                                <td style="display: none" id="servicio_id">
+                                  <input class="form-control servicio_id" type="text" name="servicio_id[]" value="{{$servicio->detalle_cotizacion_id}}">
+                                </td>
                                 <td id="nombre_serv">{{$servicio->nombre}}</td>
                                 <td id="desc_serv">{{$servicio->descripcion}}</td>
                                 <td>
-                                  <input id="precio_inicial" class="form-control precio_inicial" type="number" value="{{$servicio->precio_inicial}}" min="1" step="1"/>
+                                  <input id="precio_inicial" name="precio_inicial[]" class="form-control precio_inicial" type="number" value="{{$servicio->precio_inicial}}" min="0" step="1" onkeyup="validarNumero(this)"/>
                                 </td>
                                 <td>
-                                  <input id="cantidad" class="form-control cantidad" type="number" value="{{$servicio->cantidad}}" min="0" max="1000" step="1" onkeyup="validarNumero(this)" />
+                                  <input id="cantidad" name="cantidad[]" class="form-control cantidad" type="number" value="{{$servicio->cantidad}}" min="0" max="1000" step="1" onkeyup="validarNumero(this)" />
                                 </td>
                                 <td>
-                                  <input id="descuento" class="form-control descuento" type="number" value="{{$servicio->descuento}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
+                                  <input id="descuento" name="descuento[]" class="form-control descuento" type="number" value="{{$servicio->descuento}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
                                 </td>
-                                <td id="precio_bruto" class="precio_bruto">{{$servicio->precio_bruto}}</td>
-                                <td id="precio_iva">{{$servicio->iva}}</td>
-                                <td id="subtotal">{{$servicio->subtotal}}</td>
+                                <td name="precio_bruto[]" class="precio_bruto">
+                                  <span id="precio_brutoS">{{$servicio->precio_bruto}}</span>
+                                  <input id="precio_bruto" style="display: none" type="text" name="precio_bruto[]" value="{{$servicio->precio_bruto}}">
+                                </td>
+                                <td>
+                                  <span id="precio_ivaS">{{$servicio->iva}}</span>
+                                  <input id="precio_iva" style="display: none" type="text" name="precio_iva[]" value="{{$servicio->iva}}">
+                                </td>
+                                <td>
+                                  <span id="subtotalS">{{$servicio->subtotal}}</span>
+                                  <input id="subtotal" style="display: none" type="text" name="subtotal[]" value="{{$servicio->subtotal}}">
+                                </td>
                               </tr>
                               @endforeach
                             </tbody>
                             <tfoot>
+                              <tr>
+                                <td colspan="8">
+                                  <div class="form-group d-flex mb-0">
+                                    <label for="descuento_general" class="form-label">{{ __('Descuento general (porcentaje)') }}</label>
+                                    <input type="number" class="form-control descuento_general @error('descuento_general') is-invalid @enderror" id="descuento_general" name="descuento_general" value="{{$servicio->descuento_general}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
+                                    
+                                    @error('descuento_general')
+                                    <small class="text-danger">{{$message}}</small>
+                                    @enderror
+                                  </div>
+                                </td>
+                              </tr>
                               <tr>
                                 <th colspan="2" class="text-right">Total:</th>
                                 <th id="total_inicial">Total</th>
@@ -215,12 +238,12 @@
 </div>
 <script>
 function validarNumero(value) {
-let valor = $(value).val();
-if (!isNaN(valor) && valor >= 1){
-  $(value).val(valor);
-}else{
-  $(value).val(0);
-}
+  let valor = $(value).val();
+  if (!isNaN(valor) && valor >= 1){
+    $(value).val(valor);
+  }else{
+    $(value).val(0);
+  }
 }
 
 function validarDescuento(value) {
@@ -232,153 +255,151 @@ function validarDescuento(value) {
   }
 }
 
-let arrayServicios = [];
 
 $(document).ready(function() {
 
-  $(".cantidad").on("keyup keydown change", function(){
-    let fila = $(this).closest("#fila");
-    calcularCostos(fila);
-  });
+let arrayServicios = [];
 
-  $(".descuento").on("keyup keydown change", function(){
-    let fila = $(this).closest("#fila");
-    calcularCostos(fila);
-  });
+/**
+ * Agrega al arreglo cada uno de los productos/servicios 
+ * de la cotización
+*/
+$('#detalle-servicios tbody').find('tr#fila').each(function(i, el) {
+  arrayServicios.push({
+    servicio_id: $(el).find('td#servicio_id > input.servicio_id').val(),
+    cantidad: $(el).find('td > input#cantidad').val(),
+    descuento: $(el).find('td > input#descuento').val(),
+    descuento_general: $('input#descuento_general').val(),
+    precio_inicial: $(el).find('td > input#precio_inicial').val(),
+    precio_bruto: $(el).find('td > span#precio_brutoS').text(),
+    precio_iva: $(el).find('td > span#precio_ivaS').text(),
+    subtotal: $(el).find('td > span#subtotalS').text(),
+  })
+});
 
-  $(".precio_inicial").on("keyup keydown change", function(){
-    let fila = $(this).closest("#fila");
-    calcularPrecios(fila);
-  });
+$(".cantidad").on("keyup keydown change", function(){
+  let fila = $(this).closest("#fila");
+  calcularCostos(fila);
+});
 
-  $('#detalle-servicios tbody').find('tr#fila').each(function(i, el) {
-      arrayServicios.push({
-        servicio_id: $(el).find('td#servicio_id').text(),
-        cantidad: $(el).find('td > input#cantidad').val(),
-        descuento: $(el).find('td > input#descuento').val(),
-        precio_inicial: $(el).find('td > input#precio_inicial').val(),
-        precio_bruto: $(el).find('td#precio_bruto').text(),
-        precio_iva: $(el).find('td#precio_iva').text(),
-        subtotal: $(el).find('td#subtotal').text(),
-      })
-  });
-  
-  var total1 = 0;
-  var total2 = 0;
-  var total3 = 0;
-  var total4 = 0;
-  var total5 = 0;
-  var total6 = 0;
-  $('#detalle-servicios tbody').find('tr').each(function(i, el) {
-      total1 += parseFloat($(this).find('td').eq(3).find('input#precio_inicial').val()); // Precio inicial
-      total2 += parseFloat($(this).find('td').eq(4).find('input#cantidad').val()); // Cantidad
-      total3 += parseFloat($(this).find('td').eq(6).text()); // Descuento
-      total4 += parseFloat($(this).find('td').eq(7).text()); // Precio bruto
-      total5 += parseFloat($(this).find('td').eq(8).text()); // Iva
-      total6 += parseFloat($(this).find('td').eq(9).text()); // Subtotal
-  });
-  $('#detalle-servicios tfoot tr th').eq(1).text("$ " + total1);
-  $('#detalle-servicios tfoot tr th').eq(2).text("# " + total2);
-  // $('#detalle-servicios tfoot tr th').eq(3).text("$ " + total3);
-  $('#detalle-servicios tfoot tr th').eq(3).text("$ " + total3);
-  $('#detalle-servicios tfoot tr th').eq(4).text("$ " + total4);
-  $('#detalle-servicios tfoot tr th').eq(5).text("$ " + total5);
+$(".descuento").on("keyup keydown change", function(){
+  let fila = $(this).closest("#fila");
+  calcularCostos(fila);
+});
 
-  function sumarCostosArray(array){
-    let inicial = 0;
-    let cantidad = 0;
-    let bruto = 0;
-    let iva = 0;
-    let total = 0;
+$(".precio_inicial").on("keyup keydown change", function(){
+  let fila = $(this).closest("#fila");
+  calcularCostos(fila);
+});
 
-    array.forEach((el) => {
-      cantidad += Number(el.cantidad),
-      inicial += Number(el.precio_inicial),
-      bruto += Number(el.precio_bruto),
-      iva += Number(el.precio_iva),
-      total += Number(el.subtotal)
-    })
+$(".descuento_general").on("keyup keydown change", function(){
+  mostrarCostosFinal(arrayServicios);
+});
 
-    return {
-      cantidad,
-      inicial: inicial.toFixed(2),
-      bruto: bruto.toFixed(2),
-      iva: iva.toFixed(2),
-      total: total.toFixed(2)
-    }
-  }
+mostrarCostosFinal(arrayServicios);
 
-  function calcularCostos(fila){
-    let servicioId = $(fila).find('td#servicio_id').text();
-    let precioInicial = $(fila).find('td > input#precio_inicial').val();
-    let precioBrutoDB = $(fila).find('td#precio_bruto').text();
-    let numeroServicios = $(fila).find('td > input#cantidad').val();
-    let descuento = $(fila).find('td > input#descuento').val();
-    descuento = descuento == 100 ? 1 : (descuento < 10) ? `0.0${descuento}` : `0.${descuento}`;
-    
-    let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
-    let precioBruto2 = precioBruto;
-    precioBruto = descuento > 0 ? ((precioBruto2 - (precioBruto2 * Number(descuento)))).toFixed(2) : precioBruto2;
-    
-    let precioIva = (Number(precioBruto) * .16).toFixed(2);
-    let subtotal = (Number(precioIva) + parseFloat(precioBruto)).toFixed(2);
-    
-    $(fila).find('td#precio_bruto').text(precioBruto);
-    $(fila).find('td#precio_iva').text(precioIva);
-    $(fila).find('td#subtotal').text(subtotal);
-
-    añadirArray(servicioId, numeroServicios, descuento, precioInicial, precioBruto, precioIva, subtotal)
-  }
-
-  function calcularPrecios(fila){
-    let servicioId = $(fila).find('td#servicio_id').text();
-    let precioInicial = $(fila).find('td > input#precio_inicial').val();
-    // let precioBrutoInicial = $(fila).find('td#precio_bruto').text();
-    let numeroServicios = $(fila).find('td > input#cantidad').val();
-    let descuento = $(fila).find('td > input#descuento').val();
-    descuento = descuento == 100 ? 1 : (descuento < 10) ? `0.0${descuento}` : `0.${descuento}`;
-    
-    let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
-    let precioBruto2 = precioBruto;
-    precioBruto = descuento > 0 ? ((precioBruto2 - (precioBruto2 * Number(descuento)))).toFixed(2) : precioBruto2;
-    
-    let precioIva = (Number(precioBruto) * .16).toFixed(2);
-    let subtotal = (Number(precioIva) + parseFloat(precioBruto)).toFixed(2);
-    
-    $(fila).find('td#precio_bruto').text(precioBruto);
-    $(fila).find('td#precio_iva').text(precioIva);
-    $(fila).find('td#subtotal').text(subtotal);
-
-    añadirArray(servicioId, numeroServicios, descuento, precioInicial, precioBruto, precioIva, subtotal)
-  }
-
-  function añadirArray(servicioId, numeroServicios, descuento, precioInicial, precioBruto, precioIva, subtotal){
-    arrayServicios = arrayServicios.filter((el => el.servicio_id !== servicioId));
-
-    arrayServicios.push({
-      servicio_id: servicioId,
-      cantidad: numeroServicios,
-      descuento: descuento,
-      precio_inicial: precioInicial,
-      precio_bruto: precioBruto,
-      precio_iva: precioIva,
-      subtotal: subtotal,
-    });
-
+function mostrarCostosFinal(array){
+  if (array.length > 0) {
     let {
       inicial,
+      cantidad,
       bruto,
       iva,
-      total,
-      cantidad
-    } = sumarCostosArray(arrayServicios);
+      total
+    } = sumarCostosArray(array);
+
+    let descuento_general = $('input#descuento_general').val()
+  
+    if(descuento_general > 0){
+      descuento_general = descuento_general == 100 ? 1 : (descuento_general < 10) ? `0.0${descuento_general}` : `0.${descuento_general}`;
+      
+      let _precioInicial = inicial;
+      inicial = descuento_general > 0 ? ((_precioInicial - (_precioInicial * Number(descuento_general)))).toFixed(2) : _precioInicial;
+
+      let _precioBruto = bruto;
+      bruto = descuento_general > 0 ? ((_precioBruto - (_precioBruto * Number(descuento_general)))).toFixed(2) : _precioBruto;
+
+      iva = (Number(bruto) * .16).toFixed(2);
+      total = (Number(iva) + parseFloat(bruto)).toFixed(2);
+    }
+
     
-    $("#total_inicial").text("$ " + inicial);
-    $("#total_cantidad").text("# " + cantidad);
-    $("#total_bruto").text("$" + bruto);
-    $("#total_iva").text("$" + iva);
-    $("#total_total").text("$" + total);
+    $("#total_inicial").html("$" + inicial);
+    $("#total_cantidad").html("#" + cantidad);
+    $("#total_bruto").html("$" + bruto);
+    $("#total_iva").html("$" + iva);
+    $("#total_total").html("$" + total);
+
   }
+}
+
+function sumarCostosArray(array){
+  let inicial = 0;
+  let cantidad = 0;
+  let bruto = 0;
+  let iva = 0;
+  let total = 0;
+
+  array.forEach((el) => {
+    inicial += Number(el.precio_inicial),
+    cantidad += Number(el.cantidad),
+    bruto += Number(el.precio_bruto),
+    iva += Number(el.precio_iva),
+    total += Number(el.subtotal)
+  })
+
+  return {
+    inicial: inicial.toFixed(2),
+    cantidad,
+    bruto: bruto.toFixed(2),
+    iva: iva.toFixed(2),
+    total: total.toFixed(2)
+  }
+}
+
+function calcularCostos(fila){
+  let servicioId = $(fila).find('td#servicio_id > input.servicio_id').val();
+  let precioInicial = $(fila).find('td > input#precio_inicial').val();
+  let precioBrutoDB = $(fila).find('td > span#precio_brutoS').text();
+  let numeroServicios = $(fila).find('td > input#cantidad').val();
+  let descuentoGeneral = $('input#descuento_general').val();
+  let descuento = $(fila).find('td > input#descuento').val();
+  let _descuento = descuento;
+  descuento = descuento == 100 ? 1 : (descuento < 10) ? `0.0${descuento}` : `0.${descuento}`;
+
+  let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
+  let _precioBruto = precioBruto;
+  precioBruto = descuento > 0 ? ((_precioBruto - (_precioBruto * Number(descuento)))).toFixed(2) : _precioBruto;
+  
+  let precioIva = (Number(precioBruto) * .16).toFixed(2);
+  let subtotal = (Number(precioIva) + parseFloat(precioBruto)).toFixed(2);
+  
+  $(fila).find('td > span#precio_brutoS').text(precioBruto);
+  $(fila).find('td > input#precio_bruto').val(precioBruto);
+  $(fila).find('td > span#precio_ivaS').text(precioIva);
+  $(fila).find('td > input#precio_iva').val(precioIva);
+  $(fila).find('td > span#subtotalS').text(subtotal);
+  $(fila).find('td > input#subtotal').val(subtotal);
+
+  añadirArray(servicioId, numeroServicios, descuento, descuentoGeneral, precioInicial, precioBruto, precioIva, subtotal)
+}
+
+function añadirArray(servicioId, numeroServicios, descuento, descuentoGeneral, precioInicial, precioBruto, precioIva, subtotal){
+  arrayServicios = arrayServicios.filter((el => el.servicio_id !== servicioId));
+
+  arrayServicios.push({
+    servicio_id: servicioId,
+    cantidad: numeroServicios,
+    descuento: descuento,
+    descuento_general: descuentoGeneral,
+    precio_inicial: precioInicial,
+    precio_bruto: precioBruto,
+    precio_iva: precioIva,
+    subtotal: subtotal,
+  });
+
+  mostrarCostosFinal(arrayServicios);
+}
 
 });
 </script>

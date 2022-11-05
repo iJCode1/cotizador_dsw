@@ -15,12 +15,13 @@ class CreateDetalleCotizacionesTable extends Migration
   {
     Schema::create('detalle_cotizaciones', function(Blueprint $table){
       $table->increments('detalle_cotizacion_id');
-      $table->integer('cantidad')->unsigned();
       $table->float('precio_inicial');
-      $table->float('precio_bruto', );
-      $table->float('subtotal', );
-      $table->float('iva', );
       $table->float('descuento', );
+      $table->float('descuento_general');
+      $table->integer('cantidad')->unsigned();
+      $table->float('precio_bruto', );
+      $table->float('iva', );
+      $table->float('subtotal', );
 
       // Llaves foraneas
       $table->integer('cotizacion_id')->unsigned();
