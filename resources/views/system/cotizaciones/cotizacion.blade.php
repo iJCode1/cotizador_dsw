@@ -7,387 +7,387 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">{{ __('Crear Cotización') }}</div>
+          <div class="card-body">
+            <form method="POST" action="{{ route('tenant.cotizacion') }}">
+              @csrf
+              @method('post')
 
-        <div class="card-body">
-
-          <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">
-          Registrar Cliente
-          </button>
-
-          <!-- Modal -->
-          <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Registrar Cliente</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+              {{-- Cliente --}}
+              <div class="form-group row justify-content-center">
+                <div class="col-md-6">
+                  <label for="cliente">Buscar cliente</label>
+                  <div class="input-group">
+                      <input type="search" name="cliente" id="cliente" class="form-control @error('cliente') is-invalid @enderror" value="{{old('cliente')}}" placeholder="cliente@cliente.com" aria-label="Search">
+                      <span class="input-group-btn">
+                        <button type="button" id="selectCliente" class="btn btn-primary">
+                          Seleccionar
+                        </button>
+                      </span>
+                      @error('cliente')
+                        <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                  </div>
                 </div>
-                <form method="POST" id="añadirUsuario">
-                  @csrf
-                  <div class="modal-body">
-                    @include('layouts.partials.tenant._registroCliente')
-                  </div>
-                  <div class="modal-footer">
-                    <button id="closeModalCliente" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
 
-          <!-- Button trigger modal -->
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalServicio">
-            Registrar Servicio
-          </button>
-
-          <!-- Modal de Producto y/o Servicio -->
-          <div class="modal fade" id="modalServicio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Registrar Producto y/o Servicio</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary align-self-end" data-toggle="modal" data-target="#modal">
+                  Registrar Cliente
                   </button>
-                </div>
-                <form method="POST" id="añadirServicio" enctype="multipart/form-data">
-                  @csrf
-                  <div class="modal-body">
-                    @include('layouts.partials.tenant._registroServicio')
+        
+                  <!-- Modal -->
+                  <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Registrar Cliente</h5>
+                          <button id="closeModalCliente" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <form method="POST" id="añadirUsuario">
+                          @csrf
+                          <div class="modal-body">
+                            @include('layouts.partials.tenant._registroCliente')
+                          </div>
+                          <div class="modal-footer">
+                            <button id="cancelModalCliente" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button id="btnAñadirUsuario" type="submit" class="btn btn-primary">Registrar</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
                   </div>
-                  <div class="modal-footer">
-                    <button id="closeModalServicio" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" id="btnAñadirServicio" class="btn btn-primary">Registrar</button>
-                  </div>
-                </form>
               </div>
-            </div>
-          </div>
 
-          <form method="POST" action="{{ route('tenant.cotizacion') }}">
-            @csrf
-            @method('post')
+              <div class="row justify-content-center">
 
-            {{-- Cliente --}}
-            <div class="form-group row justify-content-center">
-              <div class="col-md-6">
-                <label for="cliente">Buscar cliente</label>
-                <div class="input-group">
-                    <input type="search" name="cliente" id="cliente" class="form-control @error('cliente') is-invalid @enderror" value="{{old('cliente')}}" placeholder="cliente@cliente.com" aria-label="Search">
-                    <span class="input-group-btn">
-                      <button type="button" id="selectCliente" class="btn btn-primary">
-                        Seleccionar
-                      </button>
-                    </span>
-                    @error('cliente')
+                {{-- ID --}}
+                <div class="col-md-4 my-3" style="display: none;">
+                  <label for="cliente_id" class="form-label">ID Cliente</label>
+                  <div class="form-group">
+                    <input type="text" readonly class="form-control" id="cliente_id" name="cliente_id" value="{{old('cliente_id')}}">
+                  </div>
+                </div>
+
+                {{-- Nombre --}}
+                <div class="col-md-4 my-3">
+                  <label for="nombreCliente" class="form-label">Nombre Cliente</label>
+                  <div class="form-group">
+                    <input type="text" readonly class="form-control @error('nombreCliente') is-invalid @enderror" id="nombreCliente" name="nombreCliente" value="{{old('nombreCliente')}}">
+                    @error('nombreCliente')
                       <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                       </span>
                     @enderror
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            <div class="row justify-content-center">
-
-              {{-- ID --}}
-              <div class="col-md-4 my-3" style="display: none;">
-                <label for="cliente_id" class="form-label">ID Cliente</label>
-                <div class="form-group">
-                  <input type="text" readonly class="form-control" id="cliente_id" name="cliente_id" value="{{old('cliente_id')}}">
-                </div>
-              </div>
-
-              {{-- Nombre --}}
-              <div class="col-md-4 my-3">
-                <label for="nombreCliente" class="form-label">Nombre Cliente</label>
-                <div class="form-group">
-                  <input type="text" readonly class="form-control @error('nombreCliente') is-invalid @enderror" id="nombreCliente" name="nombreCliente" value="{{old('nombreCliente')}}">
-                  @error('nombreCliente')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
-              </div>
-  
-              {{-- Correo --}}
-              <div class="col-md-4 my-3">
-                <label for="correoCliente" class="form-label">Correo Cliente</label>
-                <div class="form-group">
-                  <input type="text" readonly class="form-control @error('correoCliente') is-invalid @enderror" id="correoCliente" name="correoCliente" value="{{old('correoCliente')}}">
-                  @error('correoCliente')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
-              </div>
-
-            </div>
-
-            {{-- Nombre de la Cotización --}}
-            <div class="form-group row">
-              <label for="nombre_cotizacion" class="col-md-4 col-form-label text-md-right">{{ __('Nombre de la cotización') }}</label>
-
-              <div class="col-md-6">
-                <input id="nombre_cotizacion" type="text" class="form-control @error('nombre_cotizacion') is-invalid @enderror" name="nombre_cotizacion" value="{{ old('nombre_cotizacion') }}" autocomplete="nombre_cotizacion" autofocus>
-
-                @error('nombre_cotizacion')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            {{-- Descripcion --}}
-            <div class="form-group row">
-              <label for="descripcion" class="col-md-4 col-form-label text-md-right">{{ __('Descripcion') }}</label>
-
-              <div class="col-md-6">
-                <input id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" value="{{ old('descripcion') }}" autocomplete="text" autofocus>
-
-                @error('descripcion')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-
-            {{-- Fecha de creación --}}
-            <div class="form-group row">
-              <label for="fecha_creacion" class="col-md-4 col-form-label text-md-right">{{ __('Fecha de creación') }}</label>
-
-              <div class="col-md-6">
-                <input id="fecha_creacion" type="date" class="form-control @error('fecha_creacion') is-invalid @enderror" name="fecha_creacion" value="<?php echo date("Y-m-d"); ?>"  autocomplete="fecha_creacion" autofocus required min=<?php $hoy=date("Y-m-d"); echo $hoy;?>>
-
-                @error('fecha_creacion')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-
-            {{-- Vigencia --}}
-            <div class="form-group row">
-              <label for="vigencia" class="col-md-4 col-form-label text-md-right">{{ __('Vigencia (Días)') }}</label>
-
-              <div class="col-md-6">
-                <input id="vigencia" type="number" class="form-control @error('vigencia') is-invalid @enderror" name="vigencia" value="{{ old('vigencia') }}" autocomplete="vigencia" autofocus>
-
-                @error('vigencia')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-
-            {{-- Estatus de Cotización --}}
-            <div class="form-group row">
-              <label for="estatus_cotizacion_id" class="col-md-4 col-form-label text-md-right">{{ __('Estatus de la cotización') }}</label>
-
-              <div class="col-md-6">
-                <select name="estatus_cotizacion_id" id="estatus_cotizacion_id" class="form-control estatus_cotizacion_id @error('estatus_cotizacion_id') is-invalid @enderror" autofocus>
-                  
-                  <option selected disabled value="">Selecciona el status</option>
-                  @foreach($estatus as $estatu)
-                    @if (old('estatus_cotizacion_id') == $estatu->estatus_cotizacion_id)
-                      {{-- {{dd("Algo")}} --}}
-                      <option selected value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
-                      @continue
-                    @endif
-                  <option value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
-                  @endforeach
-                  
-                </select>
-                @error('estatus_cotizacion_id')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            {{-- Producto y/o Servicio --}}
-            <div class="form-group row">
-              <label for="servicio" class="col-md-4 col-form-label text-md-right">{{ __('Buscar Producto y/o Servicio') }}</label>
-
-              <div class="col-md-6 input-group">
-                <input id="servicio" type="search" class="form-control @error('servicio') is-invalid @enderror" name="servicio" value="{{ old('servicio') }}" autocomplete="servicio" autofocus aria-label="Search">
-                <span class="input-group-btn">
-                  <button type="button" id="selectServicio" class="btn btn-primary">
-                      Seleccionar
-                  </button>
-                </span>
-                @error('servicio')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            <div class="row justify-content-center">
-              
-              {{-- producto_servicio_id --}}
-              <div class="col-md-2">
-                <label for="servicio_id" class="form-label">{{ __('ID') }}</label>
-                <div class="form-group">
-                    <input type="text" readonly class="form-control" id="servicio_id" name="servicio_id" value="{{old('servicio_id')}}">
-                    @error('servicio_id')
-                    <small class="text-danger">{{$message}}</small>
+    
+                {{-- Correo --}}
+                <div class="col-md-4 my-3">
+                  <label for="correoCliente" class="form-label">Correo Cliente</label>
+                  <div class="form-group">
+                    <input type="text" readonly class="form-control @error('correoCliente') is-invalid @enderror" id="correoCliente" name="correoCliente" value="{{old('correoCliente')}}">
+                    @error('correoCliente')
+                      <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                      </span>
                     @enderror
+                  </div>
                 </div>
+
               </div>
 
-              {{-- Nombre --}}
-              <div class="col-md-5">
-                <label for="nombre_serv" class="form-label">{{ __('Nombre') }}</label>
-                <div class="form-group">
-                    <input type="text" readonly class="form-control" id="nombre_serv" name="nombre_serv" value="{{old('nombre_serv')}}">
-                    @error('nombre_serv')
-                    <small class="text-danger">{{$message}}</small>
-                    @enderror
-                </div>
-              </div>
+              {{-- Nombre de la Cotización --}}
+              <div class="form-group row">
+                <label for="nombre_cotizacion" class="col-md-4 col-form-label text-md-right">{{ __('Nombre de la cotización') }}</label>
 
-              {{-- Descripción --}}
-              <div class="col-md-5">
-                <label for="descripcion_cotizacion" class="form-label">{{ __('Descripción') }}</label>
-                <div class="form-group">
-                    <input type="text" readonly class="form-control" id="descripcion_cotizacion" name="descripcion_cotizacion" value="{{old('descripcion_cotizacion')}}">
-                    @error('descripcion_cotizacion')
-                    <small class="text-danger">{{$message}}</small>
-                    @enderror
-                </div>
-              </div>
-            </div>
+                <div class="col-md-6">
+                  <input id="nombre_cotizacion" type="text" class="form-control @error('nombre_cotizacion') is-invalid @enderror" name="nombre_cotizacion" value="{{ old('nombre_cotizacion') }}" autocomplete="nombre_cotizacion" autofocus>
 
-            <div class="row justify-content-center">
-
-              {{-- Tipo --}}
-              <div class="col-md-4">
-                <label for="tipo" class="form-label">{{ __('Tipo') }}</label>
-                <div class="form-group">
-                    <input type="text" readonly class="form-control" id="tipo" name="tipo" value="{{old('tipo')}}">
-                    @error('tipo')
-                    <small class="text-danger">{{$message}}</small>
-                    @enderror
-                </div>
-              </div>
-
-              {{-- Precio --}}
-              <div class="col-md-4">
-                <label for="precio" class="form-label">{{ __('Precio') }}</label>
-                <div class="form-group">
-                    <input type="text" class="form-control  @error('precio') is-invalid @enderror" id="precio" name="precio" value="{{old('precio')}}">
-                    @error('precio')
-                    <small class="text-danger">{{$message}}</small>
-                    @enderror
-                </div>
-              </div>
-  
-              {{-- Descuento --}}
-              <div class="col-md-2">
-                <label for="descuento" class="form-label">{{ __('Descuento (porcentaje)') }}</label>
-                <div class="form-group">
-                    <input type="number" value="0" class="form-control @error('descuento') is-invalid @enderror" id="descuento" name="descuento" value="{{old('descuento')}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
-                    @error('descuento')
-                    <small class="text-danger">{{$message}}</small>
-                    @enderror
-                </div>
-              </div>
-
-              {{-- Cantidad --}}
-              <div class="col-md-2">
-                <label for="cantidad" class="form-label">{{ __('Cantidad') }}</label>
-                <div class="form-group">
-                    <input type="number" value="1" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{old('cantidad')}}" min="1" max="1000" step="1" onkeyup="validarNumero(this)"/>
-                    @error('cantidad')
-                    <small class="text-danger">{{$message}}</small>
-                    @enderror
-                </div>
-              </div>
-            </div>
-
-            {{-- CTA-Agregar --}}
-            <div class="form-group row mb-5">
-              {{-- <div class="col-md-6 offset-md-4"> --}}
-              <div class="col">
-                <button type="button" id="btn_add" class="btn btn-block btn-primary">
-                  {{ __('Agregar') }}
-                </button>
-              </div>
-            </div>
-
-            {{-- Productos/Servicios cotizados --}}
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <div class="table-responsive">
-                <table id="detalles" name="servicio_uuid" class="table table-striped table-bordered condensed table-hover @error('servicio_uuid') is-invalid @enderror">
-                  <thead class="thead-dark">
-                    <th>ID servicio</th>
-                    <th>Nombre servicio</th>
-                    <th>Precio inicial</th>
-                    <th>Descuento</th>
-                    <th>Cantidad</th>
-                    <th>Precio unitario</th>
-                    <th>IVA</th>
-                    <th>Total</th>
-                    <th>Opciones</th>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <td colspan="8">
-                        <div class="form-group d-flex mb-0">
-                          <label for="descuento_general" class="form-label">{{ __('Descuento general (porcentaje)') }}</label>
-                          <input type="number" value="0" class="form-control descuento_general @error('descuento_general') is-invalid @enderror" id="descuento_general" name="descuento_general" value="{{old('descuento_general')}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
-                          
-                          @error('descuento_general')
-                          <small class="text-danger">{{$message}}</small>
-                          @enderror
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="5">Total</td>
-                      <td>
-                          <h4 id="total_inicial" name="total_inicial">$0.00</h4>
-                      </td>
-                      <td>
-                          <h4 id="total_iva" name="total_iva">$0.00</h4>
-                      </td>
-  
-                      <td>
-                          <h4 id="total_total" name="total_total">$0.00</h4>
-                      </td>
-                    </tr>
-                  </tfoot>
-                </table>
-                @error('servicio_uuid')
+                  @error('nombre_cotizacion')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                   </span>
-                @enderror
+                  @enderror
+                </div>
               </div>
-            </div>
 
-            {{-- CTA Cotizar --}}
-            <div class="col-md-12" id="cotizar">
-              <button type="submit" class="btn btn-primary">Cotizar</button>
-            </div>
+              {{-- Descripcion --}}
+              <div class="form-group row">
+                <label for="descripcion" class="col-md-4 col-form-label text-md-right">{{ __('Descripcion') }}</label>
 
-          </form>
+                <div class="col-md-6">
+                  <input id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" value="{{ old('descripcion') }}" autocomplete="text" autofocus>
+
+                  @error('descripcion')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+                </div>
+              </div>
+
+
+              {{-- Fecha de creación --}}
+              <div class="form-group row">
+                <label for="fecha_creacion" class="col-md-4 col-form-label text-md-right">{{ __('Fecha de creación') }}</label>
+
+                <div class="col-md-6">
+                  <input id="fecha_creacion" type="date" class="form-control @error('fecha_creacion') is-invalid @enderror" name="fecha_creacion" value="<?php echo date("Y-m-d"); ?>"  autocomplete="fecha_creacion" autofocus required min=<?php $hoy=date("Y-m-d"); echo $hoy;?>>
+
+                  @error('fecha_creacion')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+                </div>
+              </div>
+
+
+              {{-- Vigencia --}}
+              <div class="form-group row">
+                <label for="vigencia" class="col-md-4 col-form-label text-md-right">{{ __('Vigencia (Días)') }}</label>
+
+                <div class="col-md-6">
+                  <input id="vigencia" type="number" class="form-control @error('vigencia') is-invalid @enderror" name="vigencia" value="{{ old('vigencia') }}" autocomplete="vigencia" autofocus>
+
+                  @error('vigencia')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+                </div>
+              </div>
+
+
+              {{-- Estatus de Cotización --}}
+              <div class="form-group row">
+                <label for="estatus_cotizacion_id" class="col-md-4 col-form-label text-md-right">{{ __('Estatus de la cotización') }}</label>
+
+                <div class="col-md-6">
+                  <select name="estatus_cotizacion_id" id="estatus_cotizacion_id" class="form-control estatus_cotizacion_id @error('estatus_cotizacion_id') is-invalid @enderror" autofocus>
+                    
+                    <option selected disabled value="">Selecciona el status</option>
+                    @foreach($estatus as $estatu)
+                      @if (old('estatus_cotizacion_id') == $estatu->estatus_cotizacion_id)
+                        {{-- {{dd("Algo")}} --}}
+                        <option selected value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
+                        @continue
+                      @endif
+                    <option value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
+                    @endforeach
+                    
+                  </select>
+                  @error('estatus_cotizacion_id')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+                </div>
+              </div>
+
+              {{-- Producto y/o Servicio --}}
+              <div class="form-group row">
+                <label for="servicio" class="col-md-4 col-form-label text-md-right">{{ __('Buscar Producto y/o Servicio') }}</label>
+
+                <div class="col-md-6 input-group">
+                  <input id="servicio" type="search" class="form-control @error('servicio') is-invalid @enderror" name="servicio" value="{{ old('servicio') }}" autocomplete="servicio" autofocus aria-label="Search">
+                  <span class="input-group-btn">
+                    <button type="button" id="selectServicio" class="btn btn-primary">
+                        Seleccionar
+                    </button>
+                  </span>
+                  @error('servicio')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-center py-3">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalServicio">
+                  Registrar Servicio
+                </button>
+              </div>
+
+              <!-- Modal de Producto y/o Servicio -->
+              <div class="modal fade" id="modalServicio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Registrar Producto y/o Servicio</h5>
+                      <button id="closeModalServicio" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form method="POST" id="añadirServicio" enctype="multipart/form-data">
+                      @csrf
+                      <div class="modal-body">
+                        @include('layouts.partials.tenant._registroServicio')
+                      </div>
+                      <div class="modal-footer">
+                        <button id="cancelModalServicio" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="btnAñadirServicio" class="btn btn-primary">Registrar</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row justify-content-center">
+                
+                {{-- producto_servicio_id --}}
+                <div class="col-md-2">
+                  <label for="servicio_id" class="form-label">{{ __('ID') }}</label>
+                  <div class="form-group">
+                      <input type="text" readonly class="form-control" id="servicio_id" name="servicio_id" value="{{old('servicio_id')}}">
+                      @error('servicio_id')
+                      <small class="text-danger">{{$message}}</small>
+                      @enderror
+                  </div>
+                </div>
+
+                {{-- Nombre --}}
+                <div class="col-md-5">
+                  <label for="nombre_serv" class="form-label">{{ __('Nombre') }}</label>
+                  <div class="form-group">
+                      <input type="text" readonly class="form-control" id="nombre_serv" name="nombre_serv" value="{{old('nombre_serv')}}">
+                      @error('nombre_serv')
+                      <small class="text-danger">{{$message}}</small>
+                      @enderror
+                  </div>
+                </div>
+
+                {{-- Descripción --}}
+                <div class="col-md-5">
+                  <label for="descripcion_cotizacion" class="form-label">{{ __('Descripción') }}</label>
+                  <div class="form-group">
+                      <input type="text" readonly class="form-control" id="descripcion_cotizacion" name="descripcion_cotizacion" value="{{old('descripcion_cotizacion')}}">
+                      @error('descripcion_cotizacion')
+                      <small class="text-danger">{{$message}}</small>
+                      @enderror
+                  </div>
+                </div>
+              </div>
+
+              <div class="row justify-content-center">
+
+                {{-- Tipo --}}
+                <div class="col-md-4">
+                  <label for="tipo" class="form-label">{{ __('Tipo') }}</label>
+                  <div class="form-group">
+                      <input type="text" readonly class="form-control" id="tipo" name="tipo" value="{{old('tipo')}}">
+                      @error('tipo')
+                      <small class="text-danger">{{$message}}</small>
+                      @enderror
+                  </div>
+                </div>
+
+                {{-- Precio --}}
+                <div class="col-md-4">
+                  <label for="precio" class="form-label">{{ __('Precio') }}</label>
+                  <div class="form-group">
+                      <input type="text" class="form-control  @error('precio') is-invalid @enderror" id="precio" name="precio" value="{{old('precio')}}">
+                      @error('precio')
+                      <small class="text-danger">{{$message}}</small>
+                      @enderror
+                  </div>
+                </div>
+    
+                {{-- Descuento --}}
+                <div class="col-md-2">
+                  <label for="descuento" class="form-label">{{ __('Descuento (porcentaje)') }}</label>
+                  <div class="form-group">
+                      <input type="number" value="0" class="form-control @error('descuento') is-invalid @enderror" id="descuento" name="descuento" value="{{old('descuento')}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
+                      @error('descuento')
+                      <small class="text-danger">{{$message}}</small>
+                      @enderror
+                  </div>
+                </div>
+
+                {{-- Cantidad --}}
+                <div class="col-md-2">
+                  <label for="cantidad" class="form-label">{{ __('Cantidad') }}</label>
+                  <div class="form-group">
+                      <input type="number" value="1" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{old('cantidad')}}" min="1" max="1000" step="1" onkeyup="validarNumero(this)"/>
+                      @error('cantidad')
+                      <small class="text-danger">{{$message}}</small>
+                      @enderror
+                  </div>
+                </div>
+              </div>
+
+              {{-- CTA-Agregar --}}
+              <div class="form-group row mb-5">
+                {{-- <div class="col-md-6 offset-md-4"> --}}
+                <div class="col">
+                  <button type="button" id="btn_add" class="btn btn-block btn-primary">
+                    {{ __('Agregar') }}
+                  </button>
+                </div>
+              </div>
+
+              {{-- Productos/Servicios cotizados --}}
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="table-responsive">
+                  <table id="detalles" name="servicio_uuid" class="table table-striped table-bordered condensed table-hover @error('servicio_uuid') is-invalid @enderror">
+                    <thead class="thead-dark">
+                      <th>ID servicio</th>
+                      <th>Nombre servicio</th>
+                      <th>Precio inicial</th>
+                      <th>Descuento</th>
+                      <th>Cantidad</th>
+                      <th>Precio unitario</th>
+                      <th>IVA</th>
+                      <th>Total</th>
+                      <th>Opciones</th>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <td colspan="8">
+                          <div class="form-group d-flex mb-0">
+                            <label for="descuento_general" class="form-label">{{ __('Descuento general (porcentaje)') }}</label>
+                            <input type="number" value="0" class="form-control descuento_general @error('descuento_general') is-invalid @enderror" id="descuento_general" name="descuento_general" value="{{old('descuento_general')}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
+                            
+                            @error('descuento_general')
+                            <small class="text-danger">{{$message}}</small>
+                            @enderror
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="5">Total</td>
+                        <td>
+                            <h4 id="total_inicial" name="total_inicial">$0.00</h4>
+                        </td>
+                        <td>
+                            <h4 id="total_iva" name="total_iva">$0.00</h4>
+                        </td>
+    
+                        <td>
+                            <h4 id="total_total" name="total_total">$0.00</h4>
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                  @error('servicio_uuid')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+              </div>
+
+              {{-- CTA Cotizar --}}
+              <div class="col-md-12" id="cotizar">
+                <button type="submit" class="btn btn-primary">Cotizar</button>
+              </div>
+
+            </form>
         </div>
       </div>
     </div>
@@ -543,7 +543,7 @@ $(document).ready(function () {
   });
 
   // añadirUsuario
-  $("#añadirUsuario").submit(function(e){
+  $("#btnAñadirUsuario").click(function(e){
     e.preventDefault(); 
 
     let nombre = $("#nombre").val();
@@ -594,6 +594,11 @@ $(document).ready(function () {
     })
   });
 
+  $('#cancelModalCliente').click(function() {
+    limpiarMensajesErrorCliente();
+    limpiarCajasCliente();
+  });
+
   $('#closeModalCliente').click(function() {
     limpiarMensajesErrorCliente();
     limpiarCajasCliente();
@@ -621,6 +626,11 @@ $(document).ready(function () {
     $("#confirmar_contraseña").val("");
   }
 
+  $('#cancelModalServicio').click(function(){
+    limpiarMensajesErrorServicio();
+    limpiarCajasServicio();
+  })
+
   $('#closeModalServicio').click(function(){
     limpiarMensajesErrorServicio();
     limpiarCajasServicio();
@@ -647,7 +657,7 @@ $(document).ready(function () {
   }
 
   // añadirServicio
-  $("#añadirServicio").submit(function(e){
+  $("#btnAñadirServicio").click(function(e){
     e.preventDefault(); 
 
     let parametros = new FormData($("#añadirServicio")[0]);
