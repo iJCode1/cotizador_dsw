@@ -55,7 +55,7 @@
 <label for="telefono" class="col-md-4 col-form-label text-md-right">{{ __('Telefono') }}</label>
 
 <div class="col-md-6">
-    <input id="telefono" type="number" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{ old('telefono') }}" autocomplete="telefono" autofocus placeholder="xxxxxxxxxx">
+    <input id="telefono" type="tel" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{ old('telefono') }}" autocomplete="telefono" autofocus placeholder="xxxxxxxxxx">
 
     <span id="telefono-error" class="invalid-feedback" role="alert" style="display: none">
       <strong></strong>
@@ -84,19 +84,6 @@
       <input id="contraseña" type="password" class="form-control @error('contraseña') is-invalid @enderror" name="contraseña" autocomplete="new-password" placeholder="********">
 
       <span id="contraseña-error" class="invalid-feedback" role="alert" style="display: none">
-        <strong></strong>
-      </span>
-  </div>
-</div>
-
-{{-- Confirmar Password --}}
-<div class="form-group row">
-  <label for="confirmar_contraseña" class="col-md-4 col-form-label text-md-right">{{ __('Confirmar Contraseña') }}</label>
-
-  <div class="col-md-6">
-      <input id="confirmar_contraseña" type="password" class="form-control @error('confirmar_contraseña') is-invalid @enderror" name="confirmar_contraseña" autocomplete="new-password" placeholder="********">
-      
-      <span id="confirmar_contraseña-error" class="invalid-feedback" role="alert" style="display: none">
         <strong></strong>
       </span>
   </div>

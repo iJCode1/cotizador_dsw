@@ -552,13 +552,7 @@ $(document).ready(function () {
     let telefono = $("#telefono").val();
     let correo = $("#correo").val();
     let contraseña = $("#contraseña").val();
-    let confirmar_contraseña = $("#confirmar_contraseña").val();
     let _token = $("input[name=_token]").val();
-
-
-    // console.log({
-    //   nombre, app, apm, direccion, telefono, correo, contraseña, confirmar_contraseña, _token
-    // }); 
 
     $.ajax({
       url: "{{route('tenant.registrarCliente')}}",
@@ -571,7 +565,6 @@ $(document).ready(function () {
         telefono, 
         correo, 
         contraseña, 
-        confirmar_contraseña, 
         _token
       },
       dataType: 'json',
@@ -611,7 +604,6 @@ $(document).ready(function () {
     $(`span#telefono-error`).css('display','none');
     $(`span#correo-error`).css('display','none');
     $(`span#contraseña-error`).css('display','none');
-    $(`span#confirmar_contraseña-error`).css('display','none');
   }
 
   function limpiarCajasCliente(){
@@ -622,7 +614,6 @@ $(document).ready(function () {
     $("#telefono").val("");
     $("#correo").val("");
     $("#contraseña").val("");
-    $("#confirmar_contraseña").val("");
   }
 
   $('#cancelModalServicio').click(function(){

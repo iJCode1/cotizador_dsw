@@ -86,9 +86,8 @@ class CotizacionesController extends Controller
       'apm' => 'required|max:45',
       'direccion' => 'required|max:255',
       'telefono' => 'required|digits_between:10,10',
-      'correo' => 'required|email|unique:tenant.clientes,email',
+      'correo' => 'required|email|max:100|unique:tenant.clientes,email',
       'contraseña' => 'required|min:8',
-      'confirmar_contraseña' => 'required',
     ];
 
     $customMessages = [
@@ -104,14 +103,13 @@ class CotizacionesController extends Controller
       'telefono.digits_between' => 'El telefono debe ser de 10 digitos.',
       'correo.required' => 'El correo del cliente es obligatoro.',
       'correo.email' => 'El formato del correo es incorrecto.',
+      'correo.max' => 'El correo no debe contener más de 100 caracteres.',
       'correo.unique' => 'El correo ingresado ya está registrado.',
       'contraseña.required' => 'La contraseña del cliente es obligatorio.',
       'contraseña.min' => 'La contraseña no puede ser menor a 8 digitos.',
-      'confirmar_contraseña.required' => 'Confirmar la contraseña es obligatorio.',
     ];
 
     $validator = Validator::make($request->all(), $rules, $customMessages);
-
     
     if ($validator->fails()) {
       return response()->json([

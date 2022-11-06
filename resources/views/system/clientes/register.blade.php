@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container">
-  {{-- {{dd($user[0])}} --}}
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -11,7 +10,6 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('tenant.register') }}">
                         @csrf
-                        {{-- @method('post') --}}
 
                         {{-- Nombre --}}
                         <div class="form-group row">
@@ -78,7 +76,7 @@
                           <label for="telefono" class="col-md-4 col-form-label text-md-right">{{ __('Telefono') }}</label>
 
                           <div class="col-md-6">
-                              <input id="telefono" type="number" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{ old('telefono') }}" autocomplete="telefono" autofocus placeholder="xxxxxxxxxx">
+                              <input id="telefono" type="tel" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{ old('telefono') }}" autocomplete="telefono" autofocus placeholder="xxxxxxxxxx">
 
                               @error('telefono')
                                   <span class="invalid-feedback" role="alert">
@@ -111,20 +109,6 @@
                                 <input id="contraseña" type="password" class="form-control @error('contraseña') is-invalid @enderror" name="contraseña" autocomplete="new-password" placeholder="********">
 
                                 @error('contraseña')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        {{-- Confirmar Password --}}
-                        <div class="form-group row">
-                            <label for="confirmar_contraseña" class="col-md-4 col-form-label text-md-right">{{ __('Confirmar Contraseña') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="confirmar_contraseña" type="password" class="form-control @error('confirmar_contraseña') is-invalid @enderror" name="confirmar_contraseña" autocomplete="new-password" placeholder="********">
-                                @error('confirmar_contraseña')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

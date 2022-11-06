@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tenant\Cliente;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\Cliente;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
@@ -58,34 +59,59 @@ class RegisterCustomerController extends Controller
    */
   public function registerCustomer(Request $request)
   {
-    $request->validate([
+    $rules = [
       'nombre' => 'required|max:45',
       'app' => 'required|max:45',
       'apm' => 'required|max:45',
       'direccion' => 'required|max:255',
-      'telefono' => 'required|min:10|max:10',
-      'correo' => 'required|email|unique:tenant.clientes,email',
-      'contraseña' => 'required|digits_between:8,45',
-      'confirmar_contraseña' => 'required|digits_between:8,45',
-    ]);
-
-    $contraseñaEncriptada = Hash::make($request->contraseña);
-
-    $cliente = [
-      'nombre' => $request->nombre,
-      'apellido_p' => $request->app,
-      'apellido_m' => $request->apm,
-      'direccion' => $request->direccion,
-      'telefono' => $request->telefono,
-      'email' => $request->correo,
-      'password' => $contraseñaEncriptada,
-      'rol_id' => 3,
+      'telefono' => 'required|digits_between:10,10',
+      'correo' => 'required|email|max:100|unique:tenant.clientes,email',
+      'contraseña' => 'required|min:8',
     ];
 
-    Cliente::create($cliente);
+    $customMessages = [
+      'nombre.required' => 'El nombre del cliente es obligatorio.',
+      'nombre.max' => 'El nombre no debe contener más de 45 caracteres.',
+      'app.required' => 'El apellido paterno es obligatorio.',
+      'app.max' => 'El apellido paterno no debe contener más de 45 caracteres.',
+      'apm.required' => 'El apellido materno es obligatorio.',
+      'apm.max' => 'El apellido materno no debe contener más de 45 caracteres.',
+      'direccion.required' => 'La dirección del cliente es obligatorio.',
+      'direccion.max' => 'La dirección no debe contener más de 255 caracteres.',
+      'telefono.required' => 'El telefono del cliente es obligatorio.',
+      'telefono.digits_between' => 'El telefono debe ser de 10 digitos.',
+      'correo.required' => 'El correo del cliente es obligatoro.',
+      'correo.email' => 'El formato del correo es incorrecto.',
+      'correo.max' => 'El correo no debe contener más de 100 caracteres.',
+      'correo.unique' => 'El correo ingresado ya está registrado.',
+      'contraseña.required' => 'La contraseña del cliente es obligatorio.',
+      'contraseña.min' => 'La contraseña no puede ser menor a 8 digitos.',
+    ];
 
-    return redirect()->route('tenant.login')
-      ->with('url', 'cliente')
-      ->with('cliente', 'ok');
+    $validator = Validator::make($request->all(), $rules, $customMessages);
+
+    if ($validator->fails()) {
+      return redirect('/register')
+        ->withErrors($validator)
+        ->withInput();
+    } else {
+      $contraseñaEncriptada = Hash::make($request->contraseña);
+      $cliente = [
+        'nombre' => $request->nombre,
+        'apellido_p' => $request->app,
+        'apellido_m' => $request->apm,
+        'direccion' => $request->direccion,
+        'telefono' => $request->telefono,
+        'email' => $request->correo,
+        'password' => $contraseñaEncriptada,
+        'rol_id' => 3,
+      ];
+
+      Cliente::create($cliente);
+
+      return redirect()->route('tenant.login')
+        ->with('url', 'cliente')
+        ->with('cliente', 'ok');
+    }
   }
 }
