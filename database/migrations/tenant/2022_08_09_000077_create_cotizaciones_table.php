@@ -13,16 +13,16 @@ class CreateCotizacionesTable extends Migration
    */
   public function up()
   {
-    Schema::create('cotizaciones', function(Blueprint $table){
+    Schema::create('cotizaciones', function (Blueprint $table) {
       $table->increments('cotizacion_id');
       $table->string('nombre_cotizacion', 255);
-      $table->string('descripcion', 255);
+      $table->longText('descripcion');
       $table->date('fecha_creacion', 45);
       $table->string('vigencia', 45);
 
       // Llaves foraneas
       $table->integer('usuario_id')->unsigned();
-      $table->foreign('usuario_id')->references('usuario_id')->on('usuarios');
+      $table->foreign('usuario_id')->references('user_id')->on('users');
 
       $table->integer('estatus_cotizacion_id')->unsigned();
       $table->foreign('estatus_cotizacion_id')->references('estatus_cotizacion_id')->on('estatus_cotizaciones');
