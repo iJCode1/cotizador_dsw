@@ -56,10 +56,24 @@ class CotizacionesController extends Controller
     $tipos = Tipo_Producto_Servicio::all();
     $unidades = Unidad_De_Medida::all();
 
+    $usuario = "interno";
+    $cliente = "";
+
+    if (Auth::guard('cliente')->check()) {
+      $usuario = "cliente";
+      $cliente = Auth::guard('cliente')->user();
+    }
+
+    if (Auth::check()) {
+      $usuario = "interno";
+    }
+
     return view('system.cotizaciones.cotizacion', [
       "estatus" => $estatus,
       "tipos" => $tipos,
       "unidades" => $unidades,
+      "usuario" => $usuario,
+      "cliente" => $cliente
     ]);
   }
 
@@ -218,6 +232,7 @@ class CotizacionesController extends Controller
 
   public function createCotizacion(Request $request)
   {
+    // dd($request);
     // dd($request['servicio_uuid']);
 
     // if($request['servicio_uuid'] === null){
@@ -323,8 +338,16 @@ class CotizacionesController extends Controller
       // dd($cotizacion);
       // Cotizacion::create($cotizacion);
 
-      $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id]);
-      // dd("Cotizdo");
+      if (Auth::guard('cliente')->check()) {
+        $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => 1]);
+      }
+  
+      if (Auth::check()) {
+        $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id]);
+      }
+
+      // dd($cotizacion);
+
       foreach ($request->servicio_id as $index => $servicio_id) {
         $cotizacion->cotizaciones()->create([
           'cantidad' => $request->numero_servicios[$index],

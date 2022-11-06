@@ -12,92 +12,132 @@
               @csrf
               @method('post')
 
-              {{-- Cliente --}}
-              <div class="form-group row justify-content-center">
-                <div class="col-md-6">
-                  <label for="cliente">Buscar cliente</label>
-                  <div class="input-group">
-                      <input type="search" name="cliente" id="cliente" class="form-control @error('cliente') is-invalid @enderror" value="{{old('cliente')}}" placeholder="cliente@cliente.com" aria-label="Search">
-                      <span class="input-group-btn">
-                        <button type="button" id="selectCliente" class="btn btn-primary">
-                          Seleccionar
-                        </button>
-                      </span>
-                      @error('cliente')
+              @if ($usuario === "interno")
+                {{-- Cliente --}}
+                <div class="form-group row justify-content-center">
+                  <div class="col-md-6">
+                    <label for="cliente">Buscar cliente</label>
+                    <div class="input-group">
+                        <input type="search" name="cliente" id="cliente" class="form-control @error('cliente') is-invalid @enderror" value="{{old('cliente')}}" placeholder="cliente@cliente.com" aria-label="Search">
+                        <span class="input-group-btn">
+                          <button type="button" id="selectCliente" class="btn btn-primary">
+                            Seleccionar
+                          </button>
+                        </span>
+                        @error('cliente')
+                          <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                          </span>
+                        @enderror
+                    </div>
+                  </div>
+
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-primary align-self-end" data-toggle="modal" data-target="#modal">
+                    Registrar Cliente
+                    </button>
+          
+                    <!-- Modal -->
+                    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Registrar Cliente</h5>
+                            <button id="closeModalCliente" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <form method="POST" id="añadirUsuario">
+                            @csrf
+                            <div class="modal-body">
+                              @include('layouts.partials.tenant._registroCliente')
+                            </div>
+                            <div class="modal-footer">
+                              <button id="cancelModalCliente" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                              <button id="btnAñadirUsuario" type="submit" class="btn btn-primary">Registrar</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+
+                  {{-- ID --}}
+                  <div class="col-md-4 my-3" style="display: none;">
+                    <label for="cliente_id" class="form-label">ID Cliente</label>
+                    <div class="form-group">
+                      <input type="text" readonly class="form-control" id="cliente_id" name="cliente_id" value="{{old('cliente_id')}}">
+                    </div>
+                  </div>
+
+                  {{-- Nombre --}}
+                  <div class="col-md-4 my-3">
+                    <label for="nombreCliente" class="form-label">Nombre Cliente</label>
+                    <div class="form-group">
+                      <input type="text" readonly class="form-control @error('nombreCliente') is-invalid @enderror" id="nombreCliente" name="nombreCliente" value="{{old('nombreCliente')}}">
+                      @error('nombreCliente')
                         <span class="invalid-feedback" role="alert">
                           <strong>{{ $message }}</strong>
                         </span>
                       @enderror
-                  </div>
-                </div>
-
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary align-self-end" data-toggle="modal" data-target="#modal">
-                  Registrar Cliente
-                  </button>
-        
-                  <!-- Modal -->
-                  <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Registrar Cliente</h5>
-                          <button id="closeModalCliente" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <form method="POST" id="añadirUsuario">
-                          @csrf
-                          <div class="modal-body">
-                            @include('layouts.partials.tenant._registroCliente')
-                          </div>
-                          <div class="modal-footer">
-                            <button id="cancelModalCliente" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button id="btnAñadirUsuario" type="submit" class="btn btn-primary">Registrar</button>
-                          </div>
-                        </form>
-                      </div>
                     </div>
                   </div>
-              </div>
-
-              <div class="row justify-content-center">
-
-                {{-- ID --}}
-                <div class="col-md-4 my-3" style="display: none;">
-                  <label for="cliente_id" class="form-label">ID Cliente</label>
-                  <div class="form-group">
-                    <input type="text" readonly class="form-control" id="cliente_id" name="cliente_id" value="{{old('cliente_id')}}">
+      
+                  {{-- Correo --}}
+                  <div class="col-md-4 my-3">
+                    <label for="correoCliente" class="form-label">Correo Cliente</label>
+                    <div class="form-group">
+                      <input type="text" readonly class="form-control @error('correoCliente') is-invalid @enderror" id="correoCliente" name="correoCliente" value="{{old('correoCliente')}}">
+                      @error('correoCliente')
+                        <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                    </div>
                   </div>
-                </div>
 
-                {{-- Nombre --}}
-                <div class="col-md-4 my-3">
-                  <label for="nombreCliente" class="form-label">Nombre Cliente</label>
-                  <div class="form-group">
-                    <input type="text" readonly class="form-control @error('nombreCliente') is-invalid @enderror" id="nombreCliente" name="nombreCliente" value="{{old('nombreCliente')}}">
-                    @error('nombreCliente')
-                      <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                      </span>
-                    @enderror
-                  </div>
                 </div>
-    
-                {{-- Correo --}}
-                <div class="col-md-4 my-3">
-                  <label for="correoCliente" class="form-label">Correo Cliente</label>
-                  <div class="form-group">
-                    <input type="text" readonly class="form-control @error('correoCliente') is-invalid @enderror" id="correoCliente" name="correoCliente" value="{{old('correoCliente')}}">
-                    @error('correoCliente')
-                      <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                      </span>
-                    @enderror
-                  </div>
-                </div>
+              @endif
 
-              </div>
+              @if ($usuario === "cliente")
+                <div class="row justify-content-center">
+
+                  {{-- Nombre --}}
+                  <div class="col-md-4 my-3" style="display: none;">
+                    <label for="cliente_id" class="form-label">ID Cliente</label>
+                    <div class="form-group">
+                      <input type="search" name="cliente" id="cliente" class="form-control @error('cliente') is-invalid @enderror" value="{{$cliente->nombre}}" placeholder="cliente@cliente.com" aria-label="Search">
+                    </div>
+                  </div>
+
+                  {{-- ID --}}
+                  <div class="col-md-4 my-3" style="display: none;">
+                    <label for="cliente_id" class="form-label">ID Cliente</label>
+                    <div class="form-group">
+                      <input type="text" readonly class="form-control" id="cliente_id" name="cliente_id" value="{{$cliente->cliente_id}}">
+                    </div>
+                  </div>
+
+                  {{-- Nombre --}}
+                  <div class="col-md-4 my-3" style="display: none;">
+                    <label for="nombreCliente" class="form-label">Nombre Cliente</label>
+                    <div class="form-group">
+                      <input type="text" readonly class="form-control @error('nombreCliente') is-invalid @enderror" id="nombreCliente" name="nombreCliente" value="{{$cliente->nombre}}">
+                    </div>
+                  </div>
+      
+                  {{-- Correo --}}
+                  <div class="col-md-4 my-3" style="display: none;">
+                    <label for="correoCliente" class="form-label">Correo Cliente</label>
+                    <div class="form-group">
+                      <input type="text" readonly class="form-control @error('correoCliente') is-invalid @enderror" id="correoCliente" name="correoCliente" value="{{$cliente->email}}">
+                    </div>
+                  </div>
+
+                </div>
+              @endif
 
               {{-- Nombre de la Cotización --}}
               <div class="form-group row">
@@ -147,11 +187,11 @@
 
 
               {{-- Vigencia --}}
-              <div class="form-group row">
+              <div @if($usuario === "cliente") class="d-none" @else class="form-group row" @endif>
                 <label for="vigencia" class="col-md-4 col-form-label text-md-right">{{ __('Vigencia (Días)') }}</label>
 
                 <div class="col-md-6">
-                  <input id="vigencia" type="number" class="form-control @error('vigencia') is-invalid @enderror" name="vigencia" value="{{ old('vigencia') }}" autocomplete="vigencia" autofocus>
+                  <input id="vigencia" type="number" class="form-control @error('vigencia') is-invalid @enderror" name="vigencia" @if($usuario === "cliente") value="7" @else value="{{ old('vigencia') }}" @endif autocomplete="vigencia" autofocus>
 
                   @error('vigencia')
                   <span class="invalid-feedback" role="alert">
@@ -161,32 +201,47 @@
                 </div>
               </div>
 
+              @if ($usuario === "interno")
+                {{-- Estatus de Cotización --}}
+                <div class="form-group row">
+                  <label for="estatus_cotizacion_id" class="col-md-4 col-form-label text-md-right">{{ __('Estatus de la cotización') }}</label>
 
-              {{-- Estatus de Cotización --}}
-              <div class="form-group row">
-                <label for="estatus_cotizacion_id" class="col-md-4 col-form-label text-md-right">{{ __('Estatus de la cotización') }}</label>
-
-                <div class="col-md-6">
-                  <select name="estatus_cotizacion_id" id="estatus_cotizacion_id" class="form-control estatus_cotizacion_id @error('estatus_cotizacion_id') is-invalid @enderror" autofocus>
-                    
-                    <option selected disabled value="">Selecciona el status</option>
-                    @foreach($estatus as $estatu)
-                      @if (old('estatus_cotizacion_id') == $estatu->estatus_cotizacion_id)
-                        {{-- {{dd("Algo")}} --}}
-                        <option selected value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
-                        @continue
-                      @endif
-                    <option value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
-                    @endforeach
-                    
-                  </select>
-                  @error('estatus_cotizacion_id')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                  @enderror
+                  <div class="col-md-6">
+                    <select name="estatus_cotizacion_id" id="estatus_cotizacion_id" class="form-control estatus_cotizacion_id @error('estatus_cotizacion_id') is-invalid @enderror" autofocus>
+                      
+                      <option selected disabled value="">Selecciona el status</option>
+                      @foreach($estatus as $estatu)
+                        @if (old('estatus_cotizacion_id') == $estatu->estatus_cotizacion_id)
+                          {{-- {{dd("Algo")}} --}}
+                          <option selected value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
+                          @continue
+                        @endif
+                      <option value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
+                      @endforeach
+                      
+                    </select>
+                    @error('estatus_cotizacion_id')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                  </div>
                 </div>
-              </div>
+              @endif
+
+              @if ($usuario === "cliente")
+                {{-- Estatus de Cotización --}}
+                <div class="form-group row d-none">
+                  <label for="estatus_cotizacion_id" class="col-md-4 col-form-label text-md-right">{{ __('Estatus de la cotización') }}</label>
+
+                  <div class="col-md-6">
+                    <select name="estatus_cotizacion_id" id="estatus_cotizacion_id" class="form-control estatus_cotizacion_id @error('estatus_cotizacion_id') is-invalid @enderror" autofocus>
+                      <option selected value="1">Enviado</option>
+                    </select>
+                  </div>
+                </div>
+              @endif
+              
 
               {{-- Producto y/o Servicio --}}
               <div class="form-group row">
@@ -207,36 +262,38 @@
                 </div>
               </div>
 
-              <div class="d-flex justify-content-center py-3">
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalServicio">
-                  Registrar Servicio
-                </button>
-              </div>
+              @if ($usuario === "interno")
+                <div class="d-flex justify-content-center py-3">
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalServicio">
+                    Registrar Servicio
+                  </button>
+                </div>
 
-              <!-- Modal de Producto y/o Servicio -->
-              <div class="modal fade" id="modalServicio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">Registrar Producto y/o Servicio</h5>
-                      <button id="closeModalServicio" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
+                <!-- Modal de Producto y/o Servicio -->
+                <div class="modal fade" id="modalServicio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Registrar Producto y/o Servicio</h5>
+                        <button id="closeModalServicio" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <form method="POST" id="añadirServicio" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+                          @include('layouts.partials.tenant._registroServicio')
+                        </div>
+                        <div class="modal-footer">
+                          <button id="cancelModalServicio" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                          <button type="submit" id="btnAñadirServicio" class="btn btn-primary">Registrar</button>
+                        </div>
+                      </form>
                     </div>
-                    <form method="POST" id="añadirServicio" enctype="multipart/form-data">
-                      @csrf
-                      <div class="modal-body">
-                        @include('layouts.partials.tenant._registroServicio')
-                      </div>
-                      <div class="modal-footer">
-                        <button id="cancelModalServicio" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" id="btnAñadirServicio" class="btn btn-primary">Registrar</button>
-                      </div>
-                    </form>
                   </div>
                 </div>
-              </div>
+              @endif
 
               <div class="row justify-content-center">
                 
@@ -291,18 +348,18 @@
                 <div class="col-md-4">
                   <label for="precio" class="form-label">{{ __('Precio') }}</label>
                   <div class="form-group">
-                      <input type="text" class="form-control  @error('precio') is-invalid @enderror" id="precio" name="precio" value="{{old('precio')}}">
+                      <input type="text" class="form-control  @error('precio') is-invalid @enderror" id="precio" name="precio" value="{{old('precio')}}" @if($usuario === "cliente") readonly @endif>
                       @error('precio')
                       <small class="text-danger">{{$message}}</small>
                       @enderror
                   </div>
                 </div>
-    
+
                 {{-- Descuento --}}
-                <div class="col-md-2">
+                <div @if($usuario === "cliente") class="d-none" @else class="col-md-2" @endif>
                   <label for="descuento" class="form-label">{{ __('Descuento (porcentaje)') }}</label>
                   <div class="form-group">
-                      <input type="number" value="0" class="form-control @error('descuento') is-invalid @enderror" id="descuento" name="descuento" value="{{old('descuento')}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
+                      <input type="number" value="0" class="form-control @error('descuento') is-invalid @enderror" id="descuento" name="descuento" value="{{old('descuento')}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)" @if($usuario === "cliente") readonly @endif/>
                       @error('descuento')
                       <small class="text-danger">{{$message}}</small>
                       @enderror
@@ -347,7 +404,7 @@
                       <th>Opciones</th>
                     </thead>
                     <tfoot>
-                      <tr>
+                      <tr @if($usuario === "cliente") class="d-none" @endif>
                         <td colspan="8">
                           <div class="form-group d-flex mb-0">
                             <label for="descuento_general" class="form-label">{{ __('Descuento general (porcentaje)') }}</label>
@@ -359,6 +416,7 @@
                           </div>
                         </td>
                       </tr>
+                      
                       <tr>
                         <td colspan="5">Total</td>
                         <td>
