@@ -40,9 +40,9 @@ class LoginCustomerController extends Controller
     ]);
 
     if (Auth::guard('cliente')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-
       return redirect()->intended('/cliente');
     }
-    return back()->withInput($request->only('email', 'remember'));
+
+    return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => 'Estas credenciales no coinciden con nuestros registros.']);
   }
 }
