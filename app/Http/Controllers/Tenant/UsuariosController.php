@@ -24,7 +24,6 @@ class UsuariosController extends Controller
    */
   public function __construct()
   {
-    $this->middleware('auth');
     $this->middleware('adminEmpresa');
     $hostname = app(\Hyn\Tenancy\Environment::class)->hostname();
     if ($hostname) {

@@ -13,6 +13,17 @@ use Illuminate\Support\Facades\Auth;
 
 class ServiciosController extends Controller
 {
+  
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    $this->middleware('adminEmpresa');
+  }
+
   /**
    * Función index()
    * Retorna la vista 'index' de servicios donde se enlistan

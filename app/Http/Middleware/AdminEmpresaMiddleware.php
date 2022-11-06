@@ -61,7 +61,7 @@ class AdminEmpresaMiddleware
       if ((auth()->check()) && (auth()->user()->rol_id === 1) && (auth()->user()->rol->nombre_rol === 'Administrador Empresa')) {
         return $next($request);
       }
-      return redirect('/home');
+      return redirect('/login/admin');
     }
   }
 }

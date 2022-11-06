@@ -9,6 +9,17 @@ use Illuminate\Validation\Rule;
 
 class UnidadesDeMedidaController extends Controller
 {
+  
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    $this->middleware('adminEmpresa');
+  }
+
   /**
    * Función index()
    * Muestra las unidades de medida que se han registrado
