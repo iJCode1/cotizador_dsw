@@ -146,7 +146,7 @@ class CotizacionesController extends Controller
       'descripcionServicio' => 'required|min:1|max:255',
       'codigoServicio' => 'required|min:1|max:45',
       'precioServicio' => 'required',
-      // 'imagen' => 'image|mimes:gif,jpeg,png,svg',
+      'imagenServicio' => 'image|mimes:gif,jpeg,png,svg',
       'tipoServicio' => 'required',
       'unidadServicio' => 'required',
     ];
@@ -162,16 +162,14 @@ class CotizacionesController extends Controller
       'codigoServicio.min' => 'El codigo debe contener al menos un carácter.',
       'codigoServicio.max' => 'El codigo no debe contener más de 45 caracteres.',
       'precioServicio.required' => 'El precio es obligatorio.',
-      // 'imagen.required' => 'La imagen es obligatorio.',
+      'imagenServicio.image' => 'El archivo seleccionado no es una imagen.',
+      'imagenServicio.mimes' => 'El formato de la imagen no es válido.',
+      'imagenServicio.mimetypes' => 'El formato de la imagen no es válido.',
       'tipoServicio.required' => 'Se debe seleccionar un tipo.',
       'unidadServicio.required' => 'Se debe seleccionar una unidad.',
     ];
 
     $validator = Validator::make($request->all(), $rules, $customMessages);
-
-    // echo($request->get('nombreServicio'));
-    // echo($request->get('imagenServicio'));
-    // echo( $_FILES['imagen']['tmp_name'] );
 
     if ($validator->fails()) {
     
@@ -180,26 +178,21 @@ class CotizacionesController extends Controller
         'errors' => $validator->errors()
       ]);
     }else{
-      // Se prepara la imágen para ser almacenada dentro de la carpeta 'images > productos_servicios/'
-      // if($request->file->get('imagenServicio')){
-      //   $file = $request->file->get('imagenServicio'); // Se obtiene la imagen
-      //   if($file!= ""){ // Si la imagen es diferente de vacio
-      //     $imgDestination = 'images/productos_servicios/';
-      //     $img = $file->getClientOriginalName(); // Se obtiene el nombre de la imagen
-      //     $img2 = time(). '-' . $img; // Se concatena el nombre de la imagen
-      //     $request->file('imagenServicio')->move($imgDestination, $img2);
-      //   }else{
-      //     $img2 = 'sinImagen.svg';
-      //   }
-      // }else{
-      //   $img2 = 'sinImagen.svg';
-      // }
+      if( $_FILES["imagenServicio"]['name'] !== "" ){
+        $nombre_imagen = $_FILES["imagenServicio"]['name'];
+        $temporal = $_FILES["imagenServicio"]['tmp_name'];
+        $img_destination = 'images/productos_servicios/';
+        $img2 = time(). '-' . $nombre_imagen; // Se concatena el nombre de la imagen
+        move_uploaded_file($temporal, $img_destination.$img2);
+      }else{
+        $img2 = 'sinImagen.svg';
+      }
 
       $producto_servicio = [
         'nombre' => $request->get('nombreServicio'),
         'descripcion' => $request->get('descripcionServicio'),
         'codigo' => $request->get('codigoServicio'),
-        'imagen' => "sinImagen.svg",
+        'imagen' => $img2,
         'precio_bruto' => $request->get('precioServicio'),
         'tipo_id' => $request->get('tipoServicio'),
         'unidad_medida_id' => $request->get('unidadServicio'),

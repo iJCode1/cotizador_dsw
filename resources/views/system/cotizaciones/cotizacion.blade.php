@@ -61,7 +61,7 @@
                   </div>
                   <div class="modal-footer">
                     <button id="closeModalServicio" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
+                    <button type="submit" id="btnAñadirServicio" class="btn btn-primary">Registrar</button>
                   </div>
                 </form>
               </div>
@@ -417,6 +417,13 @@ function validarNumero(value) {
   }
 }
 
+function validarPrecio(value) {
+  let valor = $(value).val();
+  if (isNaN(valor) || valor <= 0){
+    $(value).val("");
+  }
+}
+
 function validarDescuento(value) {
   let valor = $(value).val();
   if (!isNaN(valor) && valor >= 0 && valor<=100){
@@ -570,28 +577,16 @@ $(document).ready(function () {
       },
       dataType: 'json',
       success: function(response) {
-        $(`span#nombre-error`).css('display','none');
-        $(`span#apep-error`).css('display','none');
-        $(`span#apm-error`).css('display','none');
-        $(`span#direccion-error`).css('display','none');
-        $(`span#telefono-error`).css('display','none');
-        $(`span#correo-error`).css('display','none');
-        $(`span#contraseña-error`).css('display','none');
-        $(`span#confirmar_contraseña-error`).css('display','none');
+
+        limpiarMensajesErrorCliente();
+
         if (response.errors) {
           for (const prop in response.errors) {
             $(`#${prop} + span#${prop}-error`).css('display','block');
             $(`#${prop} + span#${prop}-error > strong`).text(response.errors[prop][0])
           }
         }else{
-          $("#nombre").val("");
-          $("#apep").val("");
-          $("#apm").val("");
-          $("#direccion").val("");
-          $("#telefono").val("");
-          $("#correo").val("");
-          $("#contraseña").val("");
-          $("#confirmar_contraseña").val("");
+          limpiarCajasCliente()
 
           $("#modal .close").click()
         }
@@ -600,6 +595,11 @@ $(document).ready(function () {
   });
 
   $('#closeModalCliente').click(function() {
+    limpiarMensajesErrorCliente();
+    limpiarCajasCliente();
+  });
+
+  function limpiarMensajesErrorCliente(){
     $(`span#nombre-error`).css('display','none');
     $(`span#apep-error`).css('display','none');
     $(`span#apm-error`).css('display','none');
@@ -608,7 +608,9 @@ $(document).ready(function () {
     $(`span#correo-error`).css('display','none');
     $(`span#contraseña-error`).css('display','none');
     $(`span#confirmar_contraseña-error`).css('display','none');
+  }
 
+  function limpiarCajasCliente(){
     $("#nombre").val("");
     $("#apep").val("");
     $("#apm").val("");
@@ -617,17 +619,24 @@ $(document).ready(function () {
     $("#correo").val("");
     $("#contraseña").val("");
     $("#confirmar_contraseña").val("");
-  })
+  }
 
   $('#closeModalServicio').click(function(){
+    limpiarMensajesErrorServicio();
+    limpiarCajasServicio();
+  })
 
+  function limpiarMensajesErrorServicio(){
     $(`span#nombreServicio-error`).css('display','none');
     $(`span#descripcionServicio-error`).css('display','none');
     $(`span#codigoServicio-error`).css('display','none');
+    $(`span#imagenServicio-error`).css('display','none');
     $(`span#precioServicio-error`).css('display','none');
     $(`span#tipoServicio-error`).css('display','none');
     $(`span#unidadServicio-error`).css('display','none');
+  }
 
+  function limpiarCajasServicio(){
     $("#nombreServicio").val("");
     $("#descripcionServicio").val("");
     $("#codigoServicio").val("");
@@ -635,58 +644,38 @@ $(document).ready(function () {
     $("#precioServicio").val("");
     $("#tipoServicio").val("");
     $("#unidadServicio").val("");
-  })
+  }
 
   // añadirServicio
   $("#añadirServicio").submit(function(e){
     e.preventDefault(); 
 
+    let parametros = new FormData($("#añadirServicio")[0]);
+
     let nombreServicio = $("#nombreServicio").val();
     let descripcionServicio = $("#descripcionServicio").val();
     let codigoServicio = $("#codigoServicio").val();
-    // let imagenServicio = $("#imagenServicio")[0].files[0];
     let precioServicio = $("#precioServicio").val();
     let tipoServicio = $("#tipoServicio").val();
     let unidadServicio = $("#unidadServicio").val();
     let _token = $("input[name=_token]").val();
-
+    
     $.ajax({
       url: "{{route('tenant.registrarServicio')}}",
       type: 'POST',
-      data: {
-        nombreServicio, 
-        descripcionServicio, 
-        codigoServicio, 
-        precioServicio,
-        tipoServicio,
-        unidadServicio,
-        _token
-      },
-      dataType: 'json',
+      data: parametros,
+      contentType: false,
+      processData: false,
       success: function(response) {
-        $(`span#nombreServicio-error`).css('display','none');
-        $(`span#descripcionServicio-error`).css('display','none');
-        $(`span#codigoServicio-error`).css('display','none');
-        $(`span#imagenServicio-error`).css('display','none');
-        $(`span#precioServicio-error`).css('display','none');
-        $(`span#tipoServicio-error`).css('display','none');
-        $(`span#unidadServicio-error`).css('display','none');
+        limpiarMensajesErrorServicio()
 
         if (response.errors) {
           for (const prop in response.errors) {
             $(`#${prop} + span#${prop}-error`).css('display','block');
-            // console.log($(`#${prop} + span#${prop}-error`));
             $(`#${prop} + span#${prop}-error > strong`).text(response.errors[prop][0])
-            // console.log($(`#${prop} + span#${prop}-error > strong`));
           }
         }else{
-          $("#nombreServicio").val("");
-          $("#descripcionServicio").val("");
-          $("#codigoServicio").val("");
-          $("#imagenServicio").val("");
-          $("#precioServicio").val("");
-          $("#tipoServicio").val("");
-          $("#unidadServicio").val("");
+          limpiarCajasServicio()
 
           $("#modalServicio .close").click()
         }
