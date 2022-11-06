@@ -159,7 +159,7 @@
                 <label for="descripcion" class="col-md-4 col-form-label text-md-right">{{ __('Descripcion') }}</label>
 
                 <div class="col-md-6">
-                  <input id="descripcion" type="text" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" value="{{ old('descripcion') }}" autocomplete="text" autofocus>
+                  <textarea class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" rows="3" autofocus>{{ old('descripcion') }}</textarea>
 
                   @error('descripcion')
                   <span class="invalid-feedback" role="alert">
@@ -323,7 +323,7 @@
                 <div class="col-md-5">
                   <label for="descripcion_cotizacion" class="form-label">{{ __('Descripción') }}</label>
                   <div class="form-group">
-                      <input type="text" readonly class="form-control" id="descripcion_cotizacion" name="descripcion_cotizacion" value="{{old('descripcion_cotizacion')}}">
+                      <textarea readonly class="form-control" id="descripcion_cotizacion" name="descripcion_cotizacion" rows="2" autofocus>{{old('descripcion_cotizacion')}}</textarea>
                       @error('descripcion_cotizacion')
                       <small class="text-danger">{{$message}}</small>
                       @enderror
