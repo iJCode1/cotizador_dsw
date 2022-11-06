@@ -64,28 +64,29 @@ class RegisterCustomerController extends Controller
       'app' => 'required|max:45',
       'apm' => 'required|max:45',
       'direccion' => 'required|max:255',
-      'telefono' => 'required|digits_between:10,10',
-      'correo' => 'required|email|max:100|unique:tenant.clientes,email',
+      'telefono' => 'required|numeric|digits_between:10,10',
+      'correo' => 'required|email|max:100|unique:tenant.clientes,email|unique:tenant.users,email',
       'contraseña' => 'required|min:8',
     ];
 
     $customMessages = [
-      'nombre.required' => 'El nombre del cliente es obligatorio.',
+      'nombre.required' => 'El nombre es obligatorio.',
       'nombre.max' => 'El nombre no debe contener más de 45 caracteres.',
       'app.required' => 'El apellido paterno es obligatorio.',
       'app.max' => 'El apellido paterno no debe contener más de 45 caracteres.',
       'apm.required' => 'El apellido materno es obligatorio.',
       'apm.max' => 'El apellido materno no debe contener más de 45 caracteres.',
-      'direccion.required' => 'La dirección del cliente es obligatorio.',
+      'direccion.required' => 'La dirección es obligatoria.',
       'direccion.max' => 'La dirección no debe contener más de 255 caracteres.',
-      'telefono.required' => 'El telefono del cliente es obligatorio.',
-      'telefono.digits_between' => 'El telefono debe ser de 10 digitos.',
-      'correo.required' => 'El correo del cliente es obligatoro.',
+      'telefono.required' => 'El teléfono es obligatorio.',
+      'telefono.numeric' => 'El teléfono solo acepta valores numéricos.',
+      'telefono.digits_between' => 'El teléfono debe ser de 10 dígitos.',
+      'correo.required' => 'El correo es obligatorio.',
       'correo.email' => 'El formato del correo es incorrecto.',
       'correo.max' => 'El correo no debe contener más de 100 caracteres.',
       'correo.unique' => 'El correo ingresado ya está registrado.',
-      'contraseña.required' => 'La contraseña del cliente es obligatorio.',
-      'contraseña.min' => 'La contraseña no puede ser menor a 8 digitos.',
+      'contraseña.required' => 'La contraseña es obligatoria.',
+      'contraseña.min' => 'La contraseña no puede ser menor a 8 dígitos.',
     ];
 
     $validator = Validator::make($request->all(), $rules, $customMessages);
