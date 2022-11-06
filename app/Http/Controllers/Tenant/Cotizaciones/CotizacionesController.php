@@ -30,10 +30,21 @@ class CotizacionesController extends Controller
   {
     $this->middleware('cotizaciones');
   }
+
   public function index()
   {
-    // dd("Hola");
-    $cotizaciones = Cotizacion::all();
+    $cotizaciones = "";
+
+    if (Auth::guard('cliente')->check()) {
+      $cliente_id = Auth::guard('cliente')->user()->cliente_id;
+      $cotizaciones = Cotizacion::where("cliente_id", "=", $cliente_id)->paginate(10);
+    }
+
+    if (Auth::check()) {
+      $user_id = Auth::user()->user_id;
+      $cotizaciones = Cotizacion::where("usuario_id", "=", $user_id)->paginate(10);
+    }
+
     return view('system.cotizaciones.index', [
       'cotizaciones' => $cotizaciones,
     ]);
@@ -110,13 +121,13 @@ class CotizacionesController extends Controller
     ];
 
     $validator = Validator::make($request->all(), $rules, $customMessages);
-    
+
     if ($validator->fails()) {
       return response()->json([
         'type' => 'validate',
         'errors' => $validator->errors()
       ]);
-    }else{
+    } else {
       $contraseñaEncriptada = Hash::make($request->get('contraseña'));
       $cliente = [
         'nombre' => $request->get('nombre'),
@@ -128,7 +139,7 @@ class CotizacionesController extends Controller
         'password' => $contraseñaEncriptada,
         'rol_id' => 3,
       ];
-  
+
       Cliente::create($cliente);
       return response()->json([
         'type' => 'validate',
@@ -170,19 +181,19 @@ class CotizacionesController extends Controller
     $validator = Validator::make($request->all(), $rules, $customMessages);
 
     if ($validator->fails()) {
-    
+
       return response()->json([
         'type' => 'validate',
         'errors' => $validator->errors()
       ]);
-    }else{
-      if( $_FILES["imagenServicio"]['name'] !== "" ){
+    } else {
+      if ($_FILES["imagenServicio"]['name'] !== "") {
         $nombre_imagen = $_FILES["imagenServicio"]['name'];
         $temporal = $_FILES["imagenServicio"]['tmp_name'];
         $img_destination = 'images/productos_servicios/';
-        $img2 = time(). '-' . $nombre_imagen; // Se concatena el nombre de la imagen
-        move_uploaded_file($temporal, $img_destination.$img2);
-      }else{
+        $img2 = time() . '-' . $nombre_imagen; // Se concatena el nombre de la imagen
+        move_uploaded_file($temporal, $img_destination . $img2);
+      } else {
         $img2 = 'sinImagen.svg';
       }
 
@@ -195,7 +206,7 @@ class CotizacionesController extends Controller
         'tipo_id' => $request->get('tipoServicio'),
         'unidad_medida_id' => $request->get('unidadServicio'),
       ];
-  
+
       Producto_Servicio::create($producto_servicio);
 
       return response()->json([
@@ -241,28 +252,28 @@ class CotizacionesController extends Controller
       'servicio_uuid.required' => 'No se ha seleccionado nada para cotizar.',
       // 'servicio_id' => 'required',
     ];
-    
+
 
     $validatedData = $request->validate($rules, $customMessages);
     // dd($validatedData);
 
     // $request->validate([
-      
+
     //   // 'servicio' => 'required',
     //   // 'nombre_serv' => 'required',
     //   // 'descripcion' => 'required',
     //   // 'tipo' => 'required',
     //   // 'precio' => 'required',
     //   // 'cantidad' => 'required',
-      // 'servicio_id' => 'required',
-      // 'servicio_uuid' => 'required',
-      // 'nombre' => 'required',
-      // 'precio_inicial' => 'required',
-      // 'descuento_aplicado' => 'required',
-      // 'numero_servicios' => 'required',
-      // 'precio_bruto' => 'required',
-      // 'precio_iva' => 'required',
-      // 'subtotal' => 'required',
+    // 'servicio_id' => 'required',
+    // 'servicio_uuid' => 'required',
+    // 'nombre' => 'required',
+    // 'precio_inicial' => 'required',
+    // 'descuento_aplicado' => 'required',
+    // 'numero_servicios' => 'required',
+    // 'precio_bruto' => 'required',
+    // 'precio_iva' => 'required',
+    // 'subtotal' => 'required',
     // ]);
 
     // $uuid = $request['servicio_uuid'];
@@ -296,7 +307,7 @@ class CotizacionesController extends Controller
     // Cotizacion::create($cot);
 
     // // return redirect()->route('tenant.cotizaciones');
-    
+
     return DB::transaction(function () use ($request) {
 
       // $cotizacion = [
@@ -308,7 +319,7 @@ class CotizacionesController extends Controller
       //   'estatus_cotizacion_id' => $request['estatus_cotizacion_id'],
       //   'cliente_id' => $request['cliente_id'],
       // ];
-  
+
       // dd($cotizacion);
       // Cotizacion::create($cotizacion);
 

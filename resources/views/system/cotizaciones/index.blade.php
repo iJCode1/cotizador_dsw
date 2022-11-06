@@ -57,6 +57,7 @@
         @endforeach
       </tbody>
     </table>
+    {{$cotizaciones->links()}}
   @endif
   <a href="{{route('tenant.cotizacion')}}" class="btn btn-block btn-primary my-4">Crear Nueva Cotización</a>
 </div>
