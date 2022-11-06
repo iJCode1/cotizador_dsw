@@ -7,8 +7,8 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">{{ __('Crear Cotización') }}</div>
-          <div class="card-body">
-            <form method="POST" action="{{ route('tenant.cotizacion') }}">
+          <form method="POST" action="{{ route('tenant.cotizacion') }}">
+            <div class="card-body">
               @csrf
               @method('post')
 
@@ -386,9 +386,8 @@
               <div class="col-md-12" id="cotizar">
                 <button type="submit" class="btn btn-primary">Cotizar</button>
               </div>
-
-            </form>
-        </div>
+            </div>
+          </form>
       </div>
     </div>
   </div>
