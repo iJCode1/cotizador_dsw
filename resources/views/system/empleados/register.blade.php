@@ -139,20 +139,6 @@
                             </div>
                         </div>
 
-                        {{-- Confirmar Password --}}
-                        <div class="form-group row">
-                            <label for="confirmar_contraseña" class="col-md-4 col-form-label text-md-right">{{ __('Confirmar Contraseña') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="confirmar_contraseña" type="password" class="form-control @error('confirmar_contraseña') is-invalid @enderror" name="confirmar_contraseña" autocomplete="new-password" placeholder="********">
-                                @error('confirmar_contraseña')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
                         {{-- Boton de registrar --}}
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

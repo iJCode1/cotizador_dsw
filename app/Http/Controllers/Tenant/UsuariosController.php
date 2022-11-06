@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\Rol;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\Tenant\User as User;
 use App\Models\Tenant\Usuario;
@@ -65,33 +66,64 @@ class UsuariosController extends Controller
    */
   public function registerUser(Request $request)
   {
-    $request->validate([
+    $rules = [
       'nombre' => 'required|max:45',
       'app' => 'required|max:45',
       'apm' => 'required|max:45',
       'direccion' => 'required|max:255',
-      'telefono' => 'required|min:10|max:10',
+      'telefono' => 'required|numeric|digits_between:10,10',
       'rol' => 'required',
-      'correo' => 'required|email|unique:tenant.usuarios,correo_electronico',
-      'contraseña' => 'required|digits_between:8,45',
-      'confirmar_contraseña' => 'required|digits_between:8,45',
-    ]);
-
-    $usuario = [
-      'nombre' => $request->nombre,
-      'apellido_p' => $request->app,
-      'apellido_m' => $request->apm,
-      'direccion' => $request->direccion,
-      'telefono' => $request->telefono,
-      'email' => $request->correo,
-      'password' => $request->contraseña,
-      'rol_id' => $request->rol,
+      'correo' => 'required|email|max:100|unique:tenant.users,email|unique:tenant.clientes,email',
+      'contraseña' => 'required|min:8|max:50',
     ];
 
-    \App\Models\Tenant\User::create($usuario);
+    $customMessages = [
+      'nombre.required' => 'El nombre es obligatorio.',
+      'nombre.max' => 'El nombre no debe contener más de 45 caracteres.',
+      'app.required' => 'El apellido paterno es obligatorio.',
+      'app.max' => 'El apellido paterno no debe contener más de 45 caracteres.',
+      'apm.required' => 'El apellido materno es obligatorio.',
+      'apm.max' => 'El apellido materno no debe contener más de 45 caracteres.',
+      'direccion.required' => 'La dirección es obligatoria.',
+      'direccion.max' => 'La dirección no debe contener más de 255 caracteres.',
+      'telefono.required' => 'El teléfono es obligatorio.',
+      'telefono.numeric' => 'El teléfono solo acepta valores numéricos.',
+      'telefono.digits_between' => 'El teléfono debe ser de 10 dígitos.',
+      'rol.required' => 'Se debe seleccionar un tipo de usuario (rol).',
+      'correo.required' => 'El correo es obligatorio.',
+      'correo.email' => 'El formato del correo es incorrecto.',
+      'correo.max' => 'El correo no debe contener más de 100 caracteres.',
+      'correo.unique' => 'El correo ingresado ya está registrado.',
+      'contraseña.required' => 'La contraseña es obligatoria.',
+      'contraseña.min' => 'La contraseña debe contener al menos 8 caracteres.',
+      'contraseña.max' => 'La contraseña no debe contener más de 50 caracteres.',
+    ];
 
-    return redirect()->route('tenant.showEmpleados')
-      ->with('crear', 'ok');
+    $validator = Validator::make($request->all(), $rules, $customMessages);
+
+    if ($validator->fails()) {
+      return redirect('/empleado')
+        ->withErrors($validator)
+        ->withInput();
+    } else {
+      $contraseñaEncriptada = Hash::make($request->contraseña);
+
+      $usuario = [
+        'nombre' => $request->nombre,
+        'apellido_p' => $request->app,
+        'apellido_m' => $request->apm,
+        'direccion' => $request->direccion,
+        'telefono' => $request->telefono,
+        'email' => $request->correo,
+        'password' => $contraseñaEncriptada,
+        'rol_id' => $request->rol,
+      ];
+
+      User::create($usuario);
+
+      return redirect()->route('tenant.showEmpleados')
+        ->with('crear', 'ok');
+    }
   }
 
   /**
