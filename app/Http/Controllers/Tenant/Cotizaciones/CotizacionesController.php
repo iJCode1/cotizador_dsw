@@ -281,7 +281,59 @@ class CotizacionesController extends Controller
     ];
 
 
-    $validatedData = $request->validate($rules, $customMessages);
+    // $validatedData = $request->validate($rules, $customMessages);
+    $validator = Validator::make($request->all(), $rules, $customMessages);
+
+    if ($validator->fails()) {
+      return redirect("/cotizacion")
+        ->withErrors($validator)
+        ->withInput();
+    } else {
+      return DB::transaction(function () use ($request) {
+
+        // $cotizacion = [
+        //   'nombre_cotizacion' => $request['nombre_cotizacion'],
+        //   'descripcion' => $request['descripcion'],
+        //   'fecha_creacion' => $request['fecha_creacion'],
+        //   'vigencia' => $request['vigencia'],
+        //   'usuario_id' =>  Auth::user()->user_id,
+        //   'estatus_cotizacion_id' => $request['estatus_cotizacion_id'],
+        //   'cliente_id' => $request['cliente_id'],
+        // ];
+  
+        // dd($cotizacion);
+        // Cotizacion::create($cotizacion);
+  
+        if (Auth::guard('cliente')->check()) {
+          $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => 1]);
+        }
+    
+        if (Auth::check()) {
+          $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id]);
+        }
+  
+        // dd($cotizacion);
+  
+        foreach ($request->servicio_id as $index => $servicio_id) {
+          $cotizacion->cotizaciones()->create([
+            'cantidad' => $request->numero_servicios[$index],
+            'precio_inicial' => $request->precio_inicial[$index],
+            'precio_bruto' => $request->precio_bruto[$index],
+            'iva' => $request->precio_iva[$index],
+            'subtotal' => $request->subtotal[$index],
+            'descuento_general' => $request->descuento_general,
+            'descuento' => $request->descuento_aplicado[$index],
+            'cotizacion_id' => $cotizacion->cotizacion_id,
+            'producto_servicio_id' => $servicio_id,
+          ]);
+        }
+        //   ->route('cotizaciones.index')->withSuccess("La cotizacion $cotizacion->nombre_proyecto se creo exitosamente");
+        return redirect()
+          ->route('tenant.cotizaciones')
+          ->with('crear', 'ok');
+      });
+    }
+
     // dd($validatedData);
 
     // $request->validate([
@@ -334,50 +386,6 @@ class CotizacionesController extends Controller
     // Cotizacion::create($cot);
 
     // // return redirect()->route('tenant.cotizaciones');
-
-    return DB::transaction(function () use ($request) {
-
-      // $cotizacion = [
-      //   'nombre_cotizacion' => $request['nombre_cotizacion'],
-      //   'descripcion' => $request['descripcion'],
-      //   'fecha_creacion' => $request['fecha_creacion'],
-      //   'vigencia' => $request['vigencia'],
-      //   'usuario_id' =>  Auth::user()->user_id,
-      //   'estatus_cotizacion_id' => $request['estatus_cotizacion_id'],
-      //   'cliente_id' => $request['cliente_id'],
-      // ];
-
-      // dd($cotizacion);
-      // Cotizacion::create($cotizacion);
-
-      if (Auth::guard('cliente')->check()) {
-        $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => 1]);
-      }
-  
-      if (Auth::check()) {
-        $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id]);
-      }
-
-      // dd($cotizacion);
-
-      foreach ($request->servicio_id as $index => $servicio_id) {
-        $cotizacion->cotizaciones()->create([
-          'cantidad' => $request->numero_servicios[$index],
-          'precio_inicial' => $request->precio_inicial[$index],
-          'precio_bruto' => $request->precio_bruto[$index],
-          'iva' => $request->precio_iva[$index],
-          'subtotal' => $request->subtotal[$index],
-          'descuento_general' => $request->descuento_general,
-          'descuento' => $request->descuento_aplicado[$index],
-          'cotizacion_id' => $cotizacion->cotizacion_id,
-          'producto_servicio_id' => $servicio_id,
-        ]);
-      }
-      //   ->route('cotizaciones.index')->withSuccess("La cotizacion $cotizacion->nombre_proyecto se creo exitosamente");
-      return redirect()
-        ->route('tenant.cotizaciones')
-        ->with('crear', 'ok');
-    });
   }
 
   public function showCotizacionEditForm($cotizacion_id)
