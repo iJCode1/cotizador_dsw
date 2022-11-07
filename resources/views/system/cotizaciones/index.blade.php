@@ -11,7 +11,7 @@
       <thead>
         <tr>
           <th scope="col">ID</th>
-          <th scope="col">Nombre Cotización</th>
+          <th scope="col">Folio Cotización</th>
           <th scope="col">Descripción</th>
           <th scope="col">Fecha Creación</th>
           <th scope="col">Vigencia</th>
@@ -25,7 +25,7 @@
         @foreach ($cotizaciones as $cotizacion)
         <tr>
           <th scope="row">{{$cotizacion->cotizacion_id}}</th>
-          <td>{{$cotizacion->nombre_cotizacion}}</td>
+          <td>{{$cotizacion->folio_cotizacion}}</td>
           <td>{{$cotizacion->descripcion}}</td>
           <td>{{$cotizacion->fecha_creacion}}</td>
           <td>{{$cotizacion->vigencia}}</td>

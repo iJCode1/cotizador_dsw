@@ -15,7 +15,7 @@ class CreateCotizacionesTable extends Migration
   {
     Schema::create('cotizaciones', function (Blueprint $table) {
       $table->increments('cotizacion_id');
-      $table->string('nombre_cotizacion', 255);
+      $table->string('folio_cotizacion', 255);
       $table->longText('descripcion');
       $table->date('fecha_creacion', 45);
       $table->string('vigencia', 45);

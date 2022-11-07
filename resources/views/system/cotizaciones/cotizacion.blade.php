@@ -139,14 +139,14 @@
                 </div>
               @endif
 
-              {{-- Nombre de la Cotización --}}
+              {{-- Folio de la Cotización --}}
               <div class="form-group row">
-                <label for="nombre_cotizacion" class="col-md-4 col-form-label text-md-right">{{ __('Nombre de la cotización') }}</label>
+                <label for="folio_cotizacion" class="col-md-4 col-form-label text-md-right">{{ __('Folio de la cotización') }}</label>
 
                 <div class="col-md-6">
-                  <input id="nombre_cotizacion" type="text" class="form-control @error('nombre_cotizacion') is-invalid @enderror" name="nombre_cotizacion" value="{{ old('nombre_cotizacion') }}" autocomplete="nombre_cotizacion" autofocus>
+                  <input id="folio_cotizacion" type="text" class="form-control @error('folio_cotizacion') is-invalid @enderror" name="folio_cotizacion" value="{{ $folio }}" autocomplete="folio_cotizacion" autofocus readonly>
 
-                  @error('nombre_cotizacion')
+                  @error('folio_cotizacion')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                   </span>

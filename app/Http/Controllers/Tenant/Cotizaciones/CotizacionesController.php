@@ -56,6 +56,17 @@ class CotizacionesController extends Controller
     $tipos = Tipo_Producto_Servicio::all();
     $unidades = Unidad_De_Medida::all();
 
+    $cotizaciones = Cotizacion::orderBy('cotizacion_id', 'DESC')->get();
+    $count = count($cotizaciones);
+
+    if($count === 0){
+      $cotSiguiente = 1;
+    }else{
+      $cotSiguiente = $cotizaciones[0]->cotizacion_id+1;
+    }
+
+    $folio = "COT-$cotSiguiente";
+
     $usuario = "interno";
     $cliente = "";
 
@@ -73,7 +84,8 @@ class CotizacionesController extends Controller
       "tipos" => $tipos,
       "unidades" => $unidades,
       "usuario" => $usuario,
-      "cliente" => $cliente
+      "cliente" => $cliente,
+      "folio" => $folio
     ]);
   }
 
@@ -247,7 +259,7 @@ class CotizacionesController extends Controller
       'cliente' => 'required',
       'nombreCliente' => 'required',
       'correoCliente' => 'required',
-      'nombre_cotizacion' => 'required',
+      'folio_cotizacion' => 'required',
       'descripcion' => 'required',
       'fecha_creacion' => 'required',
       'vigencia' => 'required',
@@ -259,7 +271,7 @@ class CotizacionesController extends Controller
       'cliente.required' => 'Se debe buscar un cliente.',
       'nombreCliente.required' => 'El nombre del cliente es obligatorio.',
       'correoCliente.required' => 'El correo del cliente es obligatorio.',
-      'nombre_cotizacion.required' => 'El folio de la cotización es obligatorio.',
+      'folio_cotizacion.required' => 'El folio de la cotización es obligatorio.',
       'descripcion.required' => 'La descripción de la cotización es obligatoria.',
       'fecha_creacion.required' => 'La fecha de creación es obligatoro.',
       'vigencia.required' => 'La vigencia de la cotización es obligatoria.',
@@ -400,7 +412,7 @@ class CotizacionesController extends Controller
   {
     // dd($request);
     $request->validate([
-      'nombre_cotizacion' => 'required|min:1|max:100',
+      'folio_cotizacion' => 'required|min:1|max:100',
       'descripcion' => 'required|min:1|max:255',
       'estatus_cotizacion_id' => 'required',
       // 'descuento_general' => 'required',
@@ -410,7 +422,7 @@ class CotizacionesController extends Controller
     $cotizacion = Cotizacion::find($cotizacion_id);
     // dd($request);  
 
-    $cotizacion->nombre_cotizacion = $request->nombre_cotizacion;
+    $cotizacion->folio_cotizacion = $request->folio_cotizacion;
     $cotizacion->descripcion = $request->descripcion;
     $cotizacion->estatus_cotizacion_id = $request->estatus_cotizacion_id;
     $cotizacion->update();
