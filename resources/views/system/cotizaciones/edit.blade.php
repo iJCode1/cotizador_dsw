@@ -177,7 +177,7 @@
                                   <input id="cantidad" name="cantidad[]" class="form-control cantidad" type="number" value="{{$servicio->cantidad}}" min="1" step="1" onkeyup="validarCantidad(this)" />
                                 </td>
                                 <td>
-                                  <input id="descuento" name="descuento[]" class="form-control descuento" type="number" value="{{$servicio->descuento}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
+                                  <input id="descuento" name="descuento[]" class="form-control descuento" type="number" value="{{$servicio->descuento}}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
                                 </td>
                                 <td name="precio_bruto[]" class="precio_bruto">
                                   <span id="precio_brutoS">{{$servicio->precio_bruto}}</span>
@@ -199,7 +199,7 @@
                                 <td colspan="8">
                                   <div class="form-group d-flex mb-0">
                                     <label for="descuento_general" class="form-label">{{ __('Descuento general (porcentaje)') }}</label>
-                                    <input type="number" class="form-control descuento_general @error('descuento_general') is-invalid @enderror" id="descuento_general" name="descuento_general" value="{{$servicio->descuento_general}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
+                                    <input type="number" class="form-control descuento_general @error('descuento_general') is-invalid @enderror" id="descuento_general" name="descuento_general" value="{{$servicio->descuento_general}}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
                                     
                                     @error('descuento_general')
                                     <small class="text-danger">{{$message}}</small>
@@ -264,10 +264,8 @@ function validarCantidad(value) {
 
 function validarDescuento(value) {
   let valor = $(value).val();
-  if (!isNaN(valor) && valor >= 0 && valor<=100){
-    $(value).val(parseInt(valor));
-  }else{
-    $(value).val(0);
+  if (isNaN(valor) || valor <= 0){
+    $(value).val("");
   }
 }
 
