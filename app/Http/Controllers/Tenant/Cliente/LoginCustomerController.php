@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tenant\Cliente;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
 class LoginCustomerController extends Controller
@@ -34,15 +35,32 @@ class LoginCustomerController extends Controller
    */
   public function customerLogin(Request $request)
   {
-    $this->validate($request, [
-      'email'   => 'required|email',
-      'password' => 'required|min:6'
-    ]);
 
-    if (Auth::guard('cliente')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-      return redirect()->intended('/cliente');
+    $rules = [
+      'email' => 'required|email',
+      'password' => 'required|min:8|max:50',
+    ];
+
+    $customMessages = [
+      'email.required' => 'El correo es obligatorio.',
+      'email.email' => 'El formato del correo es incorrecto.',
+      'password.required' => 'La contraseña es obligatoria.',
+      'password.min' => 'La contraseña debe contener al menos 8 caracteres.',
+      'password.max' => 'La contraseña no debe contener más de 50 caracteres.',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $customMessages);
+    
+    if ($validator->fails()) {
+      return redirect('/login')
+        ->withErrors($validator)
+        ->withInput();
+    } else {
+      if (Auth::guard('cliente')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+        return redirect()->intended('/cliente');
+      }
+      return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => 'Estas credenciales no coinciden con nuestros registros.']);
     }
 
-    return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => 'Estas credenciales no coinciden con nuestros registros.']);
   }
 }

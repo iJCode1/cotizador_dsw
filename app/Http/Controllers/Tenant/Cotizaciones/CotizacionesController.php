@@ -166,8 +166,8 @@ class CotizacionesController extends Controller
   public function registrarServicio(Request $request)
   {
     $rules = [
-      'nombreServicio' => 'required|min:1|max:100',
-      'descripcionServicio' => 'required|min:1|max:255',
+      'nombreServicio' => 'required|min:1|max:255',
+      'descripcionServicio' => 'required|min:1',
       'codigoServicio' => 'required|min:1|max:45',
       'precioServicio' => 'required',
       'imagenServicio' => 'image|mimes:gif,jpeg,png,svg',
@@ -181,7 +181,6 @@ class CotizacionesController extends Controller
       'nombreServicio.max' => 'El nombre no debe contener más de 100 caracteres.',
       'descripcionServicio.required' => 'La descripción es obligatoria.',
       'descripcionServicio.min' => 'La descripcion debe contener al menos un carácter.',
-      'descripcionServicio.max' => 'La descripcion no debe contener más de 255 caracteres.',
       'codigoServicio.required' => 'El código es obligatorio.',
       'codigoServicio.min' => 'El codigo debe contener al menos un carácter.',
       'codigoServicio.max' => 'El codigo no debe contener más de 45 caracteres.',
@@ -261,9 +260,9 @@ class CotizacionesController extends Controller
       'nombreCliente.required' => 'El nombre del cliente es obligatorio.',
       'correoCliente.required' => 'El correo del cliente es obligatorio.',
       'nombre_cotizacion.required' => 'El folio de la cotización es obligatorio.',
-      'descripcion.required' => 'La descripción de la cotización es obligatorio.',
+      'descripcion.required' => 'La descripción de la cotización es obligatoria.',
       'fecha_creacion.required' => 'La fecha de creación es obligatoro.',
-      'vigencia.required' => 'La vigencia de la cotización es obligatorio.',
+      'vigencia.required' => 'La vigencia de la cotización es obligatoria.',
       'estatus_cotizacion_id.required' => 'El estatus de la cotización es obligatorio.',
       'servicio_uuid.required' => 'No se ha seleccionado nada para cotizar.',
       // 'servicio_id' => 'required',

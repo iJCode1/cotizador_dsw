@@ -15,7 +15,7 @@ class CreateProductosServiciosTable extends Migration
   {
     Schema::create('productos_servicios', function (Blueprint $table) {
       $table->increments('producto_servicio_id');
-      $table->string('nombre', 100);
+      $table->string('nombre', 255);
       $table->longText('descripcion');
       $table->string('codigo', 45);
       $table->string('imagen', 255);

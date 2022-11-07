@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Tenant\User as User;
 use App\Models\Tenant\Usuario;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rule;
 
 class UsuariosController extends Controller
 {
@@ -89,7 +90,7 @@ class UsuariosController extends Controller
       'telefono.required' => 'El teléfono es obligatorio.',
       'telefono.numeric' => 'El teléfono solo acepta valores numéricos.',
       'telefono.digits_between' => 'El teléfono debe ser de 10 dígitos.',
-      'rol.required' => 'Se debe seleccionar un tipo de usuario (rol).',
+      'rol.required' => 'Se debe seleccionar el tipo de usuario (rol).',
       'correo.required' => 'El correo es obligatorio.',
       'correo.email' => 'El formato del correo es incorrecto.',
       'correo.max' => 'El correo no debe contener más de 100 caracteres.',
@@ -150,26 +151,49 @@ class UsuariosController extends Controller
    */
   public function editUser(Request $request, $usuario_id)
   {
-    $request->validate([
+    $rules = [
       'nombre' => 'required|max:45',
       'app' => 'required|max:45',
       'apm' => 'required|max:45',
       'direccion' => 'required|max:255',
-      'telefono' => 'required|min:10|max:10',
+      'telefono' => 'required|numeric|digits_between:10,10',
       'rol' => 'required',
-    ]);
+    ];
 
-    $usuario = User::withTrashed()->find($usuario_id);
-    $usuario->nombre = $request->nombre;
-    $usuario->apellido_p = $request->app;
-    $usuario->apellido_m = $request->apm;
-    $usuario->direccion = $request->direccion;
-    $usuario->telefono = $request->telefono;
-    $usuario->rol_id = $request->rol;
-    $usuario->update();
+    $customMessages = [
+      'nombre.required' => 'El nombre es obligatorio.',
+      'nombre.max' => 'El nombre no debe contener más de 45 caracteres.',
+      'app.required' => 'El apellido paterno es obligatorio.',
+      'app.max' => 'El apellido paterno no debe contener más de 45 caracteres.',
+      'apm.required' => 'El apellido materno es obligatorio.',
+      'apm.max' => 'El apellido materno no debe contener más de 45 caracteres.',
+      'direccion.required' => 'La dirección es obligatoria.',
+      'direccion.max' => 'La dirección no debe contener más de 255 caracteres.',
+      'telefono.required' => 'El teléfono es obligatorio.',
+      'telefono.numeric' => 'El teléfono solo acepta valores numéricos.',
+      'telefono.digits_between' => 'El teléfono debe ser de 10 dígitos.',
+      'rol.required' => 'Se debe seleccionar el tipo de usuario (rol).',
+    ];
 
-    return redirect()->route('tenant.showEmpleados')
-      ->with('editar', 'ok');
+    $validator = Validator::make($request->all(), $rules, $customMessages);
+
+    if ($validator->fails()) {
+      return redirect("/empleado/$usuario_id/edit")
+        ->withErrors($validator)
+        ->withInput();
+    } else {
+      $usuario = User::withTrashed()->find($usuario_id);
+      $usuario->nombre = $request->nombre;
+      $usuario->apellido_p = $request->app;
+      $usuario->apellido_m = $request->apm;
+      $usuario->direccion = $request->direccion;
+      $usuario->telefono = $request->telefono;
+      $usuario->rol_id = $request->rol;
+      $usuario->update();
+  
+      return redirect()->route('tenant.showEmpleados')
+        ->with('editar', 'ok'); 
+    }
   }
 
   /**

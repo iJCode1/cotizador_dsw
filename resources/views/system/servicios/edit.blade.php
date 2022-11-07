@@ -33,7 +33,7 @@
                           <label for="descripcion" class="col-md-4 col-form-label text-md-right">{{ __('Descripción') }}</label>
 
                           <div class="col-md-6">
-                              <textarea id="descripcion" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" value="{{ old('descripcion') }}" autofocus rows="3">{{$servicio->descripcion}}</textarea>
+                              <textarea id="descripcion" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" autofocus rows="3">{{ old('descripcion', $servicio->descripcion) }}</textarea>
                               @error('descripcion')
                                   <span class="invalid-feedback" role="alert">
                                       <strong>{{ $message }}</strong>

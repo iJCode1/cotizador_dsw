@@ -99,15 +99,15 @@
                                   @continue
                                 @endif
                               <option value="{{$tipo->tipo_id}}">{{$tipo->nombre_tipo}}</option>
-                              @endforeach
+                              @endforeach  
+                            </select> 
 
-                              @error('tipo')
-                              <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
+                            @error('tipo')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
 
-                            </select>            
                           </div>
                         </div>
 
@@ -124,15 +124,15 @@
                                   @continue
                                 @endif
                               <option value="{{$unidad->unidad_medida_id}}">{{$unidad->nombre_unidad}}</option>
-                              @endforeach
+                              @endforeach  
+                            </select>    
 
-                              @error('unidad')
-                              <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                              </span>
-                              @enderror
-
-                            </select>            
+                            @error('unidad')
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                            
                           </div>
                         </div>
 

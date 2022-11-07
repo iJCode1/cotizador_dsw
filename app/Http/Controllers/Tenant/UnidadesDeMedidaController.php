@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\Unidad_De_Medida;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class UnidadesDeMedidaController extends Controller
 {
-  
+
   /**
    * Create a new controller instance.
    *
@@ -50,20 +51,40 @@ class UnidadesDeMedidaController extends Controller
    */
   public function registerUnidad(Request $request)
   {
-    $request->validate([
+
+    $rules = [
       'nombre' => 'required|min:1|max:45|unique:tenant.unidades_de_medida,nombre_unidad',
       'abrev' => 'required|min:1|max:5|unique:tenant.unidades_de_medida,abrev',
-    ]);
-
-    $unidad = [
-      'nombre_unidad' => $request->nombre,
-      'abrev' => $request->abrev,
     ];
 
-    Unidad_De_Medida::create($unidad);
+    $customMessages = [
+      'nombre.required' => 'El nombre es obligatorio.',
+      'nombre.min' => 'El nombre debe contener al menos un carácter.',
+      'nombre.max' => 'El nombre no debe contener más de 45 caracteres.',
+      'nombre.unique' => 'El nombre ya fue registrado.',
+      'abrev.required' => 'La abreviación es obligatoria.',
+      'abrev.min' => 'La abreviación debe contener al menos un carácter.',
+      'abrev.max' => 'La abreviación no debe contener más de 5 caracteres.',
+      'abrev.unique' => 'La abreviación ya fue registrada.',
+    ];
 
-    return redirect()->route('tenant.unidades')
-      ->with('crear', 'ok');
+    $validator = Validator::make($request->all(), $rules, $customMessages);
+
+    if ($validator->fails()) {
+      return redirect("/unidad")
+        ->withErrors($validator)
+        ->withInput();
+    } else {
+      $unidad = [
+        'nombre_unidad' => $request->nombre,
+        'abrev' => $request->abrev,
+      ];
+
+      Unidad_De_Medida::create($unidad);
+
+      return redirect()->route('tenant.unidades')
+        ->with('crear', 'ok');
+    }
   }
 
   /**
@@ -86,21 +107,40 @@ class UnidadesDeMedidaController extends Controller
    */
   public function editUnidad(Request $request, $unidadID)
   {
-    // dd($request);
-    $request->validate([
-      'nombre_unidad' => 'required|min:1|max:45',
-      'abrev' => ['required','min:1','max:5',Rule::unique('tenant.unidades_de_medida')->ignore($unidadID, 'unidad_medida_id')],
-    ]);
+    // 'nombre_unidad' => 'required|min:1|max:45|unique:tenant.unidades_de_medida,nombre_unidad',
 
+    $rules = [
+      'nombre_unidad' => ['required', 'min:1', 'max:45', Rule::unique('tenant.unidades_de_medida')->ignore($unidadID, 'unidad_medida_id')],
+      'abrev' => ['required', 'min:1', 'max:5', Rule::unique('tenant.unidades_de_medida')->ignore($unidadID, 'unidad_medida_id')],
+    ];
 
-    $unidad = Unidad_De_Medida::withTrashed()->find($unidadID);
+    $customMessages = [
+      'nombre.required' => 'El nombre es obligatorio.',
+      'nombre.min' => 'El nombre debe contener al menos un carácter.',
+      'nombre.max' => 'El nombre no debe contener más de 45 caracteres.',
+      'nombre.unique' => 'El nombre ya fue registrado.',
+      'abrev.required' => 'La abreviación es obligatoria.',
+      'abrev.min' => 'La abreviación debe contener al menos un carácter.',
+      'abrev.max' => 'La abreviación no debe contener más de 5 caracteres.',
+      'abrev.unique' => 'La abreviación ya fue registrada.',
+    ];
 
-    $unidad->nombre_unidad = $request->nombre_unidad;
-    $unidad->abrev = $request->abrev;
-    $unidad->update();
+    $validator = Validator::make($request->all(), $rules, $customMessages);
 
-    return redirect()->route("tenant.unidades")
-      ->with('editar', 'ok');
+    if ($validator->fails()) {
+      return redirect("/unidad/$unidadID/edit")
+        ->withErrors($validator)
+        ->withInput();
+    } else {
+      $unidad = Unidad_De_Medida::withTrashed()->find($unidadID);
+
+      $unidad->nombre_unidad = $request->nombre_unidad;
+      $unidad->abrev = $request->abrev;
+      $unidad->update();
+
+      return redirect()->route("tenant.unidades")
+        ->with('editar', 'ok');
+    }
   }
 
   /**
