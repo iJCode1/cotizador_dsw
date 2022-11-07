@@ -171,10 +171,10 @@
                                 <td id="nombre_serv">{{$servicio->nombre}}</td>
                                 <td id="desc_serv">{{$servicio->descripcion}}</td>
                                 <td>
-                                  <input id="precio_inicial" name="precio_inicial[]" class="form-control precio_inicial" type="number" value="{{$servicio->precio_inicial}}" min="0" step="1" onkeyup="validarNumero(this)"/>
+                                  <input id="precio_inicial" name="precio_inicial[]" class="form-control precio_inicial" type="number" value="{{$servicio->precio_inicial}}" min="1" step="any" onkeyup="validarPrecio(this)"/>
                                 </td>
                                 <td>
-                                  <input id="cantidad" name="cantidad[]" class="form-control cantidad" type="number" value="{{$servicio->cantidad}}" min="0" max="1000" step="1" onkeyup="validarNumero(this)" />
+                                  <input id="cantidad" name="cantidad[]" class="form-control cantidad" type="number" value="{{$servicio->cantidad}}" min="1" step="1" onkeyup="validarCantidad(this)" />
                                 </td>
                                 <td>
                                   <input id="descuento" name="descuento[]" class="form-control descuento" type="number" value="{{$servicio->descuento}}" min="0" max="100" step="1" onkeyup="validarDescuento(this)"/>
@@ -246,15 +246,30 @@ function validarNumero(value) {
   }
 }
 
+function validarPrecio(value) {
+  let valor = $(value).val();
+  if (isNaN(valor) || valor <= 0){
+    $(value).val("");
+  }
+}
+
+function validarCantidad(value) {
+  let valor = $(value).val();
+  if (!isNaN(valor) && valor >= 1){
+    $(value).val(parseInt(valor));
+  }else{
+    $(value).val("");
+  }
+}
+
 function validarDescuento(value) {
   let valor = $(value).val();
   if (!isNaN(valor) && valor >= 0 && valor<=100){
-    $(value).val(valor);
+    $(value).val(parseInt(valor));
   }else{
     $(value).val(0);
   }
 }
-
 
 $(document).ready(function() {
 

@@ -191,7 +191,7 @@
                 <label for="vigencia" class="col-md-4 col-form-label text-md-right">{{ __('Vigencia (Días)') }}</label>
 
                 <div class="col-md-6">
-                  <input id="vigencia" type="number" class="form-control @error('vigencia') is-invalid @enderror" name="vigencia" @if($usuario === "cliente") value="7" @else value="{{ old('vigencia') }}" @endif autocomplete="vigencia" autofocus>
+                  <input id="vigencia" type="number" class="form-control @error('vigencia') is-invalid @enderror" name="vigencia" @if($usuario === "cliente") value="7" @else value="{{ old('vigencia') }}" @endif autocomplete="vigencia" min="1" max="365" step="1" autofocus onkeyup="validarVigencia(this)">
 
                   @error('vigencia')
                   <span class="invalid-feedback" role="alert">
@@ -348,7 +348,7 @@
                 <div class="col-md-4">
                   <label for="precio" class="form-label">{{ __('Precio') }}</label>
                   <div class="form-group">
-                      <input type="text" class="form-control  @error('precio') is-invalid @enderror" id="precio" name="precio" value="{{old('precio')}}" @if($usuario === "cliente") readonly @endif>
+                      <input type="number" class="form-control @error('precio') is-invalid @enderror" id="precio" name="precio" value="{{old('precio')}}" @if($usuario === "cliente") readonly @endif min="1" step="any" onkeyup="validarPrecio(this)">
                       @error('precio')
                       <small class="text-danger">{{$message}}</small>
                       @enderror
@@ -370,7 +370,7 @@
                 <div class="col-md-2">
                   <label for="cantidad" class="form-label">{{ __('Cantidad') }}</label>
                   <div class="form-group">
-                      <input type="number" value="1" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{old('cantidad')}}" min="1" max="1000" step="1" onkeyup="validarNumero(this)"/>
+                      <input type="number" value="1" class="form-control @error('cantidad') is-invalid @enderror" id="cantidad" name="cantidad" value="{{old('cantidad')}}" min="1" step="1" onkeyup="validarCantidad(this)"/>
                       @error('cantidad')
                       <small class="text-danger">{{$message}}</small>
                       @enderror
@@ -465,12 +465,12 @@
 
 <script>
 
-function validarNumero(value) {
+function validarCantidad(value) {
   let valor = $(value).val();
   if (!isNaN(valor) && valor >= 1){
-    $(value).val(valor);
+    $(value).val(parseInt(valor));
   }else{
-    $(value).val(1);
+    $(value).val("");
   }
 }
 
@@ -481,10 +481,19 @@ function validarPrecio(value) {
   }
 }
 
+function validarVigencia(value) {
+  let valor = $(value).val();
+  if (!isNaN(valor) && valor >= 1 && valor<=365){
+    $(value).val(parseInt(valor));
+  }else{
+    $(value).val("");
+  }
+}
+
 function validarDescuento(value) {
   let valor = $(value).val();
   if (!isNaN(valor) && valor >= 0 && valor<=100){
-    $(value).val(valor);
+    $(value).val(parseInt(valor));
   }else{
     $(value).val(0);
   }
@@ -778,7 +787,7 @@ $(document).ready(function () {
       <td><input class="form-control" type="text" id="nombre" name="nombre[]" value="${nombre}" readonly></td>r
       <td><input class="form-control" type="number" id="precio_inicial" name="precio_inicial[]" value="${precioInicial}" readonly></td>
       <td><input class="form-control" type="number" id="descuento_aplicado" name="descuento_aplicado[]" value="${_descuento}" readonly></td>
-      <td><input class="form-control number" type="number" id="number" name="numero_servicios[]" value="${numeroServicios}" min="1"></td>
+      <td><input class="form-control number" type="number" id="number" name="numero_servicios[]" value="${numeroServicios}" min="1" step="1" onkeyup="validarCantidad(this)"></td>
       <td><input class="form-control" type="text" id="precio_bruto" name="precio_bruto[]" value="${precioBruto}" readonly></td>
       <td><input class="form-control" type="text" id="precio_iva" name="precio_iva[]" value="${precioIva}" readonly></td>
       <td><input class="form-control" type="number" id="subtotal" name="subtotal[]" value="${subtotal}" readonly></td> 

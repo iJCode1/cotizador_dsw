@@ -80,7 +80,7 @@
                           <label for="precio" class="col-md-4 col-form-label text-md-right">{{ __('Precio bruto') }}</label>
 
                           <div class="col-md-6">
-                              <input id="precio" type="number" step="any" class="form-control @error('precio') is-invalid @enderror" name="precio" value="{{ old('precio', $servicio->precio_bruto) }}" autocomplete="precio" autofocus placeholder="1800">
+                              <input id="precio" type="number" class="form-control @error('precio') is-invalid @enderror" name="precio" value="{{ old('precio', $servicio->precio_bruto) }}" autocomplete="precio" autofocus min="1" placeholder="1800" step="any" onkeyup="validarPrecio(this)">
 
                               @error('precio')
                                   <span class="invalid-feedback" role="alert">
@@ -175,4 +175,12 @@
         </div>
     </div>
 </div>
+<script>
+function validarPrecio(value) {
+  let valor = $(value).val();
+  if (isNaN(valor) || valor <= 0){
+    $(value).val("");
+  }
+}
+</script>
 @endsection
