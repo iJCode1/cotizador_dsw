@@ -245,6 +245,7 @@ class CotizacionesController extends Controller
   public function createCotizacion(Request $request)
   {
     // dd($request);
+    // dd($request['descripcion']);
     // dd($request['servicio_uuid']);
 
     // if($request['servicio_uuid'] === null){
@@ -256,7 +257,7 @@ class CotizacionesController extends Controller
 
     // dd($request);
     $rules = [
-      'cliente' => 'required',
+      // 'cliente' => 'required',
       'nombreCliente' => 'required',
       'correoCliente' => 'required',
       'folio_cotizacion' => 'required',
@@ -268,7 +269,7 @@ class CotizacionesController extends Controller
     ];
 
     $customMessages = [
-      'cliente.required' => 'Se debe buscar un cliente.',
+      // 'cliente.required' => 'Se debe buscar un cliente.',
       'nombreCliente.required' => 'El nombre del cliente es obligatorio.',
       'correoCliente.required' => 'El correo del cliente es obligatorio.',
       'folio_cotizacion.required' => 'El folio de la cotización es obligatorio.',
@@ -286,9 +287,10 @@ class CotizacionesController extends Controller
 
     if ($validator->fails()) {
       return redirect("/cotizacion")
-        ->withErrors($validator)
-        ->withInput();
+        ->withInput($request->only('cliente_id', 'nombreCliente', 'correoCliente', 'descripcion', 'fecha_creacion', 'vigencia', 'estatus_cotizacion_id', 'descuento_general'))
+        ->withErrors($validator);
     } else {
+      
       return DB::transaction(function () use ($request) {
 
         // $cotizacion = [
@@ -307,10 +309,11 @@ class CotizacionesController extends Controller
         if (Auth::guard('cliente')->check()) {
           $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => 1]);
         }
-    
+        
         if (Auth::check()) {
           $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id]);
         }
+
   
         // dd($cotizacion);
   

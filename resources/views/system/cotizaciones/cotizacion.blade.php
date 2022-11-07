@@ -321,10 +321,10 @@
 
                 {{-- Descripción --}}
                 <div class="col-md-5">
-                  <label for="descripcion_cotizacion" class="form-label">{{ __('Descripción') }}</label>
+                  <label for="descripcion_servicio" class="form-label">{{ __('Descripción') }}</label>
                   <div class="form-group">
-                      <textarea readonly class="form-control" id="descripcion_cotizacion" name="descripcion_cotizacion" rows="2" autofocus>{{old('descripcion_cotizacion')}}</textarea>
-                      @error('descripcion_cotizacion')
+                      <textarea readonly class="form-control" id="descripcion_servicio" name="descripcion_servicio" rows="2" autofocus>{{old('descripcion_servicio')}}</textarea>
+                      @error('descripcion_servicio')
                       <small class="text-danger">{{$message}}</small>
                       @enderror
                   </div>
@@ -595,7 +595,7 @@ $(document).ready(function () {
           
           $("#servicio_id").val(data.producto_servicio_id ?? "Sin datos")
           $("#nombre_serv").val(data.nombre ?? "Sin datos")
-          $("#descripcion_cotizacion").val(data.descripcion ?? "Sin datos")
+          $("#descripcion_servicio").val(data.descripcion ?? "Sin datos")
           $("#tipo").val(tipoDelPS ?? "Sin datos")
           $("#precio").val(data.precio_bruto ?? "Sin datos") 
         }
@@ -949,7 +949,7 @@ $(document).ready(function () {
     $("#servicio").val("");
     $("#servicio_id").val("");
     $("#nombre_serv").val("");
-    $("#descripcion_cotizacion").val("");
+    $("#descripcion_servicio").val("");
     $("#tipo").val("");
     $("#precio").val("");
     $("#cantidad").val(1);
@@ -959,7 +959,7 @@ $(document).ready(function () {
   function validarProductoServicio(){
     let servicio_id = $("#servicio_id").val();
     let nombre = $("#nombre_serv").val();
-    let descripcion = $("#descripcion_cotizacion").val();
+    let descripcion = $("#descripcion_servicio").val();
     let tipo = $("#tipo").val();
     let precio = $("#precio").val();
     let descuento = $("#descuento").val();
