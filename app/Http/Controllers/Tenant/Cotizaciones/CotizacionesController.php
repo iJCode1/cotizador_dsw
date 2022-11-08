@@ -262,7 +262,7 @@ class CotizacionesController extends Controller
       'nombreCliente' => 'required',
       'correoCliente' => 'required',
       'folio_cotizacion' => 'required',
-      'descripcion' => 'required',
+      'descripcion' => 'required|min:1',
       'fecha_creacion' => 'required',
       'vigencia' => 'required',
       'estatus_cotizacion_id' => 'required',
@@ -277,6 +277,7 @@ class CotizacionesController extends Controller
       'correoCliente.required' => 'El correo del cliente es obligatorio.',
       'folio_cotizacion.required' => 'El folio de la cotización es obligatorio.',
       'descripcion.required' => 'La descripción de la cotización es obligatoria.',
+      'descripcion.min' => 'La descripción debe contener al menos 1 carácter.',
       'fecha_creacion.required' => 'La fecha de creación es obligatorio.',
       'vigencia.required' => 'La vigencia de la cotización es obligatoria.',
       'estatus_cotizacion_id.required' => 'El estatus de la cotización es obligatorio.',
@@ -423,50 +424,72 @@ class CotizacionesController extends Controller
 
   public function editCotizacion(Request $request, $cotizacion_id)
   {
-    // dd($request);
-    $request->validate([
-      'folio_cotizacion' => 'required|min:1|max:100',
-      'descripcion' => 'required|min:1|max:255',
+
+    $rules = [
+      'folio_cotizacion' => 'required',
+      'descripcion' => 'required|min:1',
       'estatus_cotizacion_id' => 'required',
       'descuento_general' => 'required',
-      // 'descuento_general' => 'required',
-    ]);
+    ];
 
+    $customMessages = [
+      'folio_cotizacion.required' => 'El folio de la cotización es obligatorio.',
+      'descripcion.required' => 'La descripción de la cotización es obligatoria.',
+      'descripcion.min' => 'La descripción debe contener al menos 1 carácter.',
+      'estatus_cotizacion_id.required' => 'El estatus de la cotización es obligatorio.',
+      'descuento_general.required' => 'El descuento general es obligatorio.',
+      // 'numero_servicios.required' => 'Se debe especificar la cantidad a cotizar.',
+    ];
 
-    $cotizacion = Cotizacion::find($cotizacion_id);
-    // dd($request);  
+    $validator = Validator::make($request->all(), $rules, $customMessages);
 
-    $cotizacion->folio_cotizacion = $request->folio_cotizacion;
-    $cotizacion->descripcion = $request->descripcion;
-    $cotizacion->estatus_cotizacion_id = $request->estatus_cotizacion_id;
-    $cotizacion->update();
+    if ($validator->fails()) {
+      return redirect("/cotizacion/$cotizacion_id/editar")
+        ->withInput($request->only('folio_cotizacion', 'descripcion', 'estatus_cotizacion_id', 'descuento_general'))
+        ->withErrors($validator);
+    } else {
+      foreach ($request->servicio_id as $index => $servicio_id) {
+        if($request->precio_inicial[$index] == null){
+          return back()
+            ->withInput($request->only('folio_cotizacion', 'descripcion', 'estatus_cotizacion_id', 'descuento_general'))
+            ->withErrors(['precio_inicial' => 'El precio es obligatorio.']);
+        }
 
-    foreach ($request->servicio_id as $index => $servicio_id) {
-      $detalle_cotizacion = Detalle_Cotizacion::find($servicio_id);
-      $detalle_cotizacion->precio_inicial = $request->precio_inicial[$index];
-      $detalle_cotizacion->cantidad = $request->cantidad[$index] ?? 0;
-      $detalle_cotizacion->descuento = $request->descuento[$index];
-      $detalle_cotizacion->descuento_general = $request->descuento_general;
-      $detalle_cotizacion->precio_bruto = $request->precio_bruto[$index];
-      $detalle_cotizacion->iva = $request->precio_iva[$index];
-      $detalle_cotizacion->subtotal = $request->subtotal[$index];
-      $detalle_cotizacion->update();
-      // $cotizacion->cotizaciones()->create([
-      //   'cantidad' => $request->numero_servicios[$index],
-      //   'precio_inicial' => $request->precio_inicial[$index],
-      //   'precio_bruto' => $request->precio_bruto[$index],
-      //   'iva' => $request->precio_iva[$index],
-      //   'subtotal' => $request->subtotal[$index],
-      //   'descuento_general' => $request->descuento_general,
-      //   'descuento' => $request->descuento_aplicado[$index],
-      //   'cotizacion_id' => $cotizacion->cotizacion_id,
-      //   'producto_servicio_id' => $servicio_id,
-      // ]);
+        if($request->descuento[$index] == null){
+          return back()
+            ->withInput($request->only('folio_cotizacion', 'descripcion', 'estatus_cotizacion_id', 'descuento_general'))
+            ->withErrors(['descuento' => 'El descuento es obligatorio.']);
+        }
+
+        if($request->cantidad[$index] == null){
+          return back()
+            ->withInput($request->only('folio_cotizacion', 'descripcion', 'estatus_cotizacion_id', 'descuento_general'))
+            ->withErrors(['cantidad' => 'La cantidad es obligatoria.']);
+        }
+      }
+      
+      $cotizacion = Cotizacion::find($cotizacion_id);
+
+      $cotizacion->descripcion = $request->descripcion;
+      $cotizacion->estatus_cotizacion_id = $request->estatus_cotizacion_id;
+      $cotizacion->update();
+  
+      foreach ($request->servicio_id as $index => $servicio_id) {
+        $detalle_cotizacion = Detalle_Cotizacion::find($servicio_id);
+        
+        $detalle_cotizacion->precio_inicial = $request->precio_inicial[$index] ?? 0;
+        $detalle_cotizacion->cantidad = $request->cantidad[$index] ?? 1;
+        $detalle_cotizacion->descuento = $request->descuento[$index] ?? 0;
+        $detalle_cotizacion->descuento_general = $request->descuento_general;
+        $detalle_cotizacion->precio_bruto = $request->precio_bruto[$index];
+        $detalle_cotizacion->iva = $request->precio_iva[$index];
+        $detalle_cotizacion->subtotal = $request->subtotal[$index];
+        $detalle_cotizacion->update();
+      }
+  
+      return redirect()
+        ->route('tenant.cotizaciones')
+        ->with('editar', 'ok'); 
     }
-
-    // dd($request);
-    return redirect()
-      ->route('tenant.cotizaciones')
-      ->with('editar', 'ok');
   }
 }

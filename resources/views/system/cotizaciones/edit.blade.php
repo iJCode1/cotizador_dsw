@@ -53,7 +53,7 @@
 
                         {{-- Folio de la Cotización --}}
                         <div class="form-group row">
-                          <label for="folio_cotizacion" class="col-md-4 col-form-label text-md-right">{{ __('Nombre de la cotización') }}</label>
+                          <label for="folio_cotizacion" class="col-md-4 col-form-label text-md-right">{{ __('Folio de la cotización') }}</label>
 
                           <div class="col-md-6">
                             <input id="folio_cotizacion" type="text" class="form-control @error('folio_cotizacion') is-invalid @enderror" name="folio_cotizacion" value="{{ old('folio_cotizacion', $cotizacion->folio_cotizacion) }}" autocomplete="folio_cotizacion" autofocus readonly>
@@ -171,13 +171,22 @@
                                 <td id="nombre_serv">{{$servicio->nombre}}</td>
                                 <td id="desc_serv">{{$servicio->descripcion}}</td>
                                 <td>
-                                  <input id="precio_inicial" name="precio_inicial[]" class="form-control precio_inicial" type="number" value="{{$servicio->precio_inicial}}" min="1" step="any" onkeyup="validarPrecio(this)"/>
+                                  <input id="precio_inicial" name="precio_inicial[]" class="form-control @error('precio_inicial') is-invalid @enderror" type="number" value="{{ old('precio_inicial', $servicio->precio_inicial) }}" min="1" step="any" onkeyup="validarPrecio(this)"/>
+                                  @error('precio_inicial')
+                                    <small class="text-danger">{{$message}}</small>
+                                  @enderror
                                 </td>
                                 <td>
-                                  <input id="cantidad" name="cantidad[]" class="form-control cantidad" type="number" value="{{$servicio->cantidad}}" min="1" step="1" onkeyup="validarCantidad(this)" />
+                                  <input id="cantidad" name="cantidad[]" class="form-control @error('cantidad') is-invalid @enderror" type="number" value="{{ old('cantidad', $servicio->cantidad) }}" min="1" step="1" onkeyup="validarCantidad(this)" />
+                                  @error('cantidad')
+                                    <small class="text-danger">{{$message}}</small>
+                                  @enderror
                                 </td>
                                 <td>
-                                  <input id="descuento" name="descuento[]" class="form-control descuento" type="number" value="{{$servicio->descuento}}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
+                                  <input id="descuento" name="descuento[]" class="form-control @error('descuento') is-invalid @enderror" type="number" value="{{ old('descuento', $servicio->descuento) }}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
+                                  @error('descuento')
+                                    <small class="text-danger">{{$message}}</small>
+                                  @enderror
                                 </td>
                                 <td name="precio_bruto[]" class="precio_bruto">
                                   <span id="precio_brutoS">{{$servicio->precio_bruto}}</span>
@@ -199,7 +208,7 @@
                                 <td colspan="8">
                                   <div class="form-group d-flex mb-0">
                                     <label for="descuento_general" class="form-label">{{ __('Descuento general (porcentaje)') }}</label>
-                                    <input type="number" class="form-control descuento_general @error('descuento_general') is-invalid @enderror" id="descuento_general" name="descuento_general" value="{{$servicio->descuento_general}}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
+                                    <input type="number" class="form-control descuento_general @error('descuento_general') is-invalid @enderror" id="descuento_general" name="descuento_general" value="{{ old('descuento_general', $servicio->descuento_general) }}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
                                     
                                     @error('descuento_general')
                                     <small class="text-danger">{{$message}}</small>
