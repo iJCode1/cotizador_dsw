@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\Producto_Servicio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -72,7 +73,7 @@ class ServiciosController extends Controller
     $rules = [
       'nombre' => 'required|min:1|max:255',
       'descripcion' => 'required|min:1',
-      'codigo' => 'required|min:1|max:45',
+      'codigo' => 'required|min:1|max:45|unique:tenant.productos_servicios,codigo',
       'imagen' => 'image|mimes:gif,jpeg,png,svg',
       'precio' => 'required',
       'tipo' => 'required',
@@ -84,10 +85,11 @@ class ServiciosController extends Controller
       'nombre.min' => 'El nombre debe contener al menos un carácter.',
       'nombre.max' => 'El nombre no debe contener más de 255 caracteres.',
       'descripcion.required' => 'La descripción es obligatoria.',
-      'descripcion.min' => 'La descripcion debe contener al menos un carácter.',
+      'descripcion.min' => 'La descripción debe contener al menos un carácter.',
       'codigo.required' => 'El código es obligatorio.',
-      'codigo.min' => 'El codigo debe contener al menos un carácter.',
-      'codigo.max' => 'El codigo no debe contener más de 45 caracteres.',
+      'codigo.min' => 'El código debe contener al menos un carácter.',
+      'codigo.max' => 'El código no debe contener más de 45 caracteres.',
+      'codigo.unique' => 'El código ya fue registrado.',
       'precio.required' => 'El precio es obligatorio.',
       'imagen.image' => 'El archivo seleccionado no es una imagen.',
       'imagen.mimes' => 'El formato de la imagen no es válido.',
@@ -164,11 +166,22 @@ class ServiciosController extends Controller
     $rules = [
       'nombre' => 'required|min:1|max:255',
       'descripcion' => 'required|min:1',
-      'codigo' => 'required|min:1|max:45',
+      'codigo' => 'required|min:1|max:45|unique:tenant.productos_servicios,codigo',
       'imagen' => 'image|mimes:gif,jpeg,png,svg',
       'precio' => 'required',
       'tipo' => 'required',
       'unidad' => 'required',
+    ];
+
+    $rules = [
+      'nombre' => ['required', 'min:1', 'max:255'],
+      'descripcion' => ['required', 'min:1'],
+      'codigo' => ['required', 'min:1', 'max:45', Rule::unique('tenant.productos_servicios')->ignore($servicioID, 'producto_servicio_id')],
+      'imagen' => ['image', 'mimes:gif,jpeg,png,svg'],
+      'precio' => ['required'],
+      'tipo' => ['required'],
+      'unidad' => ['required'],
+
     ];
 
     $customMessages = [
@@ -176,10 +189,11 @@ class ServiciosController extends Controller
       'nombre.min' => 'El nombre debe contener al menos un carácter.',
       'nombre.max' => 'El nombre no debe contener más de 255 caracteres.',
       'descripcion.required' => 'La descripción es obligatoria.',
-      'descripcion.min' => 'La descripcion debe contener al menos un carácter.',
+      'descripcion.min' => 'La descripción debe contener al menos un carácter.',
       'codigo.required' => 'El código es obligatorio.',
-      'codigo.min' => 'El codigo debe contener al menos un carácter.',
-      'codigo.max' => 'El codigo no debe contener más de 45 caracteres.',
+      'codigo.min' => 'El código debe contener al menos un carácter.',
+      'codigo.max' => 'El código no debe contener más de 45 caracteres.',
+      'codigo.unique' => 'El código ya fue registrado.',
       'precio.required' => 'El precio es obligatorio.',
       'imagen.image' => 'El archivo seleccionado no es una imagen.',
       'imagen.mimes' => 'El formato de la imagen no es válido.',
