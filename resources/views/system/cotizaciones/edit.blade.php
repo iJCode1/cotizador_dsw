@@ -171,19 +171,19 @@
                                 <td id="nombre_serv">{{$servicio->nombre}}</td>
                                 <td id="desc_serv">{{$servicio->descripcion}}</td>
                                 <td>
-                                  <input id="precio_inicial" name="precio_inicial[]" class="form-control @error('precio_inicial') is-invalid @enderror" type="number" value="{{ old('precio_inicial', $servicio->precio_inicial) }}" min="1" step="any" onkeyup="validarPrecio(this)"/>
+                                  <input id="precio_inicial" name="precio_inicial[]" class="form-control precio_inicial @error('precio_inicial') is-invalid @enderror" type="number" value="{{ old('precio_inicial', $servicio->precio_inicial) }}" min="1" step="any" onkeyup="validarPrecio(this)"/>
                                   @error('precio_inicial')
                                     <small class="text-danger">{{$message}}</small>
                                   @enderror
                                 </td>
                                 <td>
-                                  <input id="cantidad" name="cantidad[]" class="form-control @error('cantidad') is-invalid @enderror" type="number" value="{{ old('cantidad', $servicio->cantidad) }}" min="1" step="1" onkeyup="validarCantidad(this)" />
+                                  <input id="cantidad" name="cantidad[]" class="form-control cantidad @error('cantidad') is-invalid @enderror" type="number" value="{{ old('cantidad', $servicio->cantidad) }}" min="1" step="1" onkeyup="validarCantidad(this)" />
                                   @error('cantidad')
                                     <small class="text-danger">{{$message}}</small>
                                   @enderror
                                 </td>
                                 <td>
-                                  <input id="descuento" name="descuento[]" class="form-control @error('descuento') is-invalid @enderror" type="number" value="{{ old('descuento', $servicio->descuento) }}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
+                                  <input id="descuento" name="descuento[]" class="form-control descuento @error('descuento') is-invalid @enderror" type="number" value="{{ old('descuento', $servicio->descuento) }}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
                                   @error('descuento')
                                     <small class="text-danger">{{$message}}</small>
                                   @enderror
