@@ -267,6 +267,8 @@ class CotizacionesController extends Controller
       'vigencia' => 'required',
       'estatus_cotizacion_id' => 'required',
       'servicio_uuid' => 'required',
+      'descuento_general' => 'required',
+      'numero_servicios' => 'required',
     ];
 
     $customMessages = [
@@ -275,10 +277,12 @@ class CotizacionesController extends Controller
       'correoCliente.required' => 'El correo del cliente es obligatorio.',
       'folio_cotizacion.required' => 'El folio de la cotización es obligatorio.',
       'descripcion.required' => 'La descripción de la cotización es obligatoria.',
-      'fecha_creacion.required' => 'La fecha de creación es obligatoro.',
+      'fecha_creacion.required' => 'La fecha de creación es obligatorio.',
       'vigencia.required' => 'La vigencia de la cotización es obligatoria.',
       'estatus_cotizacion_id.required' => 'El estatus de la cotización es obligatorio.',
       'servicio_uuid.required' => 'No se ha seleccionado nada para cotizar.',
+      'descuento_general.required' => 'El descuento general es obligatorio.',
+      'numero_servicios.required' => 'Se debe especificar la cantidad a cotizar.',
       // 'servicio_id' => 'required',
     ];
 
@@ -306,7 +310,7 @@ class CotizacionesController extends Controller
   
         // dd($cotizacion);
         // Cotizacion::create($cotizacion);
-  
+
         if (Auth::guard('cliente')->check()) {
           $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => 1]);
         }
@@ -314,13 +318,10 @@ class CotizacionesController extends Controller
         if (Auth::check()) {
           $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id]);
         }
-
-  
-        // dd($cotizacion);
   
         foreach ($request->servicio_id as $index => $servicio_id) {
           $cotizacion->cotizaciones()->create([
-            'cantidad' => $request->numero_servicios[$index],
+            'cantidad' => $request->numero_servicios[$index] ?? 0,
             'precio_inicial' => $request->precio_inicial[$index],
             'precio_bruto' => $request->precio_bruto[$index],
             'iva' => $request->precio_iva[$index],
@@ -427,6 +428,7 @@ class CotizacionesController extends Controller
       'folio_cotizacion' => 'required|min:1|max:100',
       'descripcion' => 'required|min:1|max:255',
       'estatus_cotizacion_id' => 'required',
+      'descuento_general' => 'required',
       // 'descuento_general' => 'required',
     ]);
 
@@ -442,7 +444,7 @@ class CotizacionesController extends Controller
     foreach ($request->servicio_id as $index => $servicio_id) {
       $detalle_cotizacion = Detalle_Cotizacion::find($servicio_id);
       $detalle_cotizacion->precio_inicial = $request->precio_inicial[$index];
-      $detalle_cotizacion->cantidad = $request->cantidad[$index];
+      $detalle_cotizacion->cantidad = $request->cantidad[$index] ?? 0;
       $detalle_cotizacion->descuento = $request->descuento[$index];
       $detalle_cotizacion->descuento_general = $request->descuento_general;
       $detalle_cotizacion->precio_bruto = $request->precio_bruto[$index];
