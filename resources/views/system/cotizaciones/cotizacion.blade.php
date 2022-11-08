@@ -492,7 +492,7 @@ function validarVigencia(value) {
 
 function validarDescuento(value) {
   let valor = $(value).val();
-  if (isNaN(valor) || valor <= 0){
+  if (isNaN(valor) || valor < 0 || valor > 100){
     $(value).val("");
   }
 }
@@ -758,12 +758,12 @@ $(document).ready(function () {
     let numeroServicios = $('#cantidad').val();
     let descuento = $('#descuento').val();
     let _descuento = descuento;
-    descuento = descuento == 100 ? 1 : (descuento < 10) ? `0.0${descuento}` : `0.${descuento}`;
-
+    
     let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
     let precioBruto2 = precioBruto;
-    precioBruto = descuento > 0 ? ((precioBruto2 - (precioBruto2 * Number(descuento)))).toFixed(2) : precioBruto2;
-
+    let _ahorro = (precioBruto * descuento) / 100;
+    precioBruto = (precioBruto2 - _ahorro).toFixed(2);
+    
     let precioIva = (Number(precioBruto) * .16).toFixed(2);
     let subtotal = (Number(precioIva) + parseFloat(precioBruto)).toFixed(2);
 
@@ -784,7 +784,7 @@ $(document).ready(function () {
       <td style="display: none;"><input class="form-control" type="text" id="servicio_uuid" name="servicio_uuid[]" data-uuid="${UUID}" value="${UUID}" readonly></td>
       <td><input class="form-control" type="text" id="nombre" name="nombre[]" value="${nombre}" readonly></td>r
       <td><input class="form-control" type="number" id="precio_inicial" name="precio_inicial[]" value="${precioInicial}" readonly></td>
-      <td><input class="form-control" type="number" id="descuento_aplicado" name="descuento_aplicado[]" value="${_descuento}" readonly></td>
+      <td><input class="form-control" type="number" id="descuento_aplicado" name="descuento_aplicado[]" value="${_descuento}" min="0" max="100" step="any" readonly></td>
       <td><input class="form-control number" type="number" id="number" name="numero_servicios[]" value="${numeroServicios}" min="1" step="1" onkeyup="validarCantidad(this)"></td>
       <td><input class="form-control" type="text" id="precio_bruto" name="precio_bruto[]" value="${precioBruto}" readonly></td>
       <td><input class="form-control" type="text" id="precio_iva" name="precio_iva[]" value="${precioIva}" readonly></td>
@@ -865,7 +865,6 @@ $(document).ready(function () {
     let totalDescuento = 0;
 
     let descuentoGeneral = $("#descuento_general").val();
-    descuentoGeneral = descuentoGeneral == 100 ? 1 : (descuentoGeneral < 10) ? `0.0${descuentoGeneral}` : `0.${descuentoGeneral}`;
 
     array.forEach((costo) => {
       inicialC += Number(costo.precioBruto),
@@ -877,14 +876,17 @@ $(document).ready(function () {
     ivaDescuento = ivaC;
     totalDescuento = totalC;
 
-    inicialC = descuentoGeneral > 0 ? ((inicialDescuento - (inicialDescuento * Number(descuentoGeneral)))) : inicialDescuento;
-    ivaC = descuentoGeneral > 0 ? ((ivaDescuento - (ivaDescuento * Number(descuentoGeneral)))): ivaDescuento;
-    totalC = descuentoGeneral > 0 ? ((totalDescuento - (totalDescuento * Number(descuentoGeneral)))) : totalDescuento;
+    let _ahorro = (inicialDescuento * descuentoGeneral) / 100;
+    inicialC = (inicialDescuento - _ahorro).toFixed(2);
+    
+    ivaC = (Number(inicialC) * .16).toFixed(2);
+    totalC = (Number(ivaC) + parseFloat(inicialC)).toFixed(2);
+
 
     return {
-      inicial: inicialC.toFixed(2),
-      iva: ivaC.toFixed(2),
-      total: totalC.toFixed(2)
+      inicial: inicialC,
+      iva: ivaC,
+      total: totalC
     }
   }
 
@@ -895,12 +897,12 @@ $(document).ready(function () {
     let numeroServicios = $(fila).find('td > input#number').val();
     let descuento = $(fila).find('td > input#descuento_aplicado').val();
     let _descuento = descuento;
-    descuento = descuento == 100 ? 1 : (descuento < 10) ? `0.0${descuento}` : `0.${descuento}`;
     
     let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
     let precioBruto2 = precioBruto;
-    precioBruto = descuento > 0 ? ((precioBruto2 - (precioBruto2 * Number(descuento)))).toFixed(2) : precioBruto2;
-    
+    let _ahorro = (precioBruto2 * descuento) / 100;
+    precioBruto = (precioBruto2 - _ahorro).toFixed(2);
+
     let precioIva = (Number(precioBruto) * .16).toFixed(2);
     let subtotal = (Number(precioIva) + parseFloat(precioBruto)).toFixed(2);
     

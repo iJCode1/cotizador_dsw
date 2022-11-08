@@ -264,7 +264,7 @@ function validarCantidad(value) {
 
 function validarDescuento(value) {
   let valor = $(value).val();
-  if (isNaN(valor) || valor <= 0){
+  if (isNaN(valor) || valor < 0 || valor > 100){
     $(value).val("");
   }
 }
@@ -324,19 +324,19 @@ function mostrarCostosFinal(array){
     let descuento_general = $('input#descuento_general').val()
   
     if(descuento_general > 0){
-      descuento_general = descuento_general == 100 ? 1 : (descuento_general < 10) ? `0.0${descuento_general}` : `0.${descuento_general}`;
       
-      let _precioInicial = inicial;
-      inicial = descuento_general > 0 ? ((_precioInicial - (_precioInicial * Number(descuento_general)))).toFixed(2) : _precioInicial;
+      let _inicial = inicial;
+      let _ahorro = (_inicial * descuento_general) / 100;
+      inicial = (_inicial - _ahorro).toFixed(2);
 
-      let _precioBruto = bruto;
-      bruto = descuento_general > 0 ? ((_precioBruto - (_precioBruto * Number(descuento_general)))).toFixed(2) : _precioBruto;
+      let _bruto = bruto;
+      let _ahorro2 = (_bruto * descuento_general) / 100;
+      bruto = (_bruto - _ahorro2).toFixed(2);
 
       iva = (Number(bruto) * .16).toFixed(2);
       total = (Number(iva) + parseFloat(bruto)).toFixed(2);
     }
 
-    
     $("#total_inicial").html("$" + inicial);
     $("#total_cantidad").html("#" + cantidad);
     $("#total_bruto").html("$" + bruto);
@@ -378,11 +378,11 @@ function calcularCostos(fila){
   let descuentoGeneral = $('input#descuento_general').val();
   let descuento = $(fila).find('td > input#descuento').val();
   let _descuento = descuento;
-  descuento = descuento == 100 ? 1 : (descuento < 10) ? `0.0${descuento}` : `0.${descuento}`;
 
   let precioBruto = (Number(precioInicial) * Number(numeroServicios)).toFixed(2);
-  let _precioBruto = precioBruto;
-  precioBruto = descuento > 0 ? ((_precioBruto - (_precioBruto * Number(descuento)))).toFixed(2) : _precioBruto;
+  let precioBruto2 = precioBruto;
+  let _ahorro = (precioBruto2 * descuento) / 100;
+  precioBruto = (precioBruto2 - _ahorro).toFixed(2);
   
   let precioIva = (Number(precioBruto) * .16).toFixed(2);
   let subtotal = (Number(precioIva) + parseFloat(precioBruto)).toFixed(2);
