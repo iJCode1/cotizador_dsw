@@ -336,7 +336,7 @@ class CotizacionesController extends Controller
           ]);
         }
 
-        $this->generarPDFCotizacion();
+        $this->generarPDFCotizacion($request, $cotizacion->cotizacion_id);
 
         //   ->route('cotizaciones.index')->withSuccess("La cotizacion $cotizacion->nombre_proyecto se creo exitosamente");
         return redirect()
@@ -399,17 +399,22 @@ class CotizacionesController extends Controller
     // // return redirect()->route('tenant.cotizaciones');
   }
 
-  public function generarPDFCotizacion(){
-
+  public function generarPDFCotizacion($request, $cotizacion_id){
+    
     $producto = Producto_Servicio::find(1)->get();
 
-    if(count($producto) > 0){
-      $pdf = Pdf::loadView('pdf.cotizacion', compact("producto"));
+    $servicios = Detalle_Cotizacion::select('detalle_cotizaciones.detalle_cotizacion_id', 'detalle_cotizaciones.cantidad', 'detalle_cotizaciones.descuento', 'detalle_cotizaciones.descuento_general', 'detalle_cotizaciones.precio_inicial', 'detalle_cotizaciones.precio_bruto', 'detalle_cotizaciones.iva', 'detalle_cotizaciones.subtotal', 'productos_servicios.nombre', 'productos_servicios.descripcion')
+      ->join('productos_servicios', 'detalle_cotizaciones.producto_servicio_id', '=', 'productos_servicios.producto_servicio_id')
+      ->where("detalle_cotizaciones.cotizacion_id", "=", $cotizacion_id)
+      ->get();
 
-      Mail::send('email.cotizacion', compact("producto"), function ($mail) use ($pdf) {
-        $mail->from('elbaskcraft@gmail.com', 'Joel Dome');
-        $mail->to('elbaskcraft@gmail.com');
-        $mail->subject("Cotización COT-12");
+    if(count($producto) > 0){
+      $pdf = Pdf::loadView('pdf.cotizacion', compact("request", "servicios"));
+
+      Mail::send('email.cotizacion', compact("producto"), function ($mail) use ($pdf, $request) {
+        $mail->from('joeldome17@gmail.com', 'Joel Dome');
+        $mail->to($request->correoCliente);
+        $mail->subject("Cotización: $request->folio_cotizacion");
         $mail->attachData($pdf->output(), 'cotizacion.pdf');
       });
 

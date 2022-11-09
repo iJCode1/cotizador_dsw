@@ -28,32 +28,30 @@
     <h1>Cotización</h1>
   </header>
 
-  {{-- <div class="page-break"></div>
-  <h1>Nombre: {{ $producto[0]->nombre }}</h1>
-  <textarea>{{ $producto[0]->descripcion }}</textarea>
-  <p>Código: {{ $producto[0]->codigo }}</p>
-  <p>Precio: {{ $producto[0]->precio_bruto }}</p> --}}
+  <h1>Nombre del cliente: {{ $request->nombreCliente }}</h1>
+  <p>Folio de la cotización: {{ $request->folio_cotizacion }}</p>
+  <textarea>{{ $request->descripcion }}</textarea>
 
   <table class="table">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Nombre</th>
+        <th>Servicio</th>
         <th>Descripción</th>
-        <th>Código</th>
-        <th>Precio</th>
-        <th>Tipo</th>
+        <th>Cantidad</th>
+        <th>Precio Bruto</th>
+        <th>Precio Iva</th>
+        <th>Total</th>
       </tr>
     </thead>
     <tbody>
-      @foreach ($producto as $product)
+      @foreach ($servicios as $servicio)
         <tr>
-          <td>{{ $product->producto_servicio_id }}</td>
-          <td>{{ $product->nombre }}</td>
-          <td>{{ $product->descripcion }}</td>
-          <td>{{ $product->codigo }}</td>
-          <td>{{ $product->precio_bruto }}</td>
-          <td>{{ $product->tipo->nombre_tipo }}</td>
+          <td>{{ $servicio->nombre }}</td>
+          <td>{{ $servicio->descripcion }}</td>
+          <td>{{ $servicio->cantidad }}</td>
+          <td>{{ $servicio->precio_bruto }}</td>
+          <td>{{ $servicio->iva }}</td>
+          <td>{{ $servicio->subtotal }}</td>
         </tr>
       @endforeach
     </tbody>
