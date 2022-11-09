@@ -10,12 +10,14 @@ use App\Models\Tenant\Estatus_Cotizacion;
 use App\Models\Tenant\Producto_Servicio;
 use App\Models\Tenant\Tipo_Producto_Servicio;
 use App\Models\Tenant\Unidad_De_Medida;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class CotizacionesController extends Controller
 {
@@ -333,6 +335,9 @@ class CotizacionesController extends Controller
             'producto_servicio_id' => $servicio_id,
           ]);
         }
+
+        $this->generarPDFCotizacion();
+
         //   ->route('cotizaciones.index')->withSuccess("La cotizacion $cotizacion->nombre_proyecto se creo exitosamente");
         return redirect()
           ->route('tenant.cotizaciones')
@@ -392,6 +397,25 @@ class CotizacionesController extends Controller
     // Cotizacion::create($cot);
 
     // // return redirect()->route('tenant.cotizaciones');
+  }
+
+  public function generarPDFCotizacion(){
+
+    $producto = Producto_Servicio::find(1)->get();
+
+    if(count($producto) > 0){
+      $pdf = Pdf::loadView('pdf.cotizacion', compact("producto"));
+
+      Mail::send('email.cotizacion', compact("producto"), function ($mail) use ($pdf) {
+        $mail->from('elbaskcraft@gmail.com', 'Joel Dome');
+        $mail->to('elbaskcraft@gmail.com');
+        $mail->subject("Cotización COT-12");
+        $mail->attachData($pdf->output(), 'cotizacion.pdf');
+      });
+
+      return $pdf->download('archivo.pdf'); // Descargar
+      // return $pdf->stream('archivo.pdf'); // Ver en una nueva página
+    }
   }
 
   public function showCotizacionEditForm($cotizacion_id)
@@ -492,4 +516,27 @@ class CotizacionesController extends Controller
         ->with('editar', 'ok'); 
     }
   }
+
+  public function pruebapdf(){
+    return view('system.cotizaciones.pruebaPDF');
+  }
+
+  public function generarpdf(Request $request){
+    $producto = Producto_Servicio::find(1)->get();
+
+    if(count($producto) > 0){
+      $pdf = Pdf::loadView('pdf.cotizacion', compact("producto"));
+
+      Mail::send('email.cotizacion', compact("producto"), function ($mail) use ($pdf) {
+        $mail->from('elbaskcraft@gmail.com', 'Joel Dome');
+        $mail->to('elbaskcraft@gmail.com');
+        $mail->subject("Cotización COT-12");
+        $mail->attachData($pdf->output(), 'cotizacion.pdf');
+      });
+
+      // return $pdf->download('archivo.pdf'); // Descargar
+      return $pdf->stream('archivo.pdf'); // Ver en una nueva página
+    }
+  }
+
 }

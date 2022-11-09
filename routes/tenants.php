@@ -73,5 +73,8 @@ Route::middleware(['web'])
     Route::post('/registrarServicio', [CotizacionesController::class, 'registrarServicio'])->name('registrarServicio');
     Route::get('/cotizacion/{id}/editar', [CotizacionesController::class, 'showCotizacionEditForm'])->name('showCotizacionEditForm');
     Route::put('/cotizacion/{id}', [CotizacionesController::class, 'editCotizacion'])->name('editCotizacion');
+    
+    Route::get('/pruebapdf', [CotizacionesController::class, 'pruebapdf'])->name('pruebapdf');
+    Route::post('/generarpdf', [CotizacionesController::class, 'generarpdf'])->name('generarpdf');
 
   });
