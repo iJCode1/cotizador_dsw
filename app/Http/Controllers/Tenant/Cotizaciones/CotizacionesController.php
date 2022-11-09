@@ -400,15 +400,13 @@ class CotizacionesController extends Controller
   }
 
   public function generarPDFCotizacion($request, $cotizacion_id){
-    
-    $producto = Producto_Servicio::find(1)->get();
 
     $servicios = Detalle_Cotizacion::select('detalle_cotizaciones.detalle_cotizacion_id', 'detalle_cotizaciones.cantidad', 'detalle_cotizaciones.descuento', 'detalle_cotizaciones.descuento_general', 'detalle_cotizaciones.precio_inicial', 'detalle_cotizaciones.precio_bruto', 'detalle_cotizaciones.iva', 'detalle_cotizaciones.subtotal', 'productos_servicios.nombre', 'productos_servicios.descripcion')
       ->join('productos_servicios', 'detalle_cotizaciones.producto_servicio_id', '=', 'productos_servicios.producto_servicio_id')
       ->where("detalle_cotizaciones.cotizacion_id", "=", $cotizacion_id)
       ->get();
 
-    if(count($producto) > 0){
+    if(count($servicios) > 0){
       $pdf = Pdf::loadView('pdf.cotizacion', compact("request", "servicios"));
 
       Mail::send('email.cotizacion', compact("producto"), function ($mail) use ($pdf, $request) {
@@ -521,27 +519,4 @@ class CotizacionesController extends Controller
         ->with('editar', 'ok'); 
     }
   }
-
-  public function pruebapdf(){
-    return view('system.cotizaciones.pruebaPDF');
-  }
-
-  public function generarpdf(Request $request){
-    $producto = Producto_Servicio::find(1)->get();
-
-    if(count($producto) > 0){
-      $pdf = Pdf::loadView('pdf.cotizacion', compact("producto"));
-
-      Mail::send('email.cotizacion', compact("producto"), function ($mail) use ($pdf) {
-        $mail->from('elbaskcraft@gmail.com', 'Joel Dome');
-        $mail->to('elbaskcraft@gmail.com');
-        $mail->subject("Cotización COT-12");
-        $mail->attachData($pdf->output(), 'cotizacion.pdf');
-      });
-
-      // return $pdf->download('archivo.pdf'); // Descargar
-      return $pdf->stream('archivo.pdf'); // Ver en una nueva página
-    }
-  }
-
 }
