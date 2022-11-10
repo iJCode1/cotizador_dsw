@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 // MultiTenancy
@@ -120,45 +121,64 @@ class EmpresaController extends Controller
    */
   public function registrarEmpresa(Request $request)
   {
-    // Las validaciones se hacen de izquierda a derecha
-    // dd($request);
-    $request->validate([
+
+    $rules = [
       'fqdn' => 'required|unique:Empresas',
-      'address' => 'required',
-      'postal' => 'required|min:5|max:5',
+      'address' => 'required|string|min:1',
+      'postal' => 'required|digits_between:5,5',
       'estado' => 'required',
       'municipio_id' => 'required',
-      'number' => 'required|digits_between:1,5',
-      'rfc' => 'required|min:13|max:13',
-      'nameContact' => 'required', 'regex: /^[A-Z][A-Z,a-z,\s, á, é, í, ó, ú, ü]+$/',
-      'phone' => 'required|min:10|max:10',
+      'number' => 'required|numeric|digits_between:1,5',
+      'rfc' => 'required|between:13,13',
+      'nameContact' => 'required|string',
+      'phone' => 'required|numeric|digits_between:10,10',
       'email' => 'required|email|unique:Empresas,correo_electronico',
-      'password' => 'required|digits_between:8,45',
-      'password_confirmation' => 'required',
-    ]);
-    // $this->validate($request, [
-    // 'fqdn' => ['required', 'string', 'max:20', Rule::unique('hostnames')->where(function ($query) use ($fqdn) {
-    //   return $query->where('fqdn', $fqdn);
-    // })],
-    //   'address' => ['required', 'string',],
-    //   'postal' => ['required', 'string', 'regex: /^[0-9]{5}$/'],
-    //   'number' => ['required', 'string', 'regex: /^[0-9]*$/', 'max:10'],
-    // 'estado' => ['required'],
-    //   'municipio' => ['required'],
-    // 'rfc' => ['required', 'string', 'regex: /^[0-9][A-Z,a-z]{13}$/'],
-    //   'nameContact' => ['required', 'string', 'max:50'],
-    //   'phone' => ['required', 'string', 'regex: /^[0-9]{10}$/'],
-    //   'email' => ['required', 'string', 'email', 'max:50', 'unique:users'],
-    //   'password' => ['required', 'string', 'min:8', 'max:50', 'confirmed'],
-    // ]);
-    $contraseña = Hash::make($request->password);
-    $_SESSION['name'] = $request->fqdn;
-    $_SESSION['email'] = $request->email;
-    $_SESSION['password'] = $contraseña;
-    $this->registered($request);
+      'password' => 'required|min:8',
+    ];
 
-    return redirect()->route('empresas')
-      ->with('crear', 'ok');
+    $customMessages = [
+      'fqdn.required' => 'El nombre de la empresa es obligatorio.',
+      'fqdn.unique' => 'El nombre de la empresa ya ha sido utilizado antes.',
+      'address.required' => 'La dirección es obligatoria.',
+      'address.string' => 'Se han introducido valores inválidos en la dirección.',
+      'address.min' => 'La dirección debe contener al menos 1 carácter.',
+      'postal.required' => 'El código postal es obligatorio.',
+      'postal.digits_between' => 'El código postal debe ser de 5 dígitos.',
+      'estado.required' => 'Se debe seleccionar el estado.',
+      'municipio_id.required' => 'Se debe seleccionar el municipio.',
+      'number.required' => 'El número es obligatorio.',
+      'number.numeric' => 'El número solo acepta valores numéricos.',
+      'number.digits_between' => 'El número debe estar entre 1 y 5 dígitos.',
+      'rfc.required' => 'El RFC es obligatorio.',
+      'rfc.between' => 'El RFC debe ser de 13 caracteres.',
+      'nameContact.required' => 'El nombre es obligatorio.',
+      'nameContact.string' => 'El nombre solo debe contener letras y espacios.',
+      'phone.required' => 'El teléfono es obligatorio.',
+      'phone.numeric' => 'El teléfono solo acepta valores numéricos.',
+      'phone.digits_between' => 'El teléfono debe ser de 10 dígitos.',
+      'email.required' => 'El correo electrónico es obligatorio.',
+      'email.email' => 'El correo electrónico tiene un formato incorrecto.',
+      'email.unique' => 'El correo electrónico ya ha sido utilizado antes.',
+      'password.required' => 'La contraseña es obligatoria.',
+      'password.min' => 'La contraseña debe contener al menos 8 caracteres.',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $customMessages);
+    
+    if ($validator->fails()) {
+      return redirect("/empresa")
+      ->withInput()
+      ->withErrors($validator);
+    } else {
+      $contraseña = Hash::make($request->password);
+      $_SESSION['name'] = $request->fqdn;
+      $_SESSION['email'] = $request->email;
+      $_SESSION['password'] = $contraseña;
+      $this->registered($request);
+
+      return redirect()->route('empresas')
+        ->with('crear', 'ok');
+    }
   }
 
   /**

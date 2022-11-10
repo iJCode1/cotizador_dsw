@@ -79,7 +79,6 @@
                   <option selected disabled value="">Seleccione un estado</option>
                   @foreach($estados as $estado)
                     @if (old('estado') == $estado->estado_id)
-                      {{-- {{dd("Algo")}} --}}
                       <option selected value="{{$estado->estado_id}}">{{$estado->nombre}}</option>
                       @continue
                     @endif
@@ -170,7 +169,7 @@
               <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Teléfono') }}</label>
 
               <div class="col-md-6">
-                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" autocomplete="phone" autofocus>
+                <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" autocomplete="phone" autofocus>
 
                 @error('phone')
                 <span class="invalid-feedback" role="alert">
@@ -203,21 +202,6 @@
                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" autocomplete="off" >
 
                 @error('password')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            {{-- Confirmar Contraseña --}}
-            <div class="form-group row">
-              <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirmar Contraseña') }}</label>
-
-              <div class="col-md-6">
-                <input id="password-confirm" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" value="{{ old('password_confirmation') }}" autocomplete="new-password">
-
-                @error('password_confirmation')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
