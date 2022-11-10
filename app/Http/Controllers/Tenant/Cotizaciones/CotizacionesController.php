@@ -562,6 +562,8 @@ class CotizacionesController extends Controller
         $detalle_cotizacion->subtotal = $request->subtotal[$index];
         $detalle_cotizacion->update();
       }
+
+      $this->generarPDFCotizacion($request, $cotizacion_id);
   
       return redirect()
         ->route('tenant.cotizaciones')

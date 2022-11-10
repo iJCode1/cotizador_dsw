@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="container">
-  {{-- {{dd($cotizacion)}} --}}
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -34,6 +33,7 @@
                         <div class="my-3 text-center">
                           <p class="font-weight-bold">Correo Cliente:
                             <span class="font-weight-normal">{{$cotizacion->cliente->email}}</span>
+                            <input type="text" style="display: none" readonly class="form-control" id="correoCliente" name="correoCliente" value="{{old('correoCliente', $cotizacion->cliente->email)}}">
                           </p>
                         </div>
 
