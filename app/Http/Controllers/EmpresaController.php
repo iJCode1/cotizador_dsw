@@ -283,33 +283,64 @@ class EmpresaController extends Controller
 
   /**
    * Función actualizarEmpresa()
-   * Recibe los datos editados de la empresa y los actualiza en el registro
+   * Recibe los datos editados de la empresa y hace la validación
+   * Si los datos son correctos, actualiza la información de la empresa
+   * Si no, regresa a la vista de edición y muestra los errores
    */
   public function actualizarEmpresa(Request $request, $empresaID)
   {
-    $request->validate([
-      'address' => 'required',
-      'postal' => 'required|min:5|max:5',
-      'number' => 'required|digits_between:1,5',
-      'rfc' => 'required|min:13|max:13',
-      'nameContact' => 'required', 'regex: /^[A-Z][A-Z,a-z,\s, á, é, í, ó, ú, ü]+$/',
-      'phone' => 'required|min:10|max:10',
-      'municipio_id' => 'required',
+
+    $rules = [
+      'address' => 'required|string|min:1',
+      'postal' => 'required|digits_between:5,5',
+      'number' => 'required|numeric|digits_between:1,5',
       'estado' => 'required',
-    ]);
+      'municipio_id' => 'required',
+      'rfc' => 'required|between:13,13',
+      'nameContact' => 'required|string',
+      'phone' => 'required|numeric|digits_between:10,10',
+    ];
 
-    $empresa = Empresa::find($empresaID);
-    $empresa->direccion = $request->address;
-    $empresa->codigo_postal = $request->postal;
-    $empresa->numero = $request->number;
-    $empresa->rfc = $request->rfc;
-    $empresa->nombre_contacto = $request->nameContact;
-    $empresa->telefono = $request->phone;
-    $empresa->municipio_id = $request->municipio_id;
-    $empresa->update();
+    $customMessages = [
+      'address.required' => 'La dirección es obligatoria.',
+      'address.string' => 'Se han introducido valores inválidos en la dirección.',
+      'address.min' => 'La dirección debe contener al menos 1 carácter.',
+      'postal.required' => 'El código postal es obligatorio.',
+      'postal.digits_between' => 'El código postal debe ser de 5 dígitos.',
+      'estado.required' => 'Se debe seleccionar el estado.',
+      'municipio_id.required' => 'Se debe seleccionar el municipio.',
+      'number.required' => 'El número es obligatorio.',
+      'number.numeric' => 'El número solo acepta valores numéricos.',
+      'number.digits_between' => 'El número debe estar entre 1 y 5 dígitos.',
+      'rfc.required' => 'El RFC es obligatorio.',
+      'rfc.between' => 'El RFC debe ser de 13 caracteres.',
+      'nameContact.required' => 'El nombre es obligatorio.',
+      'nameContact.string' => 'El nombre solo debe contener letras y espacios.',
+      'phone.required' => 'El teléfono es obligatorio.',
+      'phone.numeric' => 'El teléfono solo acepta valores numéricos.',
+      'phone.digits_between' => 'El teléfono debe ser de 10 dígitos.',
+    ];
 
-    return redirect()->route("empresas")
-      ->with('editar', 'ok');
+    $validator = Validator::make($request->all(), $rules, $customMessages);
+
+    if ($validator->fails()) {
+      return redirect("/empresa/$empresaID/editar")
+        ->withInput()
+        ->withErrors($validator);
+    } else {
+      $empresa = Empresa::find($empresaID);
+      $empresa->direccion = $request->address;
+      $empresa->codigo_postal = $request->postal;
+      $empresa->numero = $request->number;
+      $empresa->rfc = $request->rfc;
+      $empresa->nombre_contacto = $request->nameContact;
+      $empresa->telefono = $request->phone;
+      $empresa->municipio_id = $request->municipio_id;
+      $empresa->update();
+
+      return redirect()->route("empresas")
+        ->with('editar', 'ok'); 
+    }
   }
 
   /**

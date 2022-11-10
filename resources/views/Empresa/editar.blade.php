@@ -6,11 +6,11 @@
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">{{ __('Registrar') }}</div>
-        {{-- {{dd($empresa)}} --}}
         <div class="card-body">
           <form method="POST" action="{{ route('actualizarEmpresa', $empresa) }}">
             @method('put')
             @csrf
+            
             <!-- Registro de un Inquilino (Empresa): fqdn - fully qualified domain name -->
             <div class="form-group row">
               <label for="fqdn" class="col-md-4 col-form-label text-md-right">{{ __('Dominio') }}</label>
@@ -71,7 +71,6 @@
               </div>
 
               {{-- Número --}}
-            
               <label for="number" class="col-md-2 col-form-label text-md-right">{{ __('Numero') }}</label>
 
               <div class="col-md-2">
@@ -84,7 +83,7 @@
                 @enderror
               </div>
             </div>
-            {{-- {{dd($estadoEmpresa)}} --}}
+
             {{-- Estado --}}
             <div class="form-group row">
               <label for="estado" class="col-md-4 col-form-label text-md-right">{{ __('Estado') }}</label>
@@ -162,7 +161,7 @@
               <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Teléfono') }}</label>
 
               <div class="col-md-6">
-                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $empresa->telefono) }}" required autocomplete="phone" autofocus>
+                <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $empresa->telefono) }}" required autocomplete="phone" autofocus>
 
                 @error('phone')
                 <span class="invalid-feedback" role="alert">
@@ -171,21 +170,6 @@
                 @enderror
               </div>
             </div>
-
-            {{-- Contraseña --}}
-            {{-- <div class="form-group row">
-              <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Contraseña') }}</label>
-
-              <div class="col-md-6">
-                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password', $empresa->contraseña) }}" required autocomplete="new-password" readonly>
-
-                @error('password')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div> --}}
 
             <div class="form-group row mb-0">
               <div class="col-md-6 offset-md-4">
