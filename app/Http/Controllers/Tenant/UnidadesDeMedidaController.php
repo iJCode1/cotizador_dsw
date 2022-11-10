@@ -23,7 +23,7 @@ class UnidadesDeMedidaController extends Controller
 
   /**
    * Función index()
-   * Muestra las unidades de medida que se han registrado
+   * Muestra las unidades de medida que se han registrado en la BD
    */
   public function index()
   {
@@ -37,7 +37,7 @@ class UnidadesDeMedidaController extends Controller
 
   /**
    * Función showRegisterUnidad()
-   * Retorna la vista de registro de unidades de medida
+   * Retorna la vista de registro de unidad de medida
    */
   public function showRegisterUnidad()
   {
@@ -47,7 +47,8 @@ class UnidadesDeMedidaController extends Controller
   /**
    * Función registerUnidad()
    * Hace la validación de los campos al registrar una nueva unidad de medida
-   * Si los datos son validos, registra la unidad de medida
+   * Si los datos son válidos, registra la unidad de medida
+   * Si no son válidos regresa a la vista anterior y muestra errores
    */
   public function registerUnidad(Request $request)
   {
@@ -102,12 +103,11 @@ class UnidadesDeMedidaController extends Controller
 
   /**
    * Función editUnidad()
-   * Valida que los nuevos datos de la unidad sean validos
-   * Si los datos son validos, actualiza el registro en la BD
+   * Válida que los nuevos datos de la unidad sean válidos
+   * Si los datos son válidos, actualiza el registro en la BD
    */
   public function editUnidad(Request $request, $unidadID)
   {
-    // 'nombre_unidad' => 'required|min:1|max:45|unique:tenant.unidades_de_medida,nombre_unidad',
 
     $rules = [
       'nombre_unidad' => ['required', 'min:1', 'max:45', Rule::unique('tenant.unidades_de_medida')->ignore($unidadID, 'unidad_medida_id')],
@@ -157,7 +157,7 @@ class UnidadesDeMedidaController extends Controller
 
   /**
    * Función activateUnidad()
-   * Quita la baja lógica del registro seleccionado
+   * Activa nuevamente el registro seleccionado (quita baja lógica)
    */
   public function activateUnidad($unidad_id)
   {
