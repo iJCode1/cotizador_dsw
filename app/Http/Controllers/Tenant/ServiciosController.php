@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
-
 class ServiciosController extends Controller
 {
 
@@ -63,8 +62,9 @@ class ServiciosController extends Controller
 
   /**
    * Función registerServicio()
-   * hace las validaciones de los campos para registrar un producto y/o sevricio
-   * si las validaciones son correctas, se hace la alta del registro
+   * hace las validaciones de los campos para registrar un producto y/o servicio
+   * si las validaciones retornan un error, regresa a la vista anterior y muestra errores
+   * si las validaciones son correctas, se hace el alta del registro
    * hace el redireccionamiento a la ruta 'showServicios'
    */
   public function registerServicio(Request $request)
@@ -157,21 +157,12 @@ class ServiciosController extends Controller
   /**
    * Función editServicio()
    * hace las validaciones de los campos editados en el producto y/o servicio
+   * si las validaciones retornan un error, regresa a la vista anterior y muestra errores
    * si las validaciones son correctas, se hace la actualización del registro
    * hace el redireccionamiento a la ruta 'showServicios'
    */
   public function editServicio(Request $request, $servicioID)
   {
-
-    $rules = [
-      'nombre' => 'required|min:1|max:255',
-      'descripcion' => 'required|min:1',
-      'codigo' => 'required|min:1|max:45|unique:tenant.productos_servicios,codigo',
-      'imagen' => 'image|mimes:gif,jpeg,png,svg',
-      'precio' => 'required',
-      'tipo' => 'required',
-      'unidad' => 'required',
-    ];
 
     $rules = [
       'nombre' => ['required', 'min:1', 'max:255'],
