@@ -15,13 +15,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Swift_Mailer;
+use Swift_Message;
+use Swift_SmtpTransport;
 
 class CotizacionesController extends Controller
 {
   protected $redirectTo = '/home';
+  protected $tenantName = null;
 
   /**
    * Create a new controller instance.
@@ -31,6 +36,11 @@ class CotizacionesController extends Controller
   public function __construct()
   {
     $this->middleware('cotizaciones');
+    $hostname = app(\Hyn\Tenancy\Environment::class)->hostname();
+    if ($hostname) {
+      $fqdn = $hostname->fqdn;
+      $this->tenantName = explode('.', $fqdn)[0];
+    }
   }
 
   public function index()
@@ -247,6 +257,8 @@ class CotizacionesController extends Controller
 
   public function createCotizacion(Request $request)
   {
+    // $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
+    // dd($this->tenantName);
     // dd($request);
     // dd($request['descripcion']);
     // dd($request['servicio_uuid']);
@@ -408,13 +420,39 @@ class CotizacionesController extends Controller
 
     if(count($servicios) > 0){
       $pdf = Pdf::loadView('pdf.cotizacion', compact("request", "servicios"));
+      
+      if($this->tenantName === 'joelE'){
+        // Copia del mailer actual
+        $backup = Mail::getSwiftMailer();
 
-      Mail::send('email.cotizacion', compact("producto"), function ($mail) use ($pdf, $request) {
-        $mail->from('joeldome17@gmail.com', 'Joel Dome');
-        $mail->to($request->correoCliente);
-        $mail->subject("Cotización: $request->folio_cotizacion");
-        $mail->attachData($pdf->output(), 'cotizacion.pdf');
-      });
+        // Definiendo el gmail mailer
+        $transport = new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl');
+        $transport->setUsername('joeldome17@gmail.com');
+        $transport->setPassword('ecfzmowdugttsxaq');
+        
+        $gmail = new Swift_Mailer($transport);
+
+        // Estableciendo el nuevo mailer
+        Mail::setSwiftMailer($gmail);
+
+        Mail::send('email.cotizacion', compact("servicios"), function ($mail) use ($pdf, $request) {
+          $mail->from("joeldome17@gmail.com", 'Joel Dome');
+          $mail->to($request->correoCliente);
+          $mail->subject("Cotización: $request->folio_cotizacion");
+          $mail->attachData($pdf->output(), 'cotizacion.pdf');
+        });
+        
+        // Restaurando el mailer original
+        Mail::setSwiftMailer($backup);
+      }else{
+
+        Mail::send('email.cotizacion', compact("servicios"), function ($mail) use ($pdf, $request) {
+          $mail->from("devjoel17@gmail.com", 'Joel Dome');
+          $mail->to($request->correoCliente);
+          $mail->subject("Cotización: $request->folio_cotizacion");
+          $mail->attachData($pdf->output(), 'cotizacion.pdf');
+        });
+      }
 
       return $pdf->download('archivo.pdf'); // Descargar
       // return $pdf->stream('archivo.pdf'); // Ver en una nueva página
