@@ -15,24 +15,14 @@ use App\Models\Empresa;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 // MultiTenancy
 use Hyn\Tenancy\Models\Hostname;
 use Hyn\Tenancy\Models\Website;
 use Hyn\Tenancy\Repositories\HostnameRepository;
 use Hyn\Tenancy\Repositories\WebsiteRepository;
-
-
-use Hyn\Tenancy\Events\Hostnames as Events;
-use Hyn\Tenancy\Traits\DispatchesEvents;
-use Hyn\Tenancy\Validators\HostnameValidator;
-use Illuminate\Contracts\Cache\Factory;
-use Illuminate\Database\Eloquent\Builder;
 
 use App\User;
 
@@ -60,7 +50,7 @@ class EmpresaController extends Controller
 
   /**
    * Función index()
-   * Enlista las empresas que ha dado de alta el administrador
+   * Enlista las empresas que ha dado de alta el administrador general
    */
   public function index()
   {
@@ -118,6 +108,9 @@ class EmpresaController extends Controller
 
   /**
    * Función registrarEmpresa()
+   * Hace la validación de los datos ingresados
+   * Si encuentra un error, regresa al formulario y muestra los errores
+   * Si los datos son correctos, invoca la función registered
    */
   public function registrarEmpresa(Request $request)
   {
@@ -164,11 +157,11 @@ class EmpresaController extends Controller
     ];
 
     $validator = Validator::make($request->all(), $rules, $customMessages);
-    
+
     if ($validator->fails()) {
       return redirect("/empresa")
-      ->withInput()
-      ->withErrors($validator);
+        ->withInput()
+        ->withErrors($validator);
     } else {
       $contraseña = Hash::make($request->password);
       $_SESSION['name'] = $request->fqdn;
@@ -183,7 +176,7 @@ class EmpresaController extends Controller
 
   /**
    * La empresa ya fue validada
-   * Se hace la alta de un Website y un Hostname
+   * Se hace el alta de un Website y un Hostname
    *
    * @param  \Illuminate\Http\Request $request
    * @return mixed $user
@@ -193,6 +186,8 @@ class EmpresaController extends Controller
   /**
    * Función registered()
    * Esta función hace el registro de un website y un hostname
+   * para la empresa que se está registrando
+   * finalmente invoca a la función crearEmpresa
    */
   protected function registered($request)
   {
@@ -214,7 +209,8 @@ class EmpresaController extends Controller
 
   /**
    * Función crearEmpresa()
-   * Se obtienen los datos ingresados en el formulario y se hace la alta de una nueva empresa
+   * Se obtienen los datos ingresados en el formulario
+   * Hace el alta de la nueva empresa en la BD
    */
   public function crearEmpresa($request, $hostname)
   {
@@ -234,8 +230,6 @@ class EmpresaController extends Controller
     ];
 
     Empresa::create($empresa);
-    // Session::flash('mensaje', "Se ha registrado la empresa $request->fqdn correctamente!");
-    // Session::flash('tipoDeMensaje', "satisfactorio");
   }
 
   /**
@@ -339,13 +333,15 @@ class EmpresaController extends Controller
       $empresa->update();
 
       return redirect()->route("empresas")
-        ->with('editar', 'ok'); 
+        ->with('editar', 'ok');
     }
   }
 
   /**
    * Función desactivarEmpresa()
-   * Hace una baja lógica de la empresa seleccionada
+   * obtiene el id del website que se quiere dar de baja (baja lógica)
+   * lo busca y da de baja el website
+   * hace el redireccionamiento a la ruta 'empresas'
    */
   public function desactivarEmpresa($id)
   {
