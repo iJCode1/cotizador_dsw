@@ -5,14 +5,10 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\Rol;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\Tenant\User as User;
-use App\Models\Tenant\Usuario;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Rule;
 
 class UsuariosController extends Controller
 {
@@ -36,7 +32,8 @@ class UsuariosController extends Controller
 
   /**
    * Función index()
-   * Retorna la vista 'index' donde se enlistan los usuarios dados de alta en la base de datos
+   * Retorna la vista 'index' 
+   * vista donde se enlistan los usuarios internos dados de alta en la base de datos
    */
   public function index()
   {
@@ -49,7 +46,7 @@ class UsuariosController extends Controller
 
   /**
    * Función showRegister()
-   * Retorna la vista de registro de usuarios
+   * Retorna la vista con el formulario para el registro de usuarios internos
    */
   public function showRegister()
   {
@@ -61,8 +58,9 @@ class UsuariosController extends Controller
 
   /**
    * Función registerUser()
-   * Valida los datos de un usuario al registrarlo 
-   * y hace la alta de ese usuario en la tabla correspondiente
+   * Válida los datos introducidos en el formulario
+   * Si los datos no son válidos, retorna a la vista anterior y muestra errores
+   * Si los datos son válidos hace el alta de ese usuario en la tabla correspondiente
    * Finalmente retorna a la vista donde se enlistan los usuarios registrados
    */
   public function registerUser(Request $request)
@@ -129,7 +127,7 @@ class UsuariosController extends Controller
 
   /**
    * Función showEditUser()
-   * Busca al usuario que se desea editar, obtiene su información 
+   * Busca al usuario que se desea editar y obtiene su información 
    * Retorna la vista de edición de usuario junto a la información del usuario seleccionado
    */
   public function showEditUser($usuario_id)
@@ -146,7 +144,8 @@ class UsuariosController extends Controller
   /**
    * Función editUser()
    * Hace las validaciones de los datos ingresados al editar un usuario
-   * Y hace la actualización de los datos del usuario editado
+   * Si los datos no son válidos, regresa a la vista anterior y muestra los errores
+   * Si los datos son válidos hace la actualización de los datos del usuario editado
    * Finalmente retorna a la vista donde se enlistan los usuarios registrados
    */
   public function editUser(Request $request, $usuario_id)
@@ -190,9 +189,9 @@ class UsuariosController extends Controller
       $usuario->telefono = $request->telefono;
       $usuario->rol_id = $request->rol;
       $usuario->update();
-  
+
       return redirect()->route('tenant.showEmpleados')
-        ->with('editar', 'ok'); 
+        ->with('editar', 'ok');
     }
   }
 
@@ -213,7 +212,7 @@ class UsuariosController extends Controller
   /**
    * Función activateUser()
    * Hace la activación del usuario seleccionado que previamente 
-   * se habia dado de baja de forma lógica
+   * se había dado de baja de forma lógica
    * Finalmente retorna a la vista donde se enlistan los usuarios registrados
    */
   public function activateUser($usuario_id)
