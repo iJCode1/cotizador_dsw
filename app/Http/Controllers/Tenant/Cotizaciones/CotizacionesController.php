@@ -465,6 +465,16 @@ class CotizacionesController extends Controller
 
     $cotizacion = Cotizacion::find($cotizacion_id);
     $estatus = Estatus_Cotizacion::all();
+    
+    $usuario = "interno";
+
+    if (Auth::guard('cliente')->check()) {
+      $usuario = "cliente";
+    }
+
+    if (Auth::check()) {
+      $usuario = "interno";
+    }
     // $servicios = ;
     // $servicios = DB::select("SELECT dco.detalle_cotizacion_id, dco.cantidad, dco.precio_bruto, dco.iva, dco.subtotal, serv.nombre, serv.descripcion
     // FROM detalle_cotizaciones AS dco
@@ -484,6 +494,7 @@ class CotizacionesController extends Controller
       'cotizacion' => $cotizacion,
       'estatus' => $estatus,
       'servicios' => $servicios,
+      'usuario' => $usuario
     ]);
   }
 
