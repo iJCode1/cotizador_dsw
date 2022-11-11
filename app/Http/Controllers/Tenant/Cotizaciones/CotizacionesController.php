@@ -382,7 +382,8 @@ class CotizacionesController extends Controller
    * obtiene los productos y/o servicios que pertenecen a la cotización que se realizó
    * genera el PDF y válida si el tenantName se encuentra entre las validaciones añadidas
    * para poder utilizar su configuración de email y contraseña para el envío correcto
-   * de la cotización por el email configurado
+   * de la cotización por el email configurado invocando a la función tenantEmailConfiguration
+   * para dicha configuración
    */
   public function generarPDFCotizacion($request, $cotizacion_id)
   {
@@ -395,33 +396,18 @@ class CotizacionesController extends Controller
     if (count($servicios) > 0) {
       $pdf = Pdf::loadView('pdf.cotizacion', compact("request", "servicios"));
 
-      if ($this->tenantName === 'joelE') {
-        // Copia del mailer actual
-        $backup = Mail::getSwiftMailer();
+      /**
+       * Al hacer la validación del tenant...
+       * el nombre con el que se compara debe ser exactamente igual (Mayúsculas y minúsculas)
+       */
 
-        // Definiendo el gmail mailer
-        $transport = new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl');
-        $transport->setUsername('joeldome17@gmail.com');
-        $transport->setPassword('ecfzmowdugttsxaq');
+      if ($this->tenantName === 'joele') {
 
-        $gmail = new Swift_Mailer($transport);
-
-        // Estableciendo el nuevo mailer
-        Mail::setSwiftMailer($gmail);
-
-        Mail::send('email.cotizacion', compact("servicios"), function ($mail) use ($pdf, $request) {
-          $mail->from("joeldome17@gmail.com", 'Joel Dome');
-          $mail->to($request->correoCliente);
-          $mail->subject("Cotización: $request->folio_cotizacion");
-          $mail->attachData($pdf->output(), 'cotizacion.pdf');
-        });
-
-        // Restaurando el mailer original
-        Mail::setSwiftMailer($backup);
+        $this->tenantEmailConfiguration($request, $pdf, $servicios, "joeldome17@gmail.com", "ecfzmowdugttsxaq");
       } else {
 
         Mail::send('email.cotizacion', compact("servicios"), function ($mail) use ($pdf, $request) {
-          $mail->from("devjoel17@gmail.com", 'Joel Dome');
+          $mail->from("devjoel17@gmail.com", '');
           $mail->to($request->correoCliente);
           $mail->subject("Cotización: $request->folio_cotizacion");
           $mail->attachData($pdf->output(), 'cotizacion.pdf');
@@ -431,6 +417,38 @@ class CotizacionesController extends Controller
       return $pdf->download('archivo.pdf'); // Descargar
       // return $pdf->stream('archivo.pdf'); // Ver en una nueva página
     }
+  }
+
+  /**
+   * Función tenantEmailConfiguration()
+   * recibe como argumento el correo y contraseña del email
+   * desde donde se desean enviar las cotizaciones de cada tenant (empresa)
+   * con estos datos aplica la nueva configuración para el correcto envío del email.
+   */
+  public function tenantEmailConfiguration($request, $pdf, $servicios, $email, $password)
+  {
+    // Copia del mailer actual
+    $backup = Mail::getSwiftMailer();
+
+    // Definiendo el gmail mailer
+    $transport = new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl');
+    $transport->setUsername($email);
+    $transport->setPassword($password);
+
+    $gmail = new Swift_Mailer($transport);
+
+    // Estableciendo el nuevo mailer
+    Mail::setSwiftMailer($gmail);
+
+    Mail::send('email.cotizacion', compact("servicios"), function ($mail) use ($pdf, $request, $email) {
+      $mail->from($email, '');
+      $mail->to($request->correoCliente);
+      $mail->subject("Cotización: $request->folio_cotizacion");
+      $mail->attachData($pdf->output(), 'cotizacion.pdf');
+    });
+
+    // Restaurando el mailer original
+    Mail::setSwiftMailer($backup);
   }
 
   /**
