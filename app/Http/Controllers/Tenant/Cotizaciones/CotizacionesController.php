@@ -13,14 +13,11 @@ use App\Models\Tenant\Unidad_De_Medida;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Swift_Mailer;
-use Swift_Message;
 use Swift_SmtpTransport;
 
 class CotizacionesController extends Controller
@@ -43,6 +40,11 @@ class CotizacionesController extends Controller
     }
   }
 
+  /**
+   * Función index()
+   * retorna la vista system.cotizaciones.index
+   * donde se enlistan las cotizaciones realizadas por el usuario (interno) o por el empleado
+   */
   public function index()
   {
     $cotizaciones = "";
@@ -62,6 +64,12 @@ class CotizacionesController extends Controller
     ]);
   }
 
+  /**
+   * Función showCotizacionForm()
+   * obtiene la información requerida por la vista system.cotizaciones.cotizacion
+   * donde se muestra el formulario para la creación de una cotización
+   * por parte de un usuario (interno) o por un cliente
+   */
   public function showCotizacionForm()
   {
     $estatus = Estatus_Cotizacion::all();
@@ -71,10 +79,10 @@ class CotizacionesController extends Controller
     $cotizaciones = Cotizacion::orderBy('cotizacion_id', 'DESC')->get();
     $count = count($cotizaciones);
 
-    if($count === 0){
+    if ($count === 0) {
       $cotSiguiente = 1;
-    }else{
-      $cotSiguiente = $cotizaciones[0]->cotizacion_id+1;
+    } else {
+      $cotSiguiente = $cotizaciones[0]->cotizacion_id + 1;
     }
 
     $folio = "COT-$cotSiguiente";
@@ -101,6 +109,11 @@ class CotizacionesController extends Controller
     ]);
   }
 
+  /**
+   * Función buscarCliente()
+   * a partir del término ingresado en el formulario de cotización
+   * obtiene la información del cliente que se busca
+   */
   public function buscarCliente(Request $request)
   {
     $term = $request->get('term');
@@ -108,12 +121,22 @@ class CotizacionesController extends Controller
     return response()->json($buscarCliente);
   }
 
+  /**
+   * Función seleccionarCliente()
+   * obtiene la información del cliente
+   * que se seleccionó en la búsqueda dentro del formulario de cotización
+   */
   public function seleccionarCliente(Request $request)
   {
     $cliente = Cliente::where('email', $request->cliente)->first();
     return response()->json($cliente);
   }
 
+  /**
+   * Función buscarServicio()
+   * a partir del término ingresado en el formulario de cotización
+   * obtiene la información del producto y/o servicio que se busca
+   */
   public function buscarServicio(Request $request)
   {
     $term = $request->get('term');
@@ -121,12 +144,24 @@ class CotizacionesController extends Controller
     return response()->json($buscarServicio);
   }
 
+  /**
+   * Función seleccionarServicio()
+   * obtiene la información del producto y/o servicio
+   * que se seleccionó en la búsqueda dentro del formulario de cotización
+   */
   public function seleccionarServicio(Request $request)
   {
     $servicio = Producto_Servicio::where('nombre', $request->servicio)->first();
     return response()->json($servicio);
   }
 
+  /**
+   * Función registrarCliente()
+   * obtiene los datos introducidos en el modal de registro de un nuevo cliente
+   * válida que los datos sean correctos
+   * Si no son válidos, regresa al modal los mensajes de error
+   * Si los datos son válidos, hace el registro del nuevo cliente en la tabla correspondiente
+   */
   public function registrarCliente(Request $request)
   {
     $rules = [
@@ -187,6 +222,14 @@ class CotizacionesController extends Controller
     }
   }
 
+  /**
+   * Función registrarServicio()
+   * obtiene los datos introducidos en el modal de registro de un producto y/o servicio
+   * válida que los datos sean correctos
+   * Si no son válidos, regresa al modal los mensajes de error
+   * Si los datos son válidos, hace el registro del nuevo producto y/o servicio
+   * en la tabla correspondiente
+   */
   public function registrarServicio(Request $request)
   {
     $rules = [
@@ -255,24 +298,18 @@ class CotizacionesController extends Controller
     }
   }
 
+  /**
+   * Función createCotizacion()
+   * obtiene los datos introducidos en el formulario de crear cotización
+   * válida que los datos sean correctos
+   * Si no son válidos, regresa al formulario los mensajes de error
+   * Si los datos son válidos, hace la cotización
+   * e invoca a la función generarPDFCotizacion().
+   */
   public function createCotizacion(Request $request)
   {
-    // $hostname  = app(\Hyn\Tenancy\Environment::class)->hostname();
-    // dd($this->tenantName);
-    // dd($request);
-    // dd($request['descripcion']);
-    // dd($request['servicio_uuid']);
 
-    // if($request['servicio_uuid'] === null){
-    //   // dd("Nullo");
-    //   return redirect()->back()->with('success', 'your message,here');   
-    // }else{
-    //   dd("No es nullo");
-    // }
-
-    // dd($request);
     $rules = [
-      // 'cliente' => 'required',
       'nombreCliente' => 'required',
       'correoCliente' => 'required',
       'folio_cotizacion' => 'required',
@@ -286,23 +323,19 @@ class CotizacionesController extends Controller
     ];
 
     $customMessages = [
-      // 'cliente.required' => 'Se debe buscar un cliente.',
       'nombreCliente.required' => 'El nombre del cliente es obligatorio.',
       'correoCliente.required' => 'El correo del cliente es obligatorio.',
       'folio_cotizacion.required' => 'El folio de la cotización es obligatorio.',
       'descripcion.required' => 'La descripción de la cotización es obligatoria.',
       'descripcion.min' => 'La descripción debe contener al menos 1 carácter.',
-      'fecha_creacion.required' => 'La fecha de creación es obligatorio.',
+      'fecha_creacion.required' => 'La fecha de creación es obligatoria.',
       'vigencia.required' => 'La vigencia de la cotización es obligatoria.',
       'estatus_cotizacion_id.required' => 'El estatus de la cotización es obligatorio.',
       'servicio_uuid.required' => 'No se ha seleccionado nada para cotizar.',
       'descuento_general.required' => 'El descuento general es obligatorio.',
       'numero_servicios.required' => 'Se debe especificar la cantidad a cotizar.',
-      // 'servicio_id' => 'required',
     ];
 
-
-    // $validatedData = $request->validate($rules, $customMessages);
     $validator = Validator::make($request->all(), $rules, $customMessages);
 
     if ($validator->fails()) {
@@ -310,30 +343,17 @@ class CotizacionesController extends Controller
         ->withInput($request->only('cliente_id', 'nombreCliente', 'correoCliente', 'descripcion', 'fecha_creacion', 'vigencia', 'estatus_cotizacion_id', 'descuento_general'))
         ->withErrors($validator);
     } else {
-      
-      return DB::transaction(function () use ($request) {
 
-        // $cotizacion = [
-        //   'nombre_cotizacion' => $request['nombre_cotizacion'],
-        //   'descripcion' => $request['descripcion'],
-        //   'fecha_creacion' => $request['fecha_creacion'],
-        //   'vigencia' => $request['vigencia'],
-        //   'usuario_id' =>  Auth::user()->user_id,
-        //   'estatus_cotizacion_id' => $request['estatus_cotizacion_id'],
-        //   'cliente_id' => $request['cliente_id'],
-        // ];
-  
-        // dd($cotizacion);
-        // Cotizacion::create($cotizacion);
+      return DB::transaction(function () use ($request) {
 
         if (Auth::guard('cliente')->check()) {
           $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => 1]);
         }
-        
+
         if (Auth::check()) {
           $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id]);
         }
-  
+
         foreach ($request->servicio_id as $index => $servicio_id) {
           $cotizacion->cotizaciones()->create([
             'cantidad' => $request->numero_servicios[$index] ?? 0,
@@ -350,78 +370,32 @@ class CotizacionesController extends Controller
 
         $this->generarPDFCotizacion($request, $cotizacion->cotizacion_id);
 
-        //   ->route('cotizaciones.index')->withSuccess("La cotizacion $cotizacion->nombre_proyecto se creo exitosamente");
         return redirect()
           ->route('tenant.cotizaciones')
           ->with('crear', 'ok');
       });
     }
-
-    // dd($validatedData);
-
-    // $request->validate([
-
-    //   // 'servicio' => 'required',
-    //   // 'nombre_serv' => 'required',
-    //   // 'descripcion' => 'required',
-    //   // 'tipo' => 'required',
-    //   // 'precio' => 'required',
-    //   // 'cantidad' => 'required',
-    // 'servicio_id' => 'required',
-    // 'servicio_uuid' => 'required',
-    // 'nombre' => 'required',
-    // 'precio_inicial' => 'required',
-    // 'descuento_aplicado' => 'required',
-    // 'numero_servicios' => 'required',
-    // 'precio_bruto' => 'required',
-    // 'precio_iva' => 'required',
-    // 'subtotal' => 'required',
-    // ]);
-
-    // $uuid = $request['servicio_uuid'];
-    // $nombre = $request['nombre'];
-    // $precioIni = $request['precio_inicial'];
-    // $descuento = $request['descuento_aplicado'];
-    // $numero = $request['numero_servicios'];
-    // $precioB = $request['precio_bruto'];
-    // $precioI = $request['precio_iva'];
-    // $subtotal = $request['subtotal'];
-
-    // if($uuid === null || $nombre === null || $precioIni === null || $descuento === null || $numero === null || $precioB === null || $precioI === null || $subtotal === null){
-    //   return redirect()->back()->with('sinProductos', 'yes');   
-    // }
-
-
-    // dd("coti");
-    // dd($request->all() + ['usuario_id' => Auth::user()->user_id] + ['cliente_id' => 1]);
-    // dd(Auth::user()->user_id);
-    // dd(Cotizacion);
-    // dd($request->estatus_cotizacion_id);
-    // $cot = [
-    //   "nombre_cotizacion" => $request->nombre_cotizacion,
-    //   "descripcion" => $request->descripcion,
-    //   "fecha_creacion" => $request->fecha_creacion,
-    //   "vigencia" => $request->vigencia,
-    //   "usuario_id" => Auth::user()->user_id,
-    //   "estatus_cotizacion_id" => $request->estatus_cotizacion_id,
-    //   "cliente_id" => Auth::user()->user_id
-    // ];
-    // Cotizacion::create($cot);
-
-    // // return redirect()->route('tenant.cotizaciones');
   }
 
-  public function generarPDFCotizacion($request, $cotizacion_id){
+  /**
+   * Función generarPDFCotizacion()
+   * obtiene los productos y/o servicios que pertenecen a la cotización que se realizó
+   * genera el PDF y válida si el tenantName se encuentra entre las validaciones añadidas
+   * para poder utilizar su configuración de email y contraseña para el envío correcto
+   * de la cotización por el email configurado
+   */
+  public function generarPDFCotizacion($request, $cotizacion_id)
+  {
 
     $servicios = Detalle_Cotizacion::select('detalle_cotizaciones.detalle_cotizacion_id', 'detalle_cotizaciones.cantidad', 'detalle_cotizaciones.descuento', 'detalle_cotizaciones.descuento_general', 'detalle_cotizaciones.precio_inicial', 'detalle_cotizaciones.precio_bruto', 'detalle_cotizaciones.iva', 'detalle_cotizaciones.subtotal', 'productos_servicios.nombre', 'productos_servicios.descripcion')
       ->join('productos_servicios', 'detalle_cotizaciones.producto_servicio_id', '=', 'productos_servicios.producto_servicio_id')
       ->where("detalle_cotizaciones.cotizacion_id", "=", $cotizacion_id)
       ->get();
 
-    if(count($servicios) > 0){
+    if (count($servicios) > 0) {
       $pdf = Pdf::loadView('pdf.cotizacion', compact("request", "servicios"));
-      
-      if($this->tenantName === 'joelE'){
+
+      if ($this->tenantName === 'joelE') {
         // Copia del mailer actual
         $backup = Mail::getSwiftMailer();
 
@@ -429,7 +403,7 @@ class CotizacionesController extends Controller
         $transport = new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl');
         $transport->setUsername('joeldome17@gmail.com');
         $transport->setPassword('ecfzmowdugttsxaq');
-        
+
         $gmail = new Swift_Mailer($transport);
 
         // Estableciendo el nuevo mailer
@@ -441,10 +415,10 @@ class CotizacionesController extends Controller
           $mail->subject("Cotización: $request->folio_cotizacion");
           $mail->attachData($pdf->output(), 'cotizacion.pdf');
         });
-        
+
         // Restaurando el mailer original
         Mail::setSwiftMailer($backup);
-      }else{
+      } else {
 
         Mail::send('email.cotizacion', compact("servicios"), function ($mail) use ($pdf, $request) {
           $mail->from("devjoel17@gmail.com", 'Joel Dome');
@@ -459,13 +433,17 @@ class CotizacionesController extends Controller
     }
   }
 
+  /**
+   * Función showCotizacionEditForm()
+   * obtiene los productos y/o servicios que pertenecen a la cotización que se desea editar
+   * junto a los datos que solicita la vista de system.cotizaciones.edit
+   */
   public function showCotizacionEditForm($cotizacion_id)
   {
-    // dd($cotizacion_id);
 
     $cotizacion = Cotizacion::find($cotizacion_id);
     $estatus = Estatus_Cotizacion::all();
-    
+
     $usuario = "interno";
 
     if (Auth::guard('cliente')->check()) {
@@ -475,20 +453,11 @@ class CotizacionesController extends Controller
     if (Auth::check()) {
       $usuario = "interno";
     }
-    // $servicios = ;
-    // $servicios = DB::select("SELECT dco.detalle_cotizacion_id, dco.cantidad, dco.precio_bruto, dco.iva, dco.subtotal, serv.nombre, serv.descripcion
-    // FROM detalle_cotizaciones AS dco
-    // INNER JOIN productos_servicios AS serv
-    // ON dco.producto_servicio_id = serv.producto_servicio_id
-    // WHERE cotizacion_id = $cotizacion_id");
 
     $servicios = Detalle_Cotizacion::select('detalle_cotizaciones.detalle_cotizacion_id', 'detalle_cotizaciones.cantidad', 'detalle_cotizaciones.descuento', 'detalle_cotizaciones.descuento_general', 'detalle_cotizaciones.precio_inicial', 'detalle_cotizaciones.precio_bruto', 'detalle_cotizaciones.iva', 'detalle_cotizaciones.subtotal', 'productos_servicios.nombre', 'productos_servicios.descripcion')
       ->join('productos_servicios', 'detalle_cotizaciones.producto_servicio_id', '=', 'productos_servicios.producto_servicio_id')
       ->where("detalle_cotizaciones.cotizacion_id", "=", $cotizacion_id)
       ->get();
-
-    // dd("heyy");
-    // dd($servicios);
 
     return view('system.cotizaciones.edit', [
       'cotizacion' => $cotizacion,
@@ -498,6 +467,14 @@ class CotizacionesController extends Controller
     ]);
   }
 
+  /**
+   * Función editCotizacion()
+   * obtiene los datos introducidos en el formulario de edición de cotización
+   * válida que los datos sean correctos
+   * Si no son válidos, regresa al formulario los mensajes de error
+   * Si los datos son válidos, hace la actualización de la cotización
+   * e invoca a la función generarPDFCotizacion().
+   */
   public function editCotizacion(Request $request, $cotizacion_id)
   {
 
@@ -514,7 +491,6 @@ class CotizacionesController extends Controller
       'descripcion.min' => 'La descripción debe contener al menos 1 carácter.',
       'estatus_cotizacion_id.required' => 'El estatus de la cotización es obligatorio.',
       'descuento_general.required' => 'El descuento general es obligatorio.',
-      // 'numero_servicios.required' => 'Se debe especificar la cantidad a cotizar.',
     ];
 
     $validator = Validator::make($request->all(), $rules, $customMessages);
@@ -525,34 +501,34 @@ class CotizacionesController extends Controller
         ->withErrors($validator);
     } else {
       foreach ($request->servicio_id as $index => $servicio_id) {
-        if($request->precio_inicial[$index] == null){
+        if ($request->precio_inicial[$index] == null) {
           return back()
             ->withInput($request->only('folio_cotizacion', 'descripcion', 'estatus_cotizacion_id', 'descuento_general'))
             ->withErrors(['precio_inicial' => 'El precio es obligatorio.']);
         }
 
-        if($request->descuento[$index] == null){
+        if ($request->descuento[$index] == null) {
           return back()
             ->withInput($request->only('folio_cotizacion', 'descripcion', 'estatus_cotizacion_id', 'descuento_general'))
             ->withErrors(['descuento' => 'El descuento es obligatorio.']);
         }
 
-        if($request->cantidad[$index] == null){
+        if ($request->cantidad[$index] == null) {
           return back()
             ->withInput($request->only('folio_cotizacion', 'descripcion', 'estatus_cotizacion_id', 'descuento_general'))
             ->withErrors(['cantidad' => 'La cantidad es obligatoria.']);
         }
       }
-      
+
       $cotizacion = Cotizacion::find($cotizacion_id);
 
       $cotizacion->descripcion = $request->descripcion;
       $cotizacion->estatus_cotizacion_id = $request->estatus_cotizacion_id;
       $cotizacion->update();
-  
+
       foreach ($request->servicio_id as $index => $servicio_id) {
         $detalle_cotizacion = Detalle_Cotizacion::find($servicio_id);
-        
+
         $detalle_cotizacion->precio_inicial = $request->precio_inicial[$index] ?? 0;
         $detalle_cotizacion->cantidad = $request->cantidad[$index] ?? 1;
         $detalle_cotizacion->descuento = $request->descuento[$index] ?? 0;
@@ -564,10 +540,10 @@ class CotizacionesController extends Controller
       }
 
       $this->generarPDFCotizacion($request, $cotizacion_id);
-  
+
       return redirect()
         ->route('tenant.cotizaciones')
-        ->with('editar', 'ok'); 
+        ->with('editar', 'ok');
     }
   }
 }
