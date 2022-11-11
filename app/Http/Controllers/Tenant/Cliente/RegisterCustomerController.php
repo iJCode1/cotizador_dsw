@@ -53,8 +53,9 @@ class RegisterCustomerController extends Controller
 
   /**
    * Función registerCustomer()
-   * Valida los datos de un cliente al registrarse 
-   * Hace la alta de ese cliente en la tabla correspondiente
+   * Válida los datos de un cliente al registrarse 
+   * Si los datos no son válidos, regresa a la vista anterior y muestra los errores
+   * Si los datos son válidos hace el alta de ese cliente en la tabla correspondiente
    * Finalmente retorna a la vista de login
    */
   public function registerCustomer(Request $request)
