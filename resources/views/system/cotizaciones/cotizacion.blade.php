@@ -377,6 +377,9 @@
                   </div>
                 </div>
               </div>
+              <div class="row justify-content-center mb-4">
+                <img src="" alt="" id="img_servicio2" width="250">
+              </div>
 
               {{-- CTA-Agregar --}}
               <div class="form-group row mb-5">
@@ -497,6 +500,19 @@ function validarDescuento(value) {
   }
 }
 
+function vistaPreliminar(event){
+  let img = new FileReader();
+  let img_id = document.getElementById('img_servicio');
+
+  img.onload = () => {
+    if(img.readyState == 2){
+      img_id.src = img.result;
+    }
+  }
+
+  img.readAsDataURL(event.target.files[0]);
+}
+
 $(document).ready(function () {
   
   $("#cliente").autocomplete({
@@ -595,7 +611,8 @@ $(document).ready(function () {
           $("#nombre_serv").val(data.nombre ?? "Sin datos")
           $("#descripcion_servicio").val(data.descripcion ?? "Sin datos")
           $("#tipo").val(tipoDelPS ?? "Sin datos")
-          $("#precio").val(data.precio_bruto ?? "Sin datos") 
+          $("#precio").val(data.precio_bruto ?? "Sin datos")
+          $("#img_servicio2").attr('src',`images/productos_servicios/${data.imagen}`);
         }
         // Swal.fire({
         //   icon: 'error',
@@ -954,6 +971,7 @@ $(document).ready(function () {
     $("#precio").val("");
     $("#cantidad").val(1);
     $("#descuento").val(0);
+    $("#img_servicio2").attr('src',``);
   }
 
   function validarProductoServicio(){
@@ -978,7 +996,6 @@ $(document).ready(function () {
 
   $('#btn_add').click(function(){
     validarProductoServicio();
-    // console.log("Click");
   });
 
   $(document).on('click', '.delete', function(event) {

@@ -61,7 +61,7 @@
                           <label for="imagen" class="col-md-4 col-form-label text-md-right">{{ __('Imagen') }}</label>
 
                           <div class="col-md-6">
-                              <input id="imagen" type="file" class="mt-1 @error('imagen') is-invalid @enderror" name="imagen" value="{{ old('imagen') }}" autofocus>
+                              <input id="imagen" type="file" class="mt-1 @error('imagen') is-invalid @enderror" name="imagen" value="{{ old('imagen') }}" autofocus onchange="vistaPreliminar(event)">
 
                               @error('imagen')
                                   <span class="invalid-feedback" role="alert">
@@ -69,6 +69,10 @@
                                   </span>
                               @enderror
                           </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center mb-4">
+                          <img src="{{asset('images/productos_servicios/sinImagen.svg')}}" alt="" id="img_servicio" width="250">
                         </div>
 
                         {{-- Precio bruto --}}
@@ -157,6 +161,19 @@ function validarPrecio(value) {
   if (isNaN(valor) || valor <= 0){
     $(value).val("");
   }
+}
+
+function vistaPreliminar(event){
+  let img = new FileReader();
+  let img_id = document.getElementById('img_servicio');
+
+  img.onload = () => {
+    if(img.readyState == 2){
+      img_id.src = img.result;
+    }
+  }
+
+  img.readAsDataURL(event.target.files[0]);
 }
 </script>
 @endsection

@@ -42,12 +42,15 @@
 <label for="imagenServicio" class="col-md-4 col-form-label text-md-right">{{ __('Imagen') }}</label>
 
 <div class="col-md-6">
-    <input id="imagenServicio" type="file" class="mt-1 @error('imagenServicio') is-invalid @enderror" name="imagenServicio" value="{{ old('imagenServicio') }}" autofocus>
+    <input id="imagenServicio" type="file" class="mt-1 @error('imagenServicio') is-invalid @enderror" name="imagenServicio" value="{{ old('imagenServicio') }}" autofocus onchange="vistaPreliminar(event)">
 
     <span id="imagenServicio-error" class="invalid-feedback" role="alert">
       <strong></strong>
     </span>
 </div>
+</div>
+<div class="d-flex justify-content-center mb-4">
+  <img src="{{asset('images/productos_servicios/sinImagen.svg')}}" alt="Imagen del producto y/o servicio" id="img_servicio" width="250">
 </div>
 
 {{-- Precio bruto --}}
