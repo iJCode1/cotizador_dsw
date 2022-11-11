@@ -28,10 +28,12 @@ class LoginCustomerController extends Controller
 
   /**
    * Función customerLogin()
-   * Valida que el correo y la contraseña se hayan ingresado
+   * Válida que el correo y la contraseña se hayan ingresado
    * y tengan un formato correcto.
-   * Junto al guard de 'cliente', se validan las credenciales para
-   * autenticarlo si es que se encuentra el cliente en la base de datos
+   * Si hay errores, retorna a la vista de login y muestra mensajes de error
+   * Si no hay errores, junto al guard de 'cliente' se validan las credenciales para
+   * autenticarlo si es que el cliente se encuentra registrado en la base de datos
+   * Si no se encuentra registrado, muestra el mensaje en la vista de login
    */
   public function customerLogin(Request $request)
   {
@@ -50,7 +52,7 @@ class LoginCustomerController extends Controller
     ];
 
     $validator = Validator::make($request->all(), $rules, $customMessages);
-    
+
     if ($validator->fails()) {
       return redirect('/login')
         ->withErrors($validator)
@@ -61,6 +63,5 @@ class LoginCustomerController extends Controller
       }
       return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => 'Estas credenciales no coinciden con nuestros registros.']);
     }
-
   }
 }
