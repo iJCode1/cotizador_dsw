@@ -164,6 +164,35 @@
               </div>
             </div>
 
+            {{-- Apellido paterno --}}
+            <div class="form-group row">
+              <label for="apep" class="col-md-4 col-form-label text-md-right">{{ __('Apellido paterno') }}</label>
+
+              <div class="col-md-2">
+                <input id="apep" type="text" class="form-control @error('apep') is-invalid @enderror" name="apep" value="{{ old('apep') }}" autocomplete="apep" autofocus>
+
+                @error('apep')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+              </div>
+
+              {{-- Apellido materno --}}
+            
+              <label for="apem" class="col-md-2 col-form-label text-md-right">{{ __('Apellido materno') }}</label>
+
+              <div class="col-md-2">
+                <input id="apem" type="text" class="form-control @error('apem') is-invalid @enderror" name="apem" value="{{ old('apem') }}" autocomplete="apem" autofocus>
+
+                @error('apem')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+              </div>
+            </div>
+
             {{-- Telefono de contacto --}}
             <div class="form-group row">
               <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Teléfono') }}</label>

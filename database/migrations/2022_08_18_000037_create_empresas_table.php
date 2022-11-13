@@ -21,6 +21,8 @@ class CreateEmpresasTable extends AbstractMigration
             $table->string('numero', 10);
             $table->string('rfc', 13);
             $table->string('nombre_contacto', 45);
+            $table->string('apellido_p', 45);
+            $table->string('apellido_m', 45);
             $table->string('telefono', 10);
             $table->string('correo_electronico', 50);
             $table->string('contraseña');

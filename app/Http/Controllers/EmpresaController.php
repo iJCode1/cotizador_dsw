@@ -124,6 +124,8 @@ class EmpresaController extends Controller
       'number' => 'required|numeric|digits_between:1,5',
       'rfc' => 'required|between:13,13',
       'nameContact' => 'required|string',
+      'apep' => 'required|string',
+      'apem' => 'required|string',
       'phone' => 'required|numeric|digits_between:10,10',
       'email' => 'required|email|unique:Empresas,correo_electronico',
       'password' => 'required|min:8',
@@ -146,6 +148,10 @@ class EmpresaController extends Controller
       'rfc.between' => 'El RFC debe ser de 13 caracteres.',
       'nameContact.required' => 'El nombre es obligatorio.',
       'nameContact.string' => 'El nombre solo debe contener letras y espacios.',
+      'apep.required' => 'El apellido paterno es obligatorio.',
+      'apep.string' => 'El apellido paterno solo debe contener letras y espacios.',
+      'apem.required' => 'El apellido materno es obligatorio.',
+      'apem.string' => 'El apellido materno solo debe contener letras y espacios.',
       'phone.required' => 'El teléfono es obligatorio.',
       'phone.numeric' => 'El teléfono solo acepta valores numéricos.',
       'phone.digits_between' => 'El teléfono debe ser de 10 dígitos.',
@@ -164,9 +170,13 @@ class EmpresaController extends Controller
         ->withErrors($validator);
     } else {
       $contraseña = Hash::make($request->password);
-      $_SESSION['name'] = $request->fqdn;
+      $_SESSION['name_contact'] = $request->nameContact;
+      $_SESSION['lastname1'] = $request->apep;
+      $_SESSION['lastname2'] = $request->apem;
       $_SESSION['email'] = $request->email;
       $_SESSION['password'] = $contraseña;
+      $_SESSION['address'] = $request->address;
+      $_SESSION['phone'] = $request->phone;
       $this->registered($request);
 
       return redirect()->route('empresas')
@@ -220,6 +230,8 @@ class EmpresaController extends Controller
       'numero' => $request->number,
       'rfc' => $request->rfc,
       'nombre_contacto' => $request->nameContact,
+      'apellido_p' => $request->apep,
+      'apellido_m' => $request->apem,
       'telefono' => $request->phone,
       'correo_electronico' => $request->email,
       'contraseña' => Hash::make($request->password),
@@ -292,6 +304,8 @@ class EmpresaController extends Controller
       'municipio_id' => 'required',
       'rfc' => 'required|between:13,13',
       'nameContact' => 'required|string',
+      'apep' => 'required|string',
+      'apem' => 'required|string',
       'phone' => 'required|numeric|digits_between:10,10',
     ];
 
@@ -310,6 +324,10 @@ class EmpresaController extends Controller
       'rfc.between' => 'El RFC debe ser de 13 caracteres.',
       'nameContact.required' => 'El nombre es obligatorio.',
       'nameContact.string' => 'El nombre solo debe contener letras y espacios.',
+      'apep.required' => 'El apellido paterno es obligatorio.',
+      'apep.string' => 'El apellido paterno solo debe contener letras y espacios.',
+      'apem.required' => 'El apellido materno es obligatorio.',
+      'apem.string' => 'El apellido materno solo debe contener letras y espacios.',
       'phone.required' => 'El teléfono es obligatorio.',
       'phone.numeric' => 'El teléfono solo acepta valores numéricos.',
       'phone.digits_between' => 'El teléfono debe ser de 10 dígitos.',
@@ -328,6 +346,8 @@ class EmpresaController extends Controller
       $empresa->numero = $request->number;
       $empresa->rfc = $request->rfc;
       $empresa->nombre_contacto = $request->nameContact;
+      $empresa->apellido_p = $request->apep;
+      $empresa->apellido_m = $request->apem;
       $empresa->telefono = $request->phone;
       $empresa->municipio_id = $request->municipio_id;
       $empresa->update();
