@@ -1,0 +1,11 @@
+@import './login.css';
+
+:root{
+  --main-font: 'Inter', sans-serif;
+  --second-font: 'League Spartan', sans-serif;
+}
+
+body{
+  margin: 0;
+  font-family: var(--main-font);
+}

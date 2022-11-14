@@ -6,18 +6,26 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    
     <title>{{ config('app.name', 'Laravel') }}</title>
-
+    
     <!-- Scripts -->
     {{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
-
+    
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
+    
+    {{-- <link href="{{ asset('css/@yield('style')') }}" rel="stylesheet"> --}}
+    {{-- <link href="{{ asset('css/login.css') }}" rel="stylesheet"> --}}
+    <link href="{{ asset('css/index.css') }}" rel="stylesheet">
 
     {{-- Alpine --}}
     <script defer src="https://unpkg.com/alpinejs@3.2.4/dist/cdn.min.js"></script>
@@ -33,7 +41,7 @@
 <body>
     <div id="app">
       {{-- {{dd($user[0])}} --}}
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/home') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -107,7 +115,7 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav> --}}
         {{-- Sweet Alert 2 --}}
         <script src="{{asset('./js/app.js')}}"></script>
 
