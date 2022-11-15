@@ -1,11 +1,17 @@
 @import './login.css';
+@import './navbar.css';
 
 :root{
   --main-font: 'Inter', sans-serif;
   --second-font: 'League Spartan', sans-serif;
+  --main-gradient: linear-gradient(180deg, #9358CE 0%, rgba(139, 104, 240, 0.98) 48.44%, #4C1098 100%);
 }
 
 body{
   margin: 0;
   font-family: var(--main-font);
+}
+
+.container-app{
+  display: flex;
 }

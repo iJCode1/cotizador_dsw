@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.login')
 
 {{-- @section('style', "{{ asset('css/login/login.css') }}")  --}}
 
@@ -7,7 +7,7 @@
 <div class="login-container">
   <div class="login-first">
     <h2 class="login-title">¡Bienvenido!</h2>
-    <img class="login-image" src="{{ asset('images/login/loginAdmin.svg') }}" alt="" width="290">
+    <img class="login-image" src="{{ asset('images/illustrations/loginAdmin.svg') }}" alt="" width="290">
     <div class="login-wave"></div>
   </div>
   <div class="login-second">
@@ -19,7 +19,7 @@
     @endisset
       @csrf
       <div class="login-email">
-        <img src="{{ asset('images/login/email.svg') }}" alt="" width="32">
+        <img src="{{ asset('images/icons/icon-email.svg') }}" alt="" width="32">
         <div class="login-input">
           <label for="email">{{ __('Correo electrónico') }}</label>
           <input id="email" type="email" placeholder="example@email.com" name="email" value="{{ old('email') }}" autocomplete="email" autofocus>
@@ -31,7 +31,7 @@
         </div>
       </div>
       <div class="login-password">
-        <img src="{{ asset('images/login/password.svg') }}" alt="" width="32">
+        <img src="{{ asset('images/icons/icon-password.svg') }}" alt="" width="32">
         <div class="login-input">
           <label for="password">Contraseña</label>
           <input id="password" type="password" placeholder="**********" name="password" autocomplete="current-password">
@@ -44,10 +44,12 @@
       </div>
       <button class="login-cta" type="submit">{{ __('Ingresar') }}</button>
     </form>
-    <span class="login-line"></span>
-    <p class="login-link">
-      ¿No tienes cuenta? <a href="#">Registrarse</a>
-    </p>
+    @isset($url)
+      <span class="login-line"></span>
+      <p class="login-link">
+        ¿No tienes cuenta? <a href="{{ route('tenant.register') }}">{{ __('Registrarse') }}</a>
+      </p>
+    @endisset
   </div>
 </div>
 

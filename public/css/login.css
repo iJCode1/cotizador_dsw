@@ -29,7 +29,7 @@
   block-size: 9.375rem;
   position: absolute;
   bottom: -7%;
-  background-image: url('../images/login/waveLoginnn.svg');
+  background-image: url('../images/illustrations/waveLoginnn.svg');
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
@@ -139,7 +139,7 @@
   }
 
   .login-wave{
-    background-image: url('../images/login/wave-login-d.svg');
+    background-image: url('../images/illustrations/wave-login-d.svg');
     bottom: 0;
     block-size: 20rem;
     background-position: left;
