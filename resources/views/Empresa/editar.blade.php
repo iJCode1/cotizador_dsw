@@ -1,233 +1,218 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header">{{ __('Registrar') }}</div>
-        <div class="card-body">
-          <form method="POST" action="{{ route('actualizarEmpresa', $empresa) }}">
-            @method('put')
-            @csrf
-            
-            <!-- Registro de un Inquilino (Empresa): fqdn - fully qualified domain name -->
-            <div class="form-group row">
-              <label for="fqdn" class="col-md-4 col-form-label text-md-right">{{ __('Dominio') }}</label>
+<div class="company">
+  <div class="company-first">
+    <div class="company-title">
+      <img src="{{ asset('images/icons/icon-empresas_black.svg') }}" class="nav-icon" alt="Icono de empresas" title="Icono de empresas" width="24">
+      <h2>{{ __('Editar empresa') }}</h2>
+    </div>
+  </div>
+  <form class="company-form" method="POST" action="{{ route('actualizarEmpresa', $empresa) }}">
+    @method('put')
+    @csrf
 
-              <div class="col-md-6">
-                <input id="fqdn" type="text" class="form-control @error('fqdn') is-invalid @enderror" name="fqdn" value="{{ old('fqdn', $fqdn) }}" required autocomplete="fqdn" readonly>
+    <div class="company-fFirst">
+      <p class="form-concept">Información de la empresa</p>
 
-                @error('fqdn')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
+      <div class="form-inputs">
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-globe_black.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="fqdn">{{ __('Dominio') }}</label>
+            <p class="read-only">https://{{$fqdn}}.com</p>
+          </div>
+        </div>
 
-            {{-- Correo Electrónico --}}
-            <div class="form-group row">
-              <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Correo Electrónico') }}</label>
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-map.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="address">{{ __('Dirección de la empresa') }}</label>
+            <input id="address" type="text" name="address" value="{{ old('address', $empresa->direccion) }}" autocomplete="address" autofocus placeholder="Lago azul, #56, Int. #6 Col, Hornex, 67870 CDMX">
 
-              <div class="col-md-6">
-                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $empresa->correo_electronico) }}" required autocomplete="email" readonly>
-
-                @error('email')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            {{-- Dirección --}}
-            <div class="form-group row">
-              <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Dirección') }}</label>
-
-              <div class="col-md-6">
-                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address', $empresa->direccion) }}" required autocomplete="address" autofocus>
-
-                @error('address')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            {{-- Código Postal --}}
-            <div class="form-group row">
-              <label for="postal" class="col-md-4 col-form-label text-md-right">{{ __('Código Postal') }}</label>
-
-              <div class="col-md-2">
-                <input id="postal" type="text" class="form-control @error('postal') is-invalid @enderror" name="postal" value="{{ old('postal', $empresa->codigo_postal) }}" required autocomplete="postal" autofocus>
-
-                @error('postal')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-
-              {{-- Número --}}
-              <label for="number" class="col-md-2 col-form-label text-md-right">{{ __('Numero') }}</label>
-
-              <div class="col-md-2">
-                <input id="number" type="text" class="form-control @error('number') is-invalid @enderror" name="number" value="{{ old('number', $empresa->numero) }}" required autocomplete="number" autofocus>
-
-                @error('number')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            {{-- Estado --}}
-            <div class="form-group row">
-              <label for="estado" class="col-md-4 col-form-label text-md-right">{{ __('Estado') }}</label>
-
-              <div class="col-md-6">
-                <select name="estado" id="estado" class="form-control estado @error('estado') is-invalid @enderror" autofocus>
-                  <option selected disabled value="">Seleccione un estado</option>
-                  @foreach($estados as $estado)
-                    @if ($estado->nombre  === $estadoEmpresa)
-                      <option value="{{$estado->estado_id}}" selected>{{$estado->nombre}}</option>
-                      @continue
-                    @endif
-                    <option value="{{$estado->estado_id}}">{{$estado->nombre}}</option>
-                  @endforeach
-                  <div class="valid-feedback">
-                    Correcto!
-                  </div>
-                  @error('estado')
-                    <small class="text-danger">{{ $message }}</small>
-                  @enderror
-                </select>
-              </div>
-            </div>
+            @error('address')
+            <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+          </div>
+        </div>
+        
+        <div class="register-double">
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="postal">{{ __('Código postal') }}</label>
+              <input id="postal" type="number" name="postal" value="{{ old('postal', $empresa->codigo_postal) }}" autocomplete="postal" autofocus placeholder="67453">
               
-            {{-- Municipios --}}
-            <div class="form-group row">
-              <label for="municipio" class="col-md-4 col-form-label text-md-right">{{ __('Selecciona tu Municipio') }}</label>
-              <div class="col-md-6">
-                <select name="municipio_id" id="municipio" class="form-control" autofocus>
-                  <option disabled value="">Seleccione un municipio</option>
-                  @foreach ($municipiosEmpresa as $municipioE)
-                  {{-- {{dd($municipioEmpresa)}} --}}
-                    @if ($municipioE->municipio_id === $municipioEmpresa->municipio_id)
-                      <option selected value="{{$municipioE->municipio_id}}">{{ $municipioE->nombre }}</option>
-                      @continue
-                    @endif
-                    <option value="{{$municipioE->municipio_id}}">{{ $municipioE->nombre }}</option>
-                  @endforeach
-                </select>
-              </div>
-            </div>
-
-            {{-- RFC --}}
-            <div class="form-group row">
-              <label for="rfc" class="col-md-4 col-form-label text-md-right">{{ __('RFC') }}</label>
-
-              <div class="col-md-6">
-                <input id="rfc" type="text" class="form-control @error('rfc') is-invalid @enderror" name="rfc" value="{{ old('rfc', $empresa->rfc) }}"  autocomplete="number" autofocus>
-
-                @error('rfc')
+              @error('postal')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
-                @enderror
-              </div>
+              @enderror
             </div>
+          </div>
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="number">{{ __('Número') }}</label>
+              <input id="number" type="number" name="number" value="{{ old('number', $empresa->numero) }}" autocomplete="number" autofocus placeholder="21">
 
-            {{-- Nombre de contacto --}}
-            <div class="form-group row">
-              <label for="nameContact" class="col-md-4 col-form-label text-md-right">{{ __('Nombre de Contacto') }}</label>
-
-              <div class="col-md-6">
-                <input id="nameContact" type="text" class="form-control @error('nameContact') is-invalid @enderror" name="nameContact" value="{{ old('nameContact', $empresa->nombre_contacto) }}" required autocomplete="nameContact" autofocus>
-
-                @error('nameContact')
+              @error('number')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
-                @enderror
-              </div>
+              @enderror
             </div>
+          </div>
+        </div>
 
-            {{-- Apellido paterno --}}
-            <div class="form-group row">
-              <label for="apep" class="col-md-4 col-form-label text-md-right">{{ __('Apellido paterno') }}</label>
-
-              <div class="col-md-2">
-                <input id="apep" type="text" class="form-control @error('apep') is-invalid @enderror" name="apep" value="{{ old('apep', $empresa->apellido_p) }}" autocomplete="apep" autofocus>
-
-                @error('apep')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
+        <div class="register-double">
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-map.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="estado">{{ __('Estado') }}</label>
+              <select name="estado" id="estado" autofocus>
+                <option selected disabled value="">Seleccione un estado</option>
+                @foreach($estados as $estado)
+                  @if ($estado->nombre  === $estadoEmpresa)
+                    <option value="{{$estado->estado_id}}" selected>{{$estado->nombre}}</option>
+                    @continue
+                  @endif
+                  <option value="{{$estado->estado_id}}">{{$estado->nombre}}</option>
+                @endforeach
+                @error('estado')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
                 @enderror
-              </div>
-
-              {{-- Apellido materno --}}
-            
-              <label for="apem" class="col-md-2 col-form-label text-md-right">{{ __('Apellido materno') }}</label>
-
-              <div class="col-md-2">
-                <input id="apem" type="text" class="form-control @error('apem') is-invalid @enderror" name="apem" value="{{ old('apem', $empresa->apellido_m) }}" autocomplete="apem" autofocus>
-
-                @error('apem')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
+              </select>
+            </div>
+          </div>
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-map.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="municipio">{{ __('Municipio') }}</label>
+              <select name="municipio_id" id="municipio" autofocus>
+                <option selected disabled value="">Seleccione un municipio</option>
+                @foreach ($municipiosEmpresa as $municipioE)
+                  @if ($municipioE->municipio_id === $municipioEmpresa->municipio_id)
+                    <option selected value="{{$municipioE->municipio_id}}">{{ $municipioE->nombre }}</option>
+                    @continue
+                  @endif
+                  <option value="{{$municipioE->municipio_id}}">{{ $municipioE->nombre }}</option>
+                @endforeach
+                @error('municipio_id')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
                 @enderror
-              </div>
+              </select>
             </div>
+          </div>
+        </div>
 
-            {{-- Telefono de contacto --}}
-            <div class="form-group row">
-              <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Teléfono') }}</label>
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-rfc.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="rfc">{{ __('RFC') }}</label>
+            <input id="rfc" type="text" name="rfc" value="{{ old('rfc', $empresa->rfc) }}" autocomplete="number" autofocus placeholder="5645342343423">
 
-              <div class="col-md-6">
-                <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone', $empresa->telefono) }}" required autocomplete="phone" autofocus>
-
-                @error('phone')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            <div class="form-group row mb-0">
-              <div class="col-md-6 offset-md-4">
-                <button type="submit" class="btn btn-block btn-warning">
-                  {{ __('Editar') }}
-                </button>
-              </div>
-            </div>
-          </form>
+            @error('rfc')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
+          </div>
         </div>
       </div>
     </div>
-  </div>
+
+    <div class="company-fSecond">
+      <p class="form-concept">Información de la persona encargada (Administrador)</p>
+      <div class="form-inputs">
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-email.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="email">{{ __('Correo electrónico') }}</label>
+            {{-- <input readonly id="email" type="email" name="email" value="{{ old('email', $empresa->correo_electronico) }}" autocomplete="email" placeholder="julian@compushop.com"> --}}
+            <p class="read-only">{{$empresa->correo_electronico}}</p>
+          </div>
+        </div>
+
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-personName.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="nameContact">{{ __('Nombre de Contacto') }}</label>
+            <input id="nameContact" type="text" name="nameContact" value="{{ old('nameContact', $empresa->nombre_contacto) }}" autocomplete="nameContact" autofocus placeholder="Julian">
+
+            @error('nameContact')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
+          </div>
+        </div>
+
+        <div class="register-double">
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-person.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="apep">{{ __('Apellido paterno') }}</label>
+              <input id="apep" type="text" name="apep" value="{{ old('apep', $empresa->apellido_p) }}" autocomplete="apep" autofocus placeholder="Hernández">
+
+              @error('apep')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
+          </div>
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-person.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="apem">{{ __('Apellido materno') }}</label>
+              <input id="apem" type="text" name="apem" value="{{ old('apem', $empresa->apellido_m) }}" autocomplete="apem" autofocus placeholder="Díaz">
+
+              @error('apem')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+              @enderror
+            </div>
+          </div>
+        </div>
+
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-phone.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="phone">{{ __('Teléfono') }}</label>
+            <input id="phone" type="tel" name="phone" value="{{ old('phone', $empresa->telefono) }}" autocomplete="phone" autofocus placeholder="7225678564">
+
+            @error('phone')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <button class="form-cta" type="submit">{{ __('Editar') }}</button>
+  </form>
 </div>
 @endsection
 
 <script>
-
   window.onload = function exampleFunction() {
     
     $estadoSelect = document.getElementById("estado");
     $municipiosSelect = document.getElementById("municipio");
-
     $estadoSelect.addEventListener('change', ()=> {
       $municipiosSelect.innerHTML = "";
       let estadoID = $estadoSelect.selectedIndex;
-
       const municipios = @json($municipios);
-
       municipios.forEach((mun) => {
         if(mun.estado_id === estadoID){
           let option = document.createElement('option');
@@ -236,8 +221,6 @@
           $municipiosSelect.appendChild(option);
         }
       });
-
     });
   }
-
 </script>

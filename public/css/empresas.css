@@ -223,13 +223,22 @@
   flex: 1;
 }
 
+.register-input p{
+  margin: 0;
+  font-family: 'League Spartan', sans-serif;
+}
+
+.register-input >.read-only{
+  color: #888888;
+}
+
 .form-cta{
   background-color: #5D5FEF;
   color: white;
   padding-block: 1rem;
   border: 0;
   border-radius: .5rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-family: 'League Spartan', sans-serif;
   transition: transform .2s;
   align-self: flex-end;
