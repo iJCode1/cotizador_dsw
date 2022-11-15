@@ -1,255 +1,229 @@
 @extends('../layouts.app')
 
 @section('content')
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header">{{ __('Registrar') }}</div>
+<div class="company">
+  <div class="company-first">
+    <div class="company-title">
+      <img src="{{ asset('images/icons/icon-empresas_black.svg') }}" class="nav-icon" alt="Icono de empresas" title="Icono de empresas" width="24">
+      <h2>Registrar nueva empresa</h2>
+    </div>
+  </div>
+  <form class="company-form" method="POST" action="{{ route('registrarEmpresa') }}">
+    @csrf
 
-        <div class="card-body">
-          <form method="POST" action="{{ route('registrarEmpresa') }}">
-            @csrf
+    <div class="company-fFirst">
+      <p class="form-concept">Información de la empresa</p>
 
-            <!-- Registro de un Inquilino (Empresa): fqdn - fully qualified domain name -->
-            <div class="form-group row">
-              <label for="fqdn" class="col-md-4 col-form-label text-md-right">{{ __('Nombre de la Empresa') }}</label>
+      <div class="form-inputs">
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-company_black.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="fqdn">{{ __('Nombre de la Empresa') }}</label>
+            <input id="fqdn" type="text" name="fqdn" value="{{ old('fqdn') }}" autocomplete="fqdn" placeholder="CompuShop">
 
-              <div class="col-md-6">
-                <input id="fqdn" type="text" class="form-control @error('fqdn') is-invalid @enderror" name="fqdn" value="{{ old('fqdn') }}" autocomplete="fqdn">
+            @error('fqdn')
+            <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+          </div>
+        </div>
 
-                @error('fqdn')
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-map.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="address">{{ __('Dirección de la empresa') }}</label>
+            <input id="address" type="text" name="address" value="{{ old('address') }}" autocomplete="address" autofocus placeholder="Lago azul, #56, Int. #6 Col, Hornex, 67870 CDMX">
+
+            @error('address')
+            <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+          </div>
+        </div>
+        
+        <div class="register-double">
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="postal">{{ __('Código postal') }}</label>
+              <input id="postal" type="number" name="postal" value="{{ old('postal') }}" autocomplete="postal" autofocus placeholder="67453">
+              
+              @error('postal')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
-                @enderror
-              </div>
+              @enderror
             </div>
+          </div>
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="number">{{ __('Número') }}</label>
+              <input id="number" type="number" name="number" value="{{ old('number') }}" autocomplete="number" autofocus placeholder="21">
 
-            {{-- Dirección --}}
-            <div class="form-group row">
-              <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Dirección') }}</label>
-
-              <div class="col-md-6">
-                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" autocomplete="address" autofocus>
-
-                @error('address')
+              @error('number')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
-                @enderror
-              </div>
+              @enderror
             </div>
+          </div>
+        </div>
 
-            {{-- Código Postal --}}
-            <div class="form-group row">
-              <label for="postal" class="col-md-4 col-form-label text-md-right">{{ __('Código Postal') }}</label>
-
-              <div class="col-md-2">
-                <input id="postal" type="text" class="form-control @error('postal') is-invalid @enderror" name="postal" value="{{ old('postal') }}" autocomplete="postal" autofocus>
-
-                @error('postal')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-
-              {{-- Número --}}
-            
-              <label for="number" class="col-md-2 col-form-label text-md-right">{{ __('Numero') }}</label>
-
-              <div class="col-md-2">
-                <input id="number" type="text" class="form-control @error('number') is-invalid @enderror" name="number" value="{{ old('number') }}" autocomplete="number" autofocus>
-
-                @error('number')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-            
-            {{-- Estado --}}
-            <div class="form-group row">
-              <label for="estado" class="col-md-4 col-form-label text-md-right">{{ __('Estado') }}</label>
-
-              <div class="col-md-6">
-                <select name="estado" id="estado" class="form-control estado @error('estado') is-invalid @enderror" autofocus>
-                  <option selected disabled value="">Seleccione un estado</option>
-                  @foreach($estados as $estado)
-                    @if (old('estado') == $estado->estado_id)
-                      <option selected value="{{$estado->estado_id}}">{{$estado->nombre}}</option>
-                      @continue
-                    @endif
+        <div class="register-double">
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-map.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="estado">{{ __('Estado') }}</label>
+              <select name="estado" id="estado" autofocus>
+                <option selected disabled value="">Seleccione un estado</option>
+                @foreach($estados as $estado)
+                  @if (old('estado') == $estado->estado_id)
+                    <option selected value="{{$estado->estado_id}}">{{$estado->nombre}}</option>
+                    @continue
+                  @endif
                   <option value="{{$estado->estado_id}}">{{$estado->nombre}}</option>
-                  @endforeach
-                  <div class="valid-feedback">
-                    Correcto!
-                  </div>
-                  @error('estado')
-                    <small class="text-danger">{{ $message }}</small>
-                  @enderror
-                </select>
-
+                @endforeach
+                
                 @error('estado')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
+                  <small class="text-danger">{{ $message }}</small>
                 @enderror
+              </select>
 
-                {{-- @error('rfc')
+              @error('estado')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+              @enderror
+            </div>
+          </div>
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-map.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="municipio">{{ __('Municipio') }}</label>
+              <select name="municipio_id" id="municipio" autofocus>
+                <option selected disabled value="">Seleccione un municipio</option>
+              </select>
+
+              @error('municipio_id')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
-                @enderror --}}
-              </div>
+              @enderror
             </div>
-            {{-- {{dd(old('municipio_id'))}} --}}
-            {{-- {{dd(old('estado'))}} --}}
-            {{-- {{dd($estados[0])}} --}}
+          </div>
+        </div>
 
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-rfc.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="rfc">{{ __('RFC') }}</label>
+            <input id="rfc" type="text" name="rfc" value="{{ old('rfc') }}" autocomplete="number" autofocus placeholder="5645342343423">
 
-            {{-- Municipios --}}
-            <div class="form-group row">
-              <label for="municipio" class="col-md-4 col-form-label text-md-right">{{ __('Selecciona tu Municipio') }}</label>
-              <div class="col-md-6">
-                <select name="municipio_id" id="municipio" class="form-control municipio_id @error('municipio_id') is-invalid @enderror" autofocus>
-                  <option selected disabled value="">Seleccione un municipio</option>
-                  {{-- @foreach($municipios as $municipio)
-                    @if (old('municipio_id') == $estado->estado_id)
-                      {{dd("Algo")}}
-                      <option selected value="{{$estado->estado_id}}">{{$estado->nombre}}</option>
-                      @continue
-                    @endif
-                  @endforeach --}}
-                </select>
-                @error('municipio_id')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-         
-
-            {{-- RFC --}}
-            <div class="form-group row">
-              <label for="rfc" class="col-md-4 col-form-label text-md-right">{{ __('RFC') }}</label>
-
-              <div class="col-md-6">
-                <input id="rfc" type="text" class="form-control @error('rfc') is-invalid @enderror" name="rfc" value="{{ old('rfc') }}" autocomplete="number" autofocus>
-
-                @error('rfc')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            {{-- Nombre de contacto --}}
-            <div class="form-group row">
-              <label for="nameContact" class="col-md-4 col-form-label text-md-right">{{ __('Nombre de Contacto') }}</label>
-
-              <div class="col-md-6">
-                <input id="nameContact" type="text" class="form-control @error('nameContact') is-invalid @enderror" name="nameContact" value="{{ old('nameContact') }}" autocomplete="nameContact" autofocus>
-
-                @error('nameContact')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            {{-- Apellido paterno --}}
-            <div class="form-group row">
-              <label for="apep" class="col-md-4 col-form-label text-md-right">{{ __('Apellido paterno') }}</label>
-
-              <div class="col-md-2">
-                <input id="apep" type="text" class="form-control @error('apep') is-invalid @enderror" name="apep" value="{{ old('apep') }}" autocomplete="apep" autofocus>
-
-                @error('apep')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-
-              {{-- Apellido materno --}}
-            
-              <label for="apem" class="col-md-2 col-form-label text-md-right">{{ __('Apellido materno') }}</label>
-
-              <div class="col-md-2">
-                <input id="apem" type="text" class="form-control @error('apem') is-invalid @enderror" name="apem" value="{{ old('apem') }}" autocomplete="apem" autofocus>
-
-                @error('apem')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            {{-- Telefono de contacto --}}
-            <div class="form-group row">
-              <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Teléfono') }}</label>
-
-              <div class="col-md-6">
-                <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" autocomplete="phone" autofocus>
-
-                @error('phone')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            {{-- Correo Electrónico --}}
-            <div class="form-group row">
-              <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Correo Electrónico') }}</label>
-
-              <div class="col-md-6">
-                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email">
-
-                @error('email')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            {{-- Contraseña --}}
-            <div class="form-group row">
-              <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Contraseña') }}</label>
-
-              <div class="col-md-6">
-                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" autocomplete="off" >
-
-                @error('password')
-                <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-              </div>
-            </div>
-
-            <div class="form-group row mb-0">
-              <div class="col-md-6 offset-md-4">
-                <button type="submit" class="btn btn-block btn-primary">
-                  {{ __('Registrar') }}
-                </button>
-              </div>
-            </div>
-          </form>
+            @error('rfc')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
+          </div>
         </div>
       </div>
     </div>
-  </div>
+
+    <div class="company-fSecond">
+      <p class="form-concept">Información de la persona encargada (Administrador)</p>
+      <div class="form-inputs">
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-personName.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="nameContact">{{ __('Nombre de Contacto') }}</label>
+            <input id="nameContact" type="text" name="nameContact" value="{{ old('nameContact') }}" autocomplete="nameContact" autofocus placeholder="Julian">
+
+            @error('nameContact')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
+          </div>
+        </div>
+
+        <div class="register-double">
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-person.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="apep">{{ __('Apellido paterno') }}</label>
+              <input id="apep" type="text" name="apep" value="{{ old('apep') }}" autocomplete="apep" autofocus placeholder="Hernández">
+
+              @error('apep')
+                <span class="invalid-feedback" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
+          </div>
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-person.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="apem">{{ __('Apellido materno') }}</label>
+              <input id="apem" type="text" name="apem" value="{{ old('apem') }}" autocomplete="apem" autofocus placeholder="Díaz">
+
+              @error('apem')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+              @enderror
+            </div>
+          </div>
+        </div>
+
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-phone.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="phone">{{ __('Teléfono') }}</label>
+            <input id="phone" type="tel" name="phone" value="{{ old('phone') }}" autocomplete="phone" autofocus placeholder="7225678564">
+
+            @error('phone')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
+          </div>
+        </div>
+
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-email.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="email">{{ __('Correo electrónico') }}</label>
+            <input id="email" type="email" name="email" value="{{ old('email') }}" autocomplete="email" placeholder="julian@compushop.com">
+            
+            @error('email')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
+          </div>
+        </div>
+
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-password.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="password">{{ __('Contraseña') }}</label>
+            <input id="password" type="password" name="password" value="{{ old('password') }}" autocomplete="off" placeholder="**********">
+
+            @error('password')
+              <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <button class="form-cta" type="submit">{{ __('Registrar') }}</button>
+  </form>
 </div>
 @endsection
 

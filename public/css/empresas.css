@@ -159,6 +159,91 @@
   font-size: 1rem;
 }
 
+.company-form{
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.form-concept{
+  font-size: 1.25rem;
+  border-bottom: 2px solid #6C63FF;
+  padding-block-end: .5rem;
+  display: inline-block;
+  margin: 0;
+  margin-block-end: 2.5rem;
+  font-weight: 600;
+}
+
+.form-inputs{
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.register-data{
+  display: flex;
+  gap: 0.75rem;
+}
+
+.register-input{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  inline-size: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+.register-input input{
+  border: none;
+  border-block-end: 1px solid black;
+  font-family: 'League Spartan', sans-serif;
+  padding: .5rem;
+}
+
+.register-input label{
+  font-weight: 500;
+}
+
+.register-input > select{
+  border: none;
+  border-block-end: 1px solid black;
+  font-family: 'League Spartan', sans-serif;
+  padding: .5rem;
+  font-size: 1rem
+}
+
+.register-double{
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.register-double > .register-data{
+  flex: 1;
+}
+
+.form-cta{
+  background-color: #5D5FEF;
+  color: white;
+  padding-block: 1rem;
+  border: 0;
+  border-radius: .5rem;
+  font-size: 1.2rem;
+  font-family: 'League Spartan', sans-serif;
+  transition: transform .2s;
+  align-self: flex-end;
+  padding-inline: 3.5rem;
+}
+
+.form-cta:active{
+  transform: scale(.9);
+}
+
+.form-cta:hover{
+  text-decoration: underline;
+}
+
 @media screen and (min-width: 500px){
   .company-first{
     justify-content: flex-start;
@@ -183,6 +268,12 @@
   .company-second img{
     max-inline-size: 30rem;
   }
+
+  .register-double{
+    flex-direction: row;
+    gap: 4rem;
+  }
+
 }
 
 @media screen and (min-width: 900px){
