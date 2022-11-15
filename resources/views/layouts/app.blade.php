@@ -39,7 +39,7 @@
 
 </head>
 <body>
-    <div id="app">
+    <div id="app" class="container-app">
       {{-- {{dd($user[0])}} --}}
         {{-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -116,6 +116,9 @@
                 </div>
             </div>
         </nav> --}}
+
+        @include('layouts.partials._navbar')
+
         {{-- Sweet Alert 2 --}}
         <script src="{{asset('./js/app.js')}}"></script>
 
@@ -134,9 +137,10 @@
         referrerpolicy="no-referrer"
         ></script>
 
-        <main class="py-4">
-            @yield('content')
+        <main class="main-app">
+          @yield('content')
         </main>
     </div>
+    <script src="{{asset('./js/navbar.js')}}"></script>
 </body>
 </html>
