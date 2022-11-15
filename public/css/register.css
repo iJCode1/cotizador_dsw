@@ -1,0 +1,192 @@
+.register-container{
+  block-size: 100%;
+  min-block-size: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.register-first{
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  background: linear-gradient(180deg, #9358CE 0%, rgba(139, 104, 240, 0.98) 48.44%, #4C1098 100%);
+  position: relative;
+  padding-inline: 1rem;
+  padding-block-start: 1rem;
+}
+
+.register-image{
+  z-index: 5;
+  max-inline-size: 20rem;
+  inline-size: 90%;
+}
+
+.register-wave{
+  left: 0;
+  right: 0;
+  block-size: 9.375rem;
+  position: absolute;
+  bottom: -7%;
+  background-image: url('../images/illustrations/waveLoginnn.svg');
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+}
+
+.register-title{
+  font-size: 3rem;
+  margin: 0;
+  color: white;
+}
+
+.register-second{
+  padding-block: 1rem;
+  flex: 1;
+  inline-size: 90%;
+  margin: 0 auto;
+  max-inline-size: 30rem;
+}
+
+.second-title{
+  text-align: center;
+  margin-block-end: 2rem;
+  font-size: 1.8rem;
+  color: #0A2D55;
+}
+
+.second-form{
+  font-size: 2rem;
+}
+
+.register-form{
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  gap: 2.5rem;
+  margin-block-end: 2rem;
+}
+
+.register-data{
+  display: flex;
+  gap: 0.75rem;
+}
+
+.register-input{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  inline-size: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+.register-input input{
+  border: none;
+  border-block-end: 1px solid black;
+  font-family: 'League Spartan', sans-serif;
+  padding: .5rem;
+}
+
+.register-cta{
+  background-color: #5D5FEF;
+  color: white;
+  padding-block: 0.75rem;
+  border: 0;
+  border-radius: 3rem;
+  font-size: 1.25rem;
+  font-family: 'League Spartan', sans-serif;
+  transition: transform .2s;
+  cursor: pointer;
+}
+
+.register-cta:active{
+  transform: scale(.9);
+}
+
+.register-cta:hover{
+  text-decoration: underline;
+}
+
+.register-line{
+  inline-size: 100%;
+  block-size: 2px;
+  background-color: #E0E0E0;
+  display: block;
+}
+
+.register-link{
+  font-family: 'League Spartan', sans-serif;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.register-link a{
+  color: #4C1098;
+  text-decoration: none;
+}
+
+.register-link a:hover{
+  text-decoration: underline;
+}
+
+@media screen and (min-width: 768px){
+  .register-container{
+    flex-direction: row;
+  }
+
+  .register-first{
+    inline-size: 55%;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+
+  .register-image{
+    max-inline-size: 32.5rem;
+  }
+
+  .register-wave{
+    background-image: url('../images/illustrations/wave-login-d.svg');
+    bottom: 0;
+    block-size: 20rem;
+    background-position: left;
+
+  }
+
+  .register-title{
+    font-size: 4rem;
+  }
+
+  .register-second{
+    inline-size: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-inline: 2.5rem;
+    max-inline-size: 37.5rem;
+  }
+
+  .second-title{
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-block-end: 4rem;
+  }
+
+  .register-input label{
+    font-size: 1rem;
+  }
+
+  .register-input input{
+    font-size: 1rem;
+  }
+}
+
+@media screen and (min-width: 1024px){
+  .register-first{
+    gap: 4rem;
+  }
+
+  .register-title{
+    font-size: 5rem;
+  }
+}

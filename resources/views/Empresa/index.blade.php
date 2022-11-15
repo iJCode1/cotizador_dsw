@@ -2,101 +2,104 @@
 
 @section('content')
 
-  <div class="container">
-    <h1 class="text-center mt-2 mb-4">Home de la Empresa</h1>
+  <div class="company">
+    <div class="company-first">
+      <div class="company-title">
+        <img src="{{ asset('images/icons/icon-empresas_black.svg') }}" class="nav-icon" alt="Icono de empresas" title="Icono de empresas" width="24">
+        <h2>Empresas</h2>
+      </div>
+      <a href="{{ route('altaEmpresa') }}" class="company-button">
+        <span>+</span>
+        <span>Nuevo registro</span>
+      </a>
+    </div>
     @if (count($empresas) <= 0)
-        <p>No hay empresas</p>
-        <img src="{{asset('images/illustrations/not_found.svg')}}" alt="No hay empresas" width="300">
+      <div class="company-second">
+        <img src="./empresas.svg" alt="Empresas" title="No hay empresas registradas" width="250">
+        <p>No hay empresas registradas</p>
+      </div>
     @else
-        <p>Si hay empresas</p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Dirección</th>
-              <th scope="col">CP</th>
-              <th scope="col">Numero</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Municipio</th>
-              <th scope="col">RFC</th>
-              <th scope="col">Nombre Contacto</th>
-              <th scope="col">Telefono</th>
-              <th scope="col">Hostname</th>
-              <th scope="col">Usuario</th>
-              <th scope="col">Editar</th>
-              <th scope="col">Eliminar</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($empresas as $empresa)   
-            <tr>
-              <th scope="row">{{$empresa->empresa_id}}</th>
-              <td>{{$empresa->direccion}}</td>
-              <td>{{$empresa->codigo_postal}}</td>
-              <td>{{$empresa->numero}}</td>
-              @foreach ($municipios as $municipio)
-                @if ($municipio->municipio_id === $empresa->municipio_id)
-                  @foreach ($estados as $estado)
-                    @if ($estado->estado_id === $municipio->estado_id)
-                      <td>{{$estado->nombre}}</td>
+      <div class="company-cards">
+        @foreach ($empresas as $empresa)   
+          <div class="card">
+            <div class="card-item">
+              <img src="{{ asset('images/icons/icon-company_black.svg') }}" class="nav-icon" alt="Icono de empresa" title="Empresa" width="28">
+              <div class="card-body">
+                <h2>Empresa</h2>
+                <p>{{$empresa->fqdn}}</p>
+              </div>
+            </div>
+            <div class="card-item">
+              <img src="{{ asset('images/icons/icon-globe_black.svg') }}" class="nav-icon" alt="Icono de hostname" title="Hostname" width="28">
+              <div class="card-body">
+                <h2>Hostname</h2>
+                <a href="http://{{$empresa->hostname->fqdn}}:8000" target="_blank" rel="noreferrer">{{$empresa->hostname->fqdn}}</a>
+              </div>
+            </div>
+            <div class="card-item">
+              <img src="{{ asset('images/icons/icon-map_black.svg') }}" class="nav-icon" alt="Icono de dirección" title="Dirección" width="28">
+              <div class="card-body">
+                <h2>Dirección</h2>
+                <p>{{$empresa->direccion}}</p>
+              </div>
+            </div>
+            <div class="card-item">
+              <img src="{{ asset('images/icons/icon-person_black.svg') }}" class="nav-icon" alt="Icono de administrador" title="Administrador" width="28">
+              <div class="card-body">
+                <h2>Administrador</h2>
+                <p>{{$empresa->nombre_contacto." ".$empresa->apellido_p." ".$empresa->apellido_m}}</p>
+              </div>
+            </div>
+            <div class="card-item">
+              <img src="{{ asset('images/icons/icon-phone_black.svg') }}" class="nav-icon" alt="Icono de teléfono" title="Teléfono" width="28">
+              <div class="card-body">
+                <h2>Teléfono</h2>
+                <p>{{$empresa->telefono}}</p>
+              </div>
+            </div>
+            <div class="card-item">
+              <img src="{{ asset('images/icons/icon-actions_black.svg') }}" class="nav-icon" alt="Icono de acciones" title="Acciones" width="28">
+              <div class="card-body">
+                <h2>Acciones</h2>
+                <div class="card-actions">
+                  <a href="{{ route('editarEmpresa', $empresa) }}" class="card-edit">
+                    <img src="{{ asset('images/icons/icon-edit.svg') }}" class="nav-icon" alt="Icono de editar" title="Editar" width="26">
+                    Editar
+                  </a>
+                  @foreach ($websites as $website)
+                    @if ($empresa->hostname->website_id === $website->id)
+                    <td>
+                      @if ($website->deleted_at != NULL)
+                        <form class="card-form" id="activateForm" action="{{ route('activateEmpresa', ['id' => $website->id]) }}">
+                          @csrf
+                          <img src="{{ asset('images/icons/icon-activate.svg') }}" class="nav-icon" alt="Icono de activar" title="Activar" width="24">
+                          <button type="submit">Activar</button>
+                        </form>
+                      @else
+                        <form class="card-form" id="deleteForm" action="{{ Route('desactivarEmpresa', ['id' => $website->id]) }}">
+                          @method("DELETE")
+                          @csrf
+                          <img src="{{ asset('images/icons/icon-disabled.svg') }}" class="nav-icon" alt="Icono de eliminar" title="Desactivar" width="24">
+                          <button type="submit">Desactivar</button>
+                        </form>
+                      @endif
+                    </td>
                     @endif
                   @endforeach
-                @endif
-              @endforeach
-              @foreach ($municipios as $municipio)
-                @if ($municipio->municipio_id === $empresa->municipio_id)  
-                  <td>{{$municipio->nombre}}</td>
-                @endif
-              @endforeach
-              <td>{{$empresa->rfc}}</td>
-              <td>{{$empresa->nombre_contacto}}</td>
-              <td>{{$empresa->telefono}}</td>
-              @foreach ($hostnames as $hostname)
-                @if ($hostname->id === $empresa->hostname_id)
-                  <td>{{$hostname->fqdn}}</td>
-                @endif
-              @endforeach
-              @foreach ($users as $usuario)
-                @if ($usuario->id === $empresa->usuario_id)
-                  <td>{{$usuario->name}}</td>
-                @endif
-              @endforeach
-              {{-- {{dd($empresa)}} --}}
-              <td>
-                <a href="{{ route('editarEmpresa', $empresa) }}" class="btn btn-warning">Editar</a>
-              </td>
-              @foreach ($websites as $website)
-                @if ($empresa->hostname->website_id === $website->id)
-                <td>
-                  @if ($website->deleted_at != NULL)
-                    <form id="activateForm" action="{{ route('activateEmpresa', ['id' => $website->id]) }}">
-                      @csrf
-                      <button type="submit" class="btn btn-info text-white">Activar</button>
-                    </form>
-                  @else
-                    <form id="deleteForm" action="{{ Route('desactivarEmpresa', ['id' => $website->id]) }}">
-                      @method("DELETE")
-                      @csrf
-                      <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
-                  @endif
-                </td>
-                @endif
-              @endforeach
-            </tr>
-            @endforeach
-          </tbody>
-        </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        @endforeach
+      </div>
     @endif
-    <a href="{{route('altaEmpresa')}}" class="btn btn-block btn-primary my-4">Crear Empresa</a>
+    
   </div>
 
-  {{-- Script para mostrar alertas --}}
   <script>
 
     const d = document;
 
-    // Alerta al querer eliminar un registro
     const deleteForms = d.querySelectorAll('#deleteForm');
 
     deleteForms.forEach(form => {
@@ -104,12 +107,12 @@
         event.preventDefault();
         Swal.fire({
           title: '¿Estás seguro?',
-          text: "Se eliminara esta empresa",
+          text: "Se desactivará esta empresa",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: '¡Si, eliminar!',
+          confirmButtonText: '¡Si, desactivar!',
           cancelButtonText: 'Cancelar'
         }).then((result) => {
           if (result.isConfirmed) {
@@ -119,7 +122,6 @@
       })
     });
 
-    // Alerta al querer activar un registro
     const activateforms = d.querySelectorAll('#activateForm');
 
     activateforms.forEach(form => {
@@ -127,7 +129,7 @@
         event.preventDefault();
         Swal.fire({
           title: '¿Estás seguro?',
-          text: "Se activara esta empresa",
+          text: "Se activará esta empresa",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -144,51 +146,43 @@
 
   </script>
 
-  {{-- Condicional para mostrar alerta de empleado creado --}}
-  @if (session('crear') === 'ok'){
+  @if (session('crear') === 'ok')
     <script>
       Swal.fire(
         'Registrado!',
-        'La empresa se ha registrado con éxtio!',
+        '¡La empresa ha sido registrada con éxito!',
         'success'
       )
     </script>
-  } 
   @endif
 
-  {{-- Condicional para mostrar alerta de editado --}}
-  @if (session('editar') === 'ok'){
+  @if (session('editar') === 'ok')
     <script>
       Swal.fire(
         'Editado!',
-        'La empresa se ha editado correctamente!',
+        '¡La empresa se ha editado correctamente!',
         'success'
       )
     </script>
-  } 
   @endif
 
-  {{-- Condicional para mostrar alerta de eliminado --}}
-  @if (session('eliminar') === 'ok'){
+  @if (session('eliminar') === 'ok')
     <script>
       Swal.fire(
-        'Eliminado!',
-        'La empresa se ha eliminado con éxito!',
+        'Desactivado!',
+        '¡La empresa se ha desactivado con éxito!',
         'success'
       )
     </script>
-  } 
   @endif
 
-  {{-- Condicional para mostrar alerta de activado --}}
-  @if (session('activar') === 'ok'){
+  @if (session('activar') === 'ok')
     <script>
       Swal.fire(
         'Activado!',
-        'La empresa se ha activado con éxito!',
+        '¡La empresa se ha activado con éxito!',
         'success'
       )
     </script>
-  } 
   @endif
 @endsection

@@ -1,0 +1,192 @@
+.company{
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  padding-inline: 1rem;
+  inline-size: 100%;
+  margin: 0 auto;
+  margin-block-start: calc(68px + 2rem);
+  margin-block-end: 2rem;
+  /* max-inline-size: 75rem; */
+}
+
+.company-first{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem;
+  align-items: center;
+  margin-block-end: 2.25rem;
+}
+
+.company-title{
+  display: flex;
+  gap: .5rem;
+}
+
+.company-title > h2{
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.company-button{
+  font-size: .8rem;
+  background-color: #6C63FF;
+  padding: .5rem 1rem;
+  border-radius: .5rem;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .2s;
+  display: inline-block;
+  font-family: 'League Spartan', sans-serif;
+  font-size: 1rem;
+}
+
+.company-button:active{
+  transform: scale(.9);
+}
+
+.company-second{
+  display: flex;
+  flex-direction: column;
+  font-family: 'League Spartan', sans-serif;
+  font-size: 1rem;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.company-second img{
+  inline-size: 90%;
+  max-inline-size: 20rem;
+}
+
+.company-second p{
+  margin: 0;
+  text-align: center;
+}
+
+.company-cards{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 360px));
+  gap: 2rem;
+  justify-content: center;
+}
+
+.card{
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; */
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-inline: 1.5rem;
+  padding-block: 2rem;
+  border-radius: .5rem;
+  inline-size: 100%;
+  box-sizing: border-box;
+  max-inline-size: 360px;
+  justify-content: center;
+}
+
+.card-item{
+  display: flex;
+  gap: 1rem;
+}
+
+.card-body{
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.card-body > h2{
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.card-body > p{
+  font-size: .85rem;
+}
+
+.card-body > a{
+  text-decoration: none;
+  color: #5D5FEF;
+  font-size: .85rem;
+}
+
+.card-body > h2, .card-body > p{
+  margin: 0;
+}
+
+.card-actions{
+  display: flex;
+  gap: 1rem;
+}
+
+.card-actions > a{
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: transform .2s;
+  font-size: .85rem;
+  color: #5D5FEF;
+  cursor: pointer;
+}
+
+.card-actions > a:hover{
+  text-decoration: underline;
+}
+
+.card-actions > a:active{
+  transform: scale(.9);
+}
+
+.card-form{
+  display: flex;
+  gap: .15rem;
+  cursor: pointer;
+}
+
+.card-form:hover{
+  text-decoration: underline;
+}
+
+.card-form button{
+  border: none;
+  background: none;
+  padding: 0;
+  color: #6C63FF;
+  font-family: 'League Spartan', sans-serif;
+  font-size: 1rem;
+}
+
+@media screen and (min-width: 500px){
+  .company-first{
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+}
+
+@media screen and (min-width: 768px){
+  .company{
+    margin-block: 3rem;
+    padding-inline: 3rem;
+  }
+
+  .company-first{
+    margin-block-end: 1.8rem;
+  }
+
+  .company-title > h2{
+    font-size: 1.8rem;
+  }
+
+  .company-second img{
+    max-inline-size: 30rem;
+  }
+}
+
+@media screen and (min-width: 900px){
+  .company-cards{
+    justify-content: flex-start;
+  }
+}
