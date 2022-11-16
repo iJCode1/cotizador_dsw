@@ -1,6 +1,8 @@
 @extends('layouts.login')
 
-{{-- @section('style', "{{ asset('css/login/login.css') }}")  --}}
+@section('css')
+  <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+@endsection
 
 @section('content')
 

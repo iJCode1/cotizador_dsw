@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+  <link href="{{ asset('css/empresas.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 <div class="company">
   <div class="company-first">
@@ -31,7 +35,7 @@
             <input id="address" type="text" name="address" value="{{ old('address', $empresa->direccion) }}" autocomplete="address" autofocus placeholder="Lago azul, #56, Int. #6 Col, Hornex, 67870 CDMX">
 
             @error('address')
-            <span class="invalid-feedback" role="alert">
+            <span class="invalid-feedbackk" role="alert">
               <strong>{{ $message }}</strong>
             </span>
             @enderror
@@ -46,7 +50,7 @@
               <input id="postal" type="number" name="postal" value="{{ old('postal', $empresa->codigo_postal) }}" autocomplete="postal" autofocus placeholder="67453">
               
               @error('postal')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-feedbackk" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
               @enderror
@@ -59,7 +63,7 @@
               <input id="number" type="number" name="number" value="{{ old('number', $empresa->numero) }}" autocomplete="number" autofocus placeholder="21">
 
               @error('number')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-feedbackk" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
               @enderror
@@ -82,7 +86,7 @@
                   <option value="{{$estado->estado_id}}">{{$estado->nombre}}</option>
                 @endforeach
                 @error('estado')
-                  <span class="invalid-feedback" role="alert">
+                  <span class="invalid-feedbackk" role="alert">
                     <strong>{{ $message }}</strong>
                   </span>
                 @enderror
@@ -103,7 +107,7 @@
                   <option value="{{$municipioE->municipio_id}}">{{ $municipioE->nombre }}</option>
                 @endforeach
                 @error('municipio_id')
-                  <span class="invalid-feedback" role="alert">
+                  <span class="invalid-feedbackk" role="alert">
                     <strong>{{ $message }}</strong>
                   </span>
                 @enderror
@@ -119,7 +123,7 @@
             <input id="rfc" type="text" name="rfc" value="{{ old('rfc', $empresa->rfc) }}" autocomplete="number" autofocus placeholder="5645342343423">
 
             @error('rfc')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
             @enderror
@@ -147,7 +151,7 @@
             <input id="nameContact" type="text" name="nameContact" value="{{ old('nameContact', $empresa->nombre_contacto) }}" autocomplete="nameContact" autofocus placeholder="Julian">
 
             @error('nameContact')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
             @enderror
@@ -162,7 +166,7 @@
               <input id="apep" type="text" name="apep" value="{{ old('apep', $empresa->apellido_p) }}" autocomplete="apep" autofocus placeholder="Hernández">
 
               @error('apep')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-feedbackk" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
               @enderror
@@ -175,7 +179,7 @@
               <input id="apem" type="text" name="apem" value="{{ old('apem', $empresa->apellido_m) }}" autocomplete="apem" autofocus placeholder="Díaz">
 
               @error('apem')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
               @enderror
@@ -190,7 +194,7 @@
             <input id="phone" type="tel" name="phone" value="{{ old('phone', $empresa->telefono) }}" autocomplete="phone" autofocus placeholder="7225678564">
 
             @error('phone')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
             @enderror

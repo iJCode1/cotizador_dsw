@@ -46,6 +46,11 @@
   transform: scale(.9);
 }
 
+.company-button:hover{
+  text-decoration: none;
+  color: white;
+}
+
 .company-second{
   display: flex;
   flex-direction: column;
@@ -72,7 +77,7 @@
   justify-content: center;
 }
 
-.card{
+.cardd{
   /* box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; */
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
   display: flex;
@@ -87,42 +92,42 @@
   justify-content: center;
 }
 
-.card-item{
+.cardd-item{
   display: flex;
   gap: 1rem;
 }
 
-.card-body{
+.cardd-body{
   display: flex;
   flex-direction: column;
   gap: .75rem;
 }
 
-.card-body > h2{
+.cardd-body > h2{
   font-weight: 600;
   font-size: 1rem;
 }
 
-.card-body > p{
+.cardd-body > p{
   font-size: .85rem;
 }
 
-.card-body > a{
+.cardd-body > a{
   text-decoration: none;
   color: #5D5FEF;
   font-size: .85rem;
 }
 
-.card-body > h2, .card-body > p{
+.cardd-body > h2, .cardd-body > p{
   margin: 0;
 }
 
-.card-actions{
+.cardd-actions{
   display: flex;
   gap: 1rem;
 }
 
-.card-actions > a{
+.cardd-actions > a{
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -132,25 +137,25 @@
   cursor: pointer;
 }
 
-.card-actions > a:hover{
+.cardd-actions > a:hover{
   text-decoration: underline;
 }
 
-.card-actions > a:active{
+.cardd-actions > a:active{
   transform: scale(.9);
 }
 
-.card-form{
+.cardd-form{
   display: flex;
   gap: .15rem;
   cursor: pointer;
 }
 
-.card-form:hover{
+.cardd-form:hover{
   text-decoration: underline;
 }
 
-.card-form button{
+.cardd-form button{
   border: none;
   background: none;
   padding: 0;
@@ -248,6 +253,13 @@
 
 .form-cta:active{
   transform: scale(.9);
+}
+
+.invalid-feedbackk{
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #e3342f;
 }
 
 @media screen and (min-width: 500px){

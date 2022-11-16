@@ -104,6 +104,7 @@
   font-size: 1.2rem;
   font-family: var(--second-font);
   transition: transform .2s;
+  cursor: pointer;
 }
 
 .login-cta:active{
@@ -121,6 +122,15 @@
   font-family: var(--second-font);
   text-align: center;
   font-size: 1rem;
+}
+
+.login-link a{
+  color: #4C1098;
+  text-decoration: none;
+}
+
+.login-link a:hover{
+  text-decoration: underline;
 }
 
 @media screen and (min-width: 768px){

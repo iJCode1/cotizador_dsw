@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+  <link href="{{ asset('css/empresas.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 
   <div class="company">
@@ -21,48 +25,48 @@
     @else
       <div class="company-cards">
         @foreach ($empresas as $empresa)   
-          <div class="card">
-            <div class="card-item">
+          <div class="cardd">
+            <div class="cardd-item">
               <img src="{{ asset('images/icons/icon-company_black.svg') }}" class="nav-icon" alt="Icono de empresa" title="Empresa" width="28">
-              <div class="card-body">
+              <div class="cardd-body">
                 <h2>Empresa</h2>
                 <p>{{$empresa->fqdn}}</p>
               </div>
             </div>
-            <div class="card-item">
+            <div class="cardd-item">
               <img src="{{ asset('images/icons/icon-globe_black.svg') }}" class="nav-icon" alt="Icono de hostname" title="Hostname" width="28">
-              <div class="card-body">
+              <div class="cardd-body">
                 <h2>Hostname</h2>
                 <a href="http://{{$empresa->hostname->fqdn}}:8000" target="_blank" rel="noreferrer">{{$empresa->hostname->fqdn}}</a>
               </div>
             </div>
-            <div class="card-item">
+            <div class="cardd-item">
               <img src="{{ asset('images/icons/icon-map_black.svg') }}" class="nav-icon" alt="Icono de dirección" title="Dirección" width="28">
-              <div class="card-body">
+              <div class="cardd-body">
                 <h2>Dirección</h2>
                 <p>{{$empresa->direccion}}</p>
               </div>
             </div>
-            <div class="card-item">
+            <div class="cardd-item">
               <img src="{{ asset('images/icons/icon-person_black.svg') }}" class="nav-icon" alt="Icono de administrador" title="Administrador" width="28">
-              <div class="card-body">
+              <div class="cardd-body">
                 <h2>Administrador</h2>
                 <p>{{$empresa->nombre_contacto." ".$empresa->apellido_p." ".$empresa->apellido_m}}</p>
               </div>
             </div>
-            <div class="card-item">
+            <div class="cardd-item">
               <img src="{{ asset('images/icons/icon-phone_black.svg') }}" class="nav-icon" alt="Icono de teléfono" title="Teléfono" width="28">
-              <div class="card-body">
+              <div class="cardd-body">
                 <h2>Teléfono</h2>
                 <p>{{$empresa->telefono}}</p>
               </div>
             </div>
-            <div class="card-item">
+            <div class="cardd-item">
               <img src="{{ asset('images/icons/icon-actions_black.svg') }}" class="nav-icon" alt="Icono de acciones" title="Acciones" width="28">
-              <div class="card-body">
+              <div class="cardd-body">
                 <h2>Acciones</h2>
-                <div class="card-actions">
-                  <a href="{{ route('editarEmpresa', $empresa) }}" class="card-edit">
+                <div class="cardd-actions">
+                  <a href="{{ route('editarEmpresa', $empresa) }}" class="cardd-edit">
                     <img src="{{ asset('images/icons/icon-edit.svg') }}" class="nav-icon" alt="Icono de editar" title="Editar" width="26">
                     Editar
                   </a>
@@ -70,13 +74,13 @@
                     @if ($empresa->hostname->website_id === $website->id)
                     <td>
                       @if ($website->deleted_at != NULL)
-                        <form class="card-form" id="activateForm" action="{{ route('activateEmpresa', ['id' => $website->id]) }}">
+                        <form class="cardd-form" id="activateForm" action="{{ route('activateEmpresa', ['id' => $website->id]) }}">
                           @csrf
                           <img src="{{ asset('images/icons/icon-activate.svg') }}" class="nav-icon" alt="Icono de activar" title="Activar" width="24">
                           <button type="submit">Activar</button>
                         </form>
                       @else
-                        <form class="card-form" id="deleteForm" action="{{ Route('desactivarEmpresa', ['id' => $website->id]) }}">
+                        <form class="cardd-form" id="deleteForm" action="{{ Route('desactivarEmpresa', ['id' => $website->id]) }}">
                           @method("DELETE")
                           @csrf
                           <img src="{{ asset('images/icons/icon-disabled.svg') }}" class="nav-icon" alt="Icono de eliminar" title="Desactivar" width="24">

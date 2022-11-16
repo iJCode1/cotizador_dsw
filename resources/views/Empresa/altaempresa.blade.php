@@ -1,4 +1,8 @@
-@extends('../layouts.app')
+@extends('layouts.app')
+
+@section('css')
+  <link href="{{ asset('css/empresas.css') }}" rel="stylesheet">
+@endsection
 
 @section('content')
 <div class="company">
@@ -22,7 +26,7 @@
             <input id="fqdn" type="text" name="fqdn" value="{{ old('fqdn') }}" autocomplete="fqdn" placeholder="CompuShop">
 
             @error('fqdn')
-            <span class="invalid-feedback" role="alert">
+            <span class="invalid-feedbackk" role="alert">
               <strong>{{ $message }}</strong>
             </span>
             @enderror
@@ -36,7 +40,7 @@
             <input id="address" type="text" name="address" value="{{ old('address') }}" autocomplete="address" autofocus placeholder="Lago azul, #56, Int. #6 Col, Hornex, 67870 CDMX">
 
             @error('address')
-            <span class="invalid-feedback" role="alert">
+            <span class="invalid-feedbackk" role="alert">
               <strong>{{ $message }}</strong>
             </span>
             @enderror
@@ -51,7 +55,7 @@
               <input id="postal" type="number" name="postal" value="{{ old('postal') }}" autocomplete="postal" autofocus placeholder="67453">
               
               @error('postal')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-feedbackk" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
               @enderror
@@ -64,7 +68,7 @@
               <input id="number" type="number" name="number" value="{{ old('number') }}" autocomplete="number" autofocus placeholder="21">
 
               @error('number')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-feedbackk" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
               @enderror
@@ -93,7 +97,7 @@
               </select>
 
               @error('estado')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
               @enderror
@@ -108,7 +112,7 @@
               </select>
 
               @error('municipio_id')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-feedbackk" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
               @enderror
@@ -123,7 +127,7 @@
             <input id="rfc" type="text" name="rfc" value="{{ old('rfc') }}" autocomplete="number" autofocus placeholder="5645342343423">
 
             @error('rfc')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
             @enderror
@@ -142,7 +146,7 @@
             <input id="nameContact" type="text" name="nameContact" value="{{ old('nameContact') }}" autocomplete="nameContact" autofocus placeholder="Julian">
 
             @error('nameContact')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
             @enderror
@@ -157,7 +161,7 @@
               <input id="apep" type="text" name="apep" value="{{ old('apep') }}" autocomplete="apep" autofocus placeholder="Hernández">
 
               @error('apep')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-feedbackk" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
               @enderror
@@ -170,7 +174,7 @@
               <input id="apem" type="text" name="apem" value="{{ old('apem') }}" autocomplete="apem" autofocus placeholder="Díaz">
 
               @error('apem')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
               @enderror
@@ -185,7 +189,7 @@
             <input id="phone" type="tel" name="phone" value="{{ old('phone') }}" autocomplete="phone" autofocus placeholder="7225678564">
 
             @error('phone')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
             @enderror
@@ -199,7 +203,7 @@
             <input id="email" type="email" name="email" value="{{ old('email') }}" autocomplete="email" placeholder="julian@compushop.com">
             
             @error('email')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
             @enderror
@@ -213,7 +217,7 @@
             <input id="password" type="password" name="password" value="{{ old('password') }}" autocomplete="off" placeholder="**********">
 
             @error('password')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
             @enderror
