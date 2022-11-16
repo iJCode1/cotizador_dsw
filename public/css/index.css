@@ -4,6 +4,7 @@
 @import './register.css';
 @import './servicios.css';
 @import './unidades.css';
+@import './empleados.css';
 
 :root{
   --main-font: 'Inter', sans-serif;

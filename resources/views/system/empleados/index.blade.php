@@ -56,6 +56,18 @@
     @endif
     <a href="{{route('tenant.showRegister')}}" class="btn btn-block btn-primary mb-">Crear Usuario</a>
   </div>
+  <div class="employees">
+    <div class="employees-first">
+      <div class="employees-title">
+        <img src="{{ asset('images/icons/icon-empleados_black.svg') }}" class="nav-icon" alt="Icono de empleados" title="Icono de empleados" width="24">
+        <h2>Empleados</h2>
+      </div>
+      <a href="{{ route('tenant.showRegister') }}" class="employees-button">
+        <span>+</span>
+        <span>Nuevo registro</span>
+      </a>
+    </div>
+  </div>
 
   {{-- Script para mostrar alertas --}}
   <script>
@@ -70,12 +82,12 @@
         event.preventDefault();
         Swal.fire({
           title: '¿Estás seguro?',
-          text: "Se eliminara este empleado",
+          text: "Se desactivará este empleado",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: '¡Si, eliminar!',
+          confirmButtonText: '¡Si, desactivar!',
           cancelButtonText: 'Cancelar'
         }).then((result) => {
           if (result.isConfirmed) {
@@ -93,7 +105,7 @@
         event.preventDefault();
         Swal.fire({
           title: '¿Estás seguro?',
-          text: "Se activara este empleado",
+          text: "Se activará este empleado",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
@@ -111,50 +123,46 @@
   </script>
 
   {{-- Condicional para mostrar alerta de empleado creado --}}
-  @if (session('crear') === 'ok'){
+  @if (session('crear') === 'ok')
     <script>
       Swal.fire(
         'Registrado!',
-        'El empleado se ha registrado con éxtio!',
+        'El empleado se ha registrado con éxito!',
         'success'
       )
     </script>
-  } 
   @endif
 
   {{-- Condicional para mostrar alerta de editado --}}
-  @if (session('editar') === 'ok'){
+  @if (session('editar') === 'ok')
     <script>
       Swal.fire(
         'Editado!',
-        'El empleado se ha editado correctamente!',
+        '¡El empleado se ha editado correctamente!',
         'success'
       )
     </script>
-  } 
   @endif
 
   {{-- Condicional para mostrar alerta de eliminado --}}
-  @if (session('eliminar') === 'ok'){
+  @if (session('eliminar') === 'ok')
     <script>
       Swal.fire(
         'Eliminado!',
-        'El empleado se ha eliminado con éxito!',
+        '¡El empleado se ha eliminado con éxito!',
         'success'
       )
     </script>
-  } 
   @endif
 
   {{-- Condicional para mostrar alerta de activado --}}
-  @if (session('activar') === 'ok'){
+  @if (session('activar') === 'ok')
     <script>
       Swal.fire(
         'Activado!',
-        'El empleado se ha activado con éxito!',
+        '¡El empleado se ha activado con éxito!',
         'success'
       )
     </script>
-  } 
   @endif
 @endsection()

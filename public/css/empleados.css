@@ -1,0 +1,185 @@
+.employees{
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  padding-inline: 1rem;
+  inline-size: 100%;
+  margin: 0 auto;
+  margin-block-start: calc(68px + 2rem);
+  margin-block-end: 2rem;
+}
+
+.employees-first{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem;
+  align-items: center;
+  margin-block-end: 2.25rem;
+}
+
+.employees-title{
+  display: flex;
+  gap: .5rem;
+}
+
+.employees-title > h2{
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.employees-button{
+  font-size: .8rem;
+  background-color: #6C63FF;
+  padding: .5rem 1rem;
+  border-radius: .5rem;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .2s;
+  display: inline-block;
+  font-family: 'League Spartan', sans-serif;
+  font-size: 1rem;
+}
+
+.employees-button:active{
+  transform: scale(.9);
+}
+
+.employees-button:hover{
+  text-decoration: none;
+  color: white;
+}
+
+.employees-form{
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.form-concept{
+  font-size: 1.25rem;
+  border-bottom: 2px solid #6C63FF;
+  padding-block-end: .5rem;
+  display: inline-block;
+  margin: 0;
+  margin-block-end: 2.5rem;
+  font-weight: 600;
+}
+
+.form-inputs{
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.register-data{
+  display: flex;
+  gap: 0.75rem;
+}
+
+.register-input{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  inline-size: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+.register-input input{
+  border: none;
+  border-block-end: 1px solid black;
+  font-family: 'League Spartan', sans-serif;
+  padding: .5rem;
+}
+
+.register-input label{
+  font-weight: 500;
+}
+
+.register-input > select{
+  border: none;
+  border-block-end: 1px solid black;
+  font-family: 'League Spartan', sans-serif;
+  padding: .5rem;
+  font-size: 1rem
+}
+
+.register-double{
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.register-double > .register-data{
+  flex: 1;
+}
+
+.register-input p{
+  margin: 0;
+  font-family: 'League Spartan', sans-serif;
+}
+
+.register-input >.read-only{
+  color: #888888;
+}
+
+.form-cta{
+  background-color: #5D5FEF;
+  color: white;
+  padding-block: .75rem;
+  border: 0;
+  border-radius: .5rem;
+  font-size: 1.1rem;
+  font-family: 'League Spartan', sans-serif;
+  transition: transform .2s;
+  align-self: flex-end;
+  padding-inline: 3.5rem;
+  cursor: pointer;
+}
+
+.form-cta:active{
+  transform: scale(.9);
+}
+
+.invalid-feedbackk{
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #e3342f;
+  display: inline-block;
+}
+
+@media screen and (min-width: 500px){
+  .employees-first{
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+}
+
+@media screen and (min-width: 768px){
+  .employees{
+    margin-block: 3rem;
+    padding-inline: 3rem;
+  }
+
+  .employees-first{
+    margin-block-end: 2rem;
+  }
+
+  .employees-first.employees-concept{
+    margin-block-end: 2.5rem;
+  }
+
+  .employees-title > h2{
+    font-size: 1.8rem;
+  }
+
+  .employees-second img{
+    max-inline-size: 30rem;
+  }
+
+  .register-double{
+    flex-direction: row;
+    gap: 4rem;
+  }
+}
