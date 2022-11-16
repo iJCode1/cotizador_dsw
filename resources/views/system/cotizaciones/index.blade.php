@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+{{-- <div class="container">
   @if ( count($cotizaciones) <= 0 )
     <p>No hay Cotizaciones</p>
     <img src="{{asset('images/illustrations/emptyQuotes.svg')}}" alt="Empty Quotes" width="300">
@@ -35,24 +35,6 @@
           <td>
             <a href="{{ route('tenant.showCotizacionEditForm', $cotizacion) }}" class="btn btn-warning">Editar</a>
           </td>
-          {{-- @foreach ($websites as $website)
-            @if ($empresa->hostname->website_id === $website->id)
-            <td>
-              @if ($website->deleted_at != NULL)
-                <form id="activateForm" action="{{ route('activateEmpresa', ['id' => $website->id]) }}">
-                  @csrf
-                  <button type="submit" class="btn btn-info text-white">Activar</button>
-                </form>
-              @else
-                <form id="deleteForm" action="{{ Route('desactivarEmpresa', ['id' => $website->id]) }}">
-                  @method("DELETE")
-                  @csrf
-                  <button type="submit" class="btn btn-danger">Eliminar</button>
-                </form>
-              @endif
-            </td>
-            @endif
-          @endforeach --}}
         </tr>
         @endforeach
       </tbody>
@@ -60,29 +42,47 @@
     {{$cotizaciones->links()}}
   @endif
   <a href="{{route('tenant.cotizacion')}}" class="btn btn-block btn-primary my-4">Crear Nueva Cotización</a>
+</div> --}}
+<div class="quotation">
+  <div class="quotation-first">
+    <div class="quotation-title">
+      <img src="{{ asset('images/icons/icon-cotizaciones_black.svg') }}" class="nav-icon" alt="Icono de cotizaciones" title="Icono de cotizaciones" width="24">
+      <h2>{{ __('Cotizaciones') }}</h2>
+    </div>
+    <a href="{{ route('tenant.cotizacion') }}" class="quotation-button">
+      <span>+</span>
+      <span>Nueva cotización</span>
+    </a>
+  </div>
+  @if (count($cotizaciones) <= 0)
+    <div class="quotation-second">
+      <img src="{{ asset('images/illustrations/empresas.svg') }}" alt="Empresas" title="No hay empresas registradas" width="250">
+      <p>No se han realizado cotizaciones</p>
+    </div>
+  @else
+
+  @endif
+  
 </div>
 
-{{-- Condicional para mostrar alerta de cotización realizada --}}
-@if (session('crear') === 'ok'){
+@if (session('crear') === 'ok')
   <script>
     Swal.fire(
       'Registrado!',
-      'La cotización se ha realizado con éxtio!',
+      '¡La cotización se ha realizado con éxito!',
       'success'
     )
   </script>
-} 
 @endif
 
-{{-- Condicional para mostrar alerta de editado --}}
-@if (session('editar') === 'ok'){
+@if (session('editar') === 'ok')
   <script>
     Swal.fire(
       'Editado!',
-      'La cotización se ha editado correctamente!',
+      '¡La cotización se ha editado correctamente!',
       'success'
     )
   </script>
-} 
 @endif
+
 @endsection
