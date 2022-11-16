@@ -243,14 +243,11 @@
   transition: transform .2s;
   align-self: flex-end;
   padding-inline: 3.5rem;
+  cursor: pointer;
 }
 
 .form-cta:active{
   transform: scale(.9);
-}
-
-.form-cta:hover{
-  text-decoration: underline;
 }
 
 @media screen and (min-width: 500px){
