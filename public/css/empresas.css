@@ -235,7 +235,7 @@
 .form-cta{
   background-color: #5D5FEF;
   color: white;
-  padding-block: 1rem;
+  padding-block: .75rem;
   border: 0;
   border-radius: .5rem;
   font-size: 1.1rem;
