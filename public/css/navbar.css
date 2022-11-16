@@ -1,15 +1,15 @@
-.nav{
+.navv{
   inline-size: 100%;
   box-sizing: border-box;
   position: fixed;
   top: 0;
 }
 
-.nav.is-full{
+.navv.is-full{
   block-size: 100vh;
 }
 
-.nav-list{
+.navv-list{
   list-style: none;
   padding: 0;
   margin: 0;
@@ -19,7 +19,7 @@
   box-sizing: border-box;
 }
 
-.nav-options{
+.navv-options{
   display: none;
   position: absolute;
   inset-inline: 0;
@@ -30,25 +30,25 @@
   padding-block-start: 2rem;
 }
 
-.nav-options.is-visible{
+.navv-options.is-visible{
   display: flex;
   left: 0%;
   top: 3rem;
   right: 0;
 }
 
-.nav-element{
+.navv-element{
   display: flex;
   gap: .5rem;
   flex-direction: column;
   align-items: center;
 }
 
-.nav-element:active{
+.navv-element:active{
   transform: scale(.95);
 }
 
-.nav-ancla{
+.navv-ancla{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,11 +58,11 @@
   color: white;
 }
 
-.nav-ancla:hover{
+.navv-ancla:hover{
   text-decoration: underline;
 }
 
-.nav-menu{
+.navv-menu{
   padding: .5rem 1rem;
   box-sizing: border-box;
   inline-size: 100%;
@@ -70,7 +70,7 @@
   flex: 1;
 }
 
-.nav-hamburger,.nav-hamburgerD{
+.navv-hamburger,.navv-hamburgerD{
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -78,11 +78,11 @@
   color: white;
 }
 
-.nav-hamburger > img,.nav-hamburgerD > img{
+.navv-hamburger > img,.navv-hamburgerD > img{
   cursor: pointer;
 }
 
-.nav-hamburgerD{
+.navv-hamburgerD{
   display: none;
 }
 
@@ -94,27 +94,27 @@
 }
 
 @media screen and (min-width: 768px){
-  .nav{
+  .navv{
     inline-size: auto;
     position: sticky;
     block-size: 100vh;
   }
   
-  .nav.is-small{
+  .navv.is-small{
     max-inline-size: 12rem;
     inline-size: 100%;
   }
 
-  .nav-hamburger{
+  .navv-hamburger{
     display: none;
   }
 
-  .nav-hamburgerD{
+  .navv-hamburgerD{
     display: flex;
     justify-content: center;
   }
 
-  .nav-options{
+  .navv-options{
     display: flex;
     padding-inline: 1rem;
   }

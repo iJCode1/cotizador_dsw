@@ -1,12 +1,12 @@
-<nav id="nav" class="nav">
-  <ul class="nav-list">
-    <div class="nav-menu">
-      <li class="nav-element nav-hamburgerD">
-        <img id="icon-hamburgerD" src="{{ asset('images/icons/icon-menu.svg') }}" class="nav-icon" alt="Menu" title="menu" width="32">
+<nav id="navv" class="navv">
+  <ul class="navv-list">
+    <div class="navv-menu">
+      <li class="navv-element navv-hamburgerD">
+        <img id="icon-hamburgerD" src="{{ asset('images/icons/icon-menu.svg') }}" class="navv-icon" alt="Menu" title="menu" width="32">
         <p class="link-text">Cotizador</p>
       </li>
-      <li class="nav-element nav-hamburger">
-        <img id="icon-hamburger" src="{{ asset('images/icons/icon-menu.svg') }}" class="nav-icon" alt="Menu" title="menu" width="32">
+      <li class="navv-element navv-hamburger">
+        <img id="icon-hamburger" src="{{ asset('images/icons/icon-menu.svg') }}" class="navv-icon" alt="Menu" title="menu" width="32">
         <p>Cotizador</p>
       </li>
       {{-- <div id="nav-options" class="nav-options">
@@ -64,18 +64,18 @@
 
           @endif
         @else
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('tenant.login') }}">{{ __('Login') }}</a>
+          <li class="navv-item">
+            <a class="navv-link" href="{{ route('tenant.login') }}">{{ __('Login') }}</a>
           </li>
           
-          <li class="nav-item">
-            <a class="nav-link" href="{{ route('tenant.register') }}">{{ __('Registrarse') }}</a>
+          <li class="navv-item">
+            <a class="navv-link" href="{{ route('tenant.register') }}">{{ __('Registrarse') }}</a>
           </li>
       @endif
     @else
       @guest
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+        <li class="navv-item">
+          <a class="navv-link" href="{{ route('login') }}">{{ __('Login') }}</a>
         </li>
       @else
         @if ((Auth::user()->rol->nombre_rol === "Administrador General"))

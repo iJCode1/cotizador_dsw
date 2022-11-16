@@ -1,10 +1,10 @@
 let hamburgerButton = document.getElementById("icon-hamburger")
 
 hamburgerButton.addEventListener("click", () => {
-  let navOptions = document.getElementById('nav-options')
+  let navOptions = document.getElementById('navv-options')
   navOptions.classList.toggle('is-visible')
 
-  let nav = document.getElementById('nav')
+  let nav = document.getElementById('navv')
   nav.classList.toggle('is-full')
 })
 
