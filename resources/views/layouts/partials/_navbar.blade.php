@@ -60,7 +60,7 @@
             @if ((Auth::user()->rol->nombre_rol === "Empleado"))
               @include('layouts.partials.tenant._empleado')
             @endif
-            @include('layouts.partials._logout', ['authName' => Auth::user()->nombre])
+            {{-- @include('layouts.partials._logout', ['authName' => Auth::user()->nombre]) --}}
 
           @endif
         @else

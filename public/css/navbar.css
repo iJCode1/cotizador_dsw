@@ -90,6 +90,7 @@
   color: white;
   margin: 0;
   display: block;
+  text-align: center;
 }
 
 @media screen and (min-width: 768px){
@@ -110,10 +111,12 @@
 
   .nav-hamburgerD{
     display: flex;
+    justify-content: center;
   }
 
   .nav-options{
     display: flex;
+    padding-inline: 1rem;
   }
 
   .link-text{
