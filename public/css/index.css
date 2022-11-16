@@ -3,6 +3,7 @@
 @import './login.css';
 @import './register.css';
 @import './servicios.css';
+@import './unidades.css';
 
 :root{
   --main-font: 'Inter', sans-serif;

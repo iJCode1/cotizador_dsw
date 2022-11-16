@@ -1,62 +1,53 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-          <div class="card-header">{{ __('Registrar Unidad de Medida') }}</div>
-
-          <div class="card-body">
-              <form method="POST" action="{{ route('tenant.registerUnidad') }}">
-                  @csrf
-                  @method('post')
-
-                  {{-- Nombre de la unidad --}}
-                  <div class="form-group row">
-                      <label for="nombre" class="col-md-4 col-form-label text-md-right">{{ __('Nombre de la Unidad') }}</label>
-
-                      <div class="col-md-6">
-                          <input id="nombre" type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" value="{{ old('nombre') }}" autocomplete="nombre" autofocus placeholder="unidad">
-
-                          @error('nombre')
-                              <span class="invalid-feedback" role="alert">
-                                  <strong>{{ $message }}</strong>
-                              </span>
-                          @enderror
-                      </div>
-                  </div>
-
-                  {{-- Abreviación --}}
-                  <div class="form-group row">
-                    <label for="abrev" class="col-md-4 col-form-label text-md-right">{{ __('Abreviación') }}</label>
-
-                    <div class="col-md-6">
-                        <input id="abrev" type="text" class="form-control @error('abrev') is-invalid @enderror" name="abrev" value="{{ old('abrev') }}" autocomplete="abrev" autofocus placeholder="abrev">
-
-                        @error('abrev')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                  </div>
-
-                  {{-- Boton de registrar --}}
-                  <div class="form-group row mb-0">
-                      <div class="col-md-6 offset-md-4">
-                          <button type="submit" class="btn btn-primary">
-                              {{ __('Registrar') }}
-                          </button>
-                      </div>
-                  </div>
-              </form>
-          </div>
-      </div>
+<div class="service">
+  <div class="service-first service-concept">
+    <div class="service-title">
+      <img src="{{ asset('images/icons/icon-unidad.svg') }}" class="nav-icon" alt="Icono de unidades de medida" title="Icono de unidades de medida" width="24">
+      <h2>{{ __('Registrar Unidad de Medida') }}</h2>
+    </div>
   </div>
-</div>
+  <form class="service-form" method="POST" action="{{ route('tenant.registerUnidad') }}">
+    @csrf
+    @method('post')
 
+    <div class="service-fFirst">
+      <p class="form-concept">Información de la unidad</p>
+
+      <div class="form-inputs">
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-label.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="nombre">{{ __('Nombre de la unidad') }}</label>
+            <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" autocomplete="nombre" autofocus placeholder="unidad">
+
+            @error('nombre')
+              <span class="invalid-feedbackk" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
+          </div>
+        </div>
+
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-unidad.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="abrev">{{ __('Abreviación') }}</label>
+            <input id="abrev" type="text" name="abrev" value="{{ old('abrev') }}" autocomplete="abrev" autofocus placeholder="un">
+
+            @error('abrev')
+            <span class="invalid-feedbackk" role="alert">
+              <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <button class="form-cta" type="submit">{{ __('Registrar') }}</button>
+  </form>
 </div>
 
 @endsection
