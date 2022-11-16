@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+  <link href="{{ asset('css/unidades.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 
 {{-- @if ( count($unidades) <= 0)

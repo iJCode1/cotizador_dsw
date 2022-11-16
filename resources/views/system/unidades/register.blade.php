@@ -1,18 +1,22 @@
 @extends('layouts.app')
 
+@section('css')
+  <link href="{{ asset('css/unidades.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
-<div class="service">
-  <div class="service-first service-concept">
-    <div class="service-title">
+<div class="unit">
+  <div class="unit-first unit-concept">
+    <div class="unit-title">
       <img src="{{ asset('images/icons/icon-unidad.svg') }}" class="nav-icon" alt="Icono de unidades de medida" title="Icono de unidades de medida" width="24">
       <h2>{{ __('Registrar Unidad de Medida') }}</h2>
     </div>
   </div>
-  <form class="service-form" method="POST" action="{{ route('tenant.registerUnidad') }}">
+  <form class="unit-form" method="POST" action="{{ route('tenant.registerUnidad') }}">
     @csrf
     @method('post')
 
-    <div class="service-fFirst">
+    <div class="unit-fFirst">
       <p class="form-concept">Información de la unidad</p>
 
       <div class="form-inputs">

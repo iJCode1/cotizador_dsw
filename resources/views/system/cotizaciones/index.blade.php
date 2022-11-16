@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+  <link href="{{ asset('css/cotizaciones.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 {{-- <div class="container">
   @if ( count($cotizaciones) <= 0 )

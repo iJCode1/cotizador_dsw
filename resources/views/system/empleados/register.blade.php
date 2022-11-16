@@ -1,10 +1,14 @@
 @extends('layouts.app')
 
+@section('css')
+  <link href="{{ asset('css/empleados.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 <div class="employees">
   <div class="employees-first">
     <div class="employees-title">
-      <img src="{{ asset('images/icons/icon-empresas_black.svg') }}" class="nav-icon" alt="Icono de empresas" title="Icono de empresas" width="24">
+      <img src="{{ asset('images/icons/icon-empleados_black.svg') }}" class="nav-icon" alt="Icono de empleado" title="Icono de empleado" width="24">
       <h2>Registrar nuevo empleado</h2>
     </div>
   </div>

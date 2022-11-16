@@ -1,10 +1,14 @@
 @extends('layouts.app')
 
+@section('css')
+  <link href="{{ asset('css/servicios.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 <div class="service">
   <div class="service-first service-concept">
     <div class="service-title">
-      <img src="{{ asset('images/icons/icon-servicios_black.svg') }}" class="nav-icon" alt="Icono de empresas" title="Icono de empresas" width="24">
+      <img src="{{ asset('images/icons/icon-servicios_black.svg') }}" class="nav-icon" alt="Icono de servicios" title="Icono de servicios" width="24">
       <h2>{{ __('Registrar Producto y/o Servicio') }}</h2>
     </div>
   </div>
