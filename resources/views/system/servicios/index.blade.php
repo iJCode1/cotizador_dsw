@@ -2,7 +2,7 @@
 
 @section('content')
 
-  <div class="container">
+  {{-- <div class="container">
     <h1 class="text-center mt-2 mb-4">Productos y/o Servicios</h1>
     @if (count($productosServicios) <= 0)
         <p>No hay Productos y/o Servicios</p>
@@ -59,14 +59,35 @@
     @endif
 
     <a href="{{route('tenant.showRegisterServicio')}}" class="btn btn-block btn-primary my-4">Crear Producto y/o Servicio</a>
+  </div> --}}
+
+  <div class="service">
+    <div class="service-first">
+      <div class="service-title">
+        <img src="{{ asset('images/icons/icon-servicios_black.svg') }}" class="nav-icon" alt="Icono de empresas" title="Icono de empresas" width="24">
+        <h2>Productos y/o Servicios</h2>
+      </div>
+      <a href="{{ route('tenant.showRegisterServicio') }}" class="service-button">
+        <span>+</span>
+        <span>Nuevo registro</span>
+      </a>
+    </div>
+    @if (count($productosServicios) <= 0)
+      <div class="company-second">
+        <img src="{{ asset('images/illustrations/services.svg') }}" alt="Empresas" title="No hay empresas registradas" width="250">
+        <p>No hay productos y/o servicios registrados</p>
+      </div>
+    @else
+      <div class="service-cards">
+        
+      </div>
+    @endif
   </div>
 
-  {{-- Script para mostrar alertas --}}
   <script>
 
     const d = document;
 
-    // Alerta al querer eliminar un registro
     const deleteForms = d.querySelectorAll('#deleteForm');
 
     deleteForms.forEach(form => {
@@ -89,7 +110,6 @@
       })
     });
 
-    // Alerta al querer activar un registro
     const activateforms = d.querySelectorAll('#activateForm');
 
     activateforms.forEach(form => {
@@ -114,8 +134,7 @@
 
   </script>
 
-  {{-- Condicional para mostrar alerta de producto y/o servicio creado --}}
-  @if (session('crear') === 'ok'){
+  @if (session('crear') === 'ok')
     <script>
       Swal.fire(
         'Registrado!',
@@ -123,11 +142,9 @@
         'success'
       )
     </script>
-  } 
   @endif
 
-  {{-- Condicional para mostrar alerta de editado --}}
-  @if (session('editar') === 'ok'){
+  @if (session('editar') === 'ok')
     <script>
       Swal.fire(
         'Editado!',
@@ -135,11 +152,9 @@
         'success'
       )
     </script>
-  } 
   @endif
 
-  {{-- Condicional para mostrar alerta de eliminado --}}
-  @if (session('eliminar') === 'ok'){
+  @if (session('eliminar') === 'ok')
     <script>
       Swal.fire(
         'Eliminado!',
@@ -147,11 +162,9 @@
         'success'
       )
     </script>
-  } 
   @endif
 
-  {{-- Condicional para mostrar alerta de activado --}}
-  @if (session('activar') === 'ok'){
+  @if (session('activar') === 'ok')
     <script>
       Swal.fire(
         'Activado!',
@@ -159,6 +172,5 @@
         'success'
       )
     </script>
-  } 
   @endif
 @endsection()

@@ -1,0 +1,144 @@
+.service{
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  padding-inline: 1rem;
+  inline-size: 100%;
+  margin: 0 auto;
+  margin-block-start: calc(68px + 2rem);
+  margin-block-end: 2rem;
+}
+
+.service-first{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem;
+  align-items: center;
+  margin-block-end: 2.25rem;
+}
+
+.service-title{
+  display: flex;
+  gap: .5rem;
+}
+
+.service-title > h2{
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.service-button{
+  font-size: .8rem;
+  background-color: #6C63FF;
+  padding: .5rem 1rem;
+  border-radius: .5rem;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .2s;
+  display: inline-block;
+  font-family: 'League Spartan', sans-serif;
+  font-size: 1rem;
+}
+
+.service-button:active{
+  transform: scale(.9);
+}
+
+.company-second{
+  display: flex;
+  flex-direction: column;
+  font-family: 'League Spartan', sans-serif;
+  font-size: 1rem;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.company-second img{
+  inline-size: 90%;
+  max-inline-size: 20rem;
+}
+
+.company-second p{
+  margin: 0;
+  text-align: center;
+}
+
+.service-form{
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.register-input > textarea{
+  border: none;
+  border-block-end: 1px solid black;
+  font-family: 'League Spartan', sans-serif;
+  padding: 0.5rem;
+  resize: vertical;
+  font-size: 1rem;
+}
+
+.register-file{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.register-file::before{
+  background-color: #5678EF;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 3px;
+  content: 'Seleccionar imagen';
+  position: absolute;
+  left: 0;
+  top: 40%;
+  bottom: 0;
+  font-size: 1rem;
+  padding-inline: 1rem;
+  padding-block: .5rem;
+  font-family: 'League Spartan', sans-serif;
+}
+
+.register-file input[type="file"] {
+  opacity: 0;
+  display: inline-block;
+}
+
+.service-image{
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (min-width: 500px){
+  .service-first{
+    justify-content: flex-start;
+    gap: 1.5rem;
+  }
+}
+
+@media screen and (min-width: 768px){
+  .service{
+    margin-block: 3rem;
+    padding-inline: 3rem;
+  }
+
+  .service-first{
+    margin-block-end: 6rem;
+  }
+
+  .service-first.service-concept{
+    margin-block-end: 2.5rem;
+  }
+
+  .service-title > h2{
+    font-size: 1.8rem;
+  }
+
+  .company-second img{
+    max-inline-size: 30rem;
+  }
+}
