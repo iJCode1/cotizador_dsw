@@ -28,20 +28,10 @@ class ClienteController extends Controller
 
   /**
    * Función showCliente()
-   * retorna la vista de cliente
+   * retorna la ruta de cotizaciones
    */
   public function showCliente()
   {
-    return view('/cliente');
-  }
-
-  /**
-   * Función index()
-   */
-  public function index()
-  {
-    // dd($this->user->rol->nombre_rol);
-    // dd($this->user->rol->nombre_rol);
-    dd("Index Cliente");
+    return redirect()->route('tenant.cotizaciones');
   }
 }

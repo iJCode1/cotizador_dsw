@@ -59,7 +59,7 @@ class LoginCustomerController extends Controller
         ->withInput();
     } else {
       if (Auth::guard('cliente')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-        return redirect()->intended('/cliente');
+        return redirect()->route('tenant.cotizaciones');
       }
       return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => 'Estas credenciales no coinciden con nuestros registros.']);
     }

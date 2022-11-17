@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\VerificationController;
 use App\User;
 
 use App\Http\Controllers\EmpresaController;
+use App\Models\Website;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +25,21 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-  return view('welcome');
+
+  $tenantName = null;
+
+  $hostname = app(\Hyn\Tenancy\Environment::class)->hostname();
+  if ($hostname) {
+    $fqdn = $hostname->fqdn;
+    $tenantName = explode('.', $fqdn)[0];
+  }
+
+  if (!$tenantName) {
+    return redirect()->route('login');
+  }else{
+    return redirect()->route('tenant.login');
+  }
+
 });
 
 /**

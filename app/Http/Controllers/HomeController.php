@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Empresa;
+use App\Models\Estado;
+use App\Models\Hostname;
+use App\Models\Municipio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -23,17 +27,13 @@ class HomeController extends Controller
 
   public function __construct()
   {
-    // $this->middleware('adminEmpresa');
-    // $this->middleware('cliente');
     $hostname = app(\Hyn\Tenancy\Environment::class)->hostname();
     if ($hostname) {
-      // $this->middleware('auth');
-      // $this->middleware('cliente');
       $this->website_id = app(\Hyn\Tenancy\Environment::class)->hostname()->website_id;
       $this->website = Website::withTrashed()->find($this->website_id);
       $fqdn = $hostname->fqdn;
       $this->tenantName = explode('.', $fqdn)[0];
-    }else{
+    } else {
       $this->middleware('auth');
     }
   }
@@ -46,18 +46,19 @@ class HomeController extends Controller
   public function index()
   {
     if (!$this->tenantName) {
-      echo(Auth::user().'<br>');
-      echo(Auth::user()->rol->nombre_rol);
-      return view('home');
+      $empresas = Empresa::withTrashed()->get();
+      $websites = Website::withTrashed()->get();
+
+      return view('Empresa.index', [
+        'empresas' => $empresas,
+        'websites' => $websites,
+      ]);
     } else {
       if (Auth::guard('cliente')->user()) {
-        echo(Auth::guard('cliente')->user().'<br>');
-        echo(Auth::guard('cliente')->user()->rol->nombre_rol);
-      }else{
-        echo(Auth::user().'<br>');
-        echo(Auth::user()->rol->nombre_rol);
+        return redirect()->route('tenant.cotizaciones');
+      } else {
+        return redirect()->route('tenant.showServicios');
       }
-      return view('home');
     }
   }
 }
