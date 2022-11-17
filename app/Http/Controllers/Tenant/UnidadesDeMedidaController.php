@@ -18,7 +18,7 @@ class UnidadesDeMedidaController extends Controller
    */
   public function __construct()
   {
-    $this->middleware('adminEmpresa');
+    $this->middleware('userInterno');
   }
 
   /**

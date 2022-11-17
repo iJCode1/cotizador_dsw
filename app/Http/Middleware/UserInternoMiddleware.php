@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class AdminEmpresaMiddleware
+class UserInternoMiddleware
 {
   /**
    * Variable $tenantName
@@ -46,10 +46,10 @@ class AdminEmpresaMiddleware
       /**
        * Si la variable tenantName no esta vacía
        * Se obtiene el rol del usuario autenticado
-       * Se hace una validación de que el usuario este autenticado, que el rol sea 1 y el nombre del rol sea 'Administrador Empresa'
+       * Se hace una validación de que el usuario este autenticado, que el rol sea 1 o 2 y el nombre del rol sea 'Administrador Empresa' o 'Empleado'
        */
 
-      if ((auth()->check()) && (auth()->user()->rol_id === 1) && (auth()->user()->rol->nombre_rol === 'Administrador Empresa')) {
+      if ((auth()->check()) && (auth()->user()->rol_id === 1 || auth()->user()->rol_id === 2) && (auth()->user()->rol->nombre_rol === 'Administrador Empresa' || auth()->user()->rol->nombre_rol === 'Empleado')) {
         return $next($request);
       }
       return redirect('/login/admin');
