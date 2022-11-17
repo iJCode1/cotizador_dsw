@@ -50,6 +50,25 @@
   transform: scale(.9);
 }
 
+.unit-second{
+  display: flex;
+  flex-direction: column;
+  font-family: 'League Spartan', sans-serif;
+  font-size: 1rem;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.unit-second img{
+  inline-size: 90%;
+  max-inline-size: 20rem;
+}
+
+.unit-second p{
+  margin: 0;
+  text-align: center;
+}
+
 .unit-form{
   display: flex;
   flex-direction: column;
@@ -124,6 +143,26 @@
   display: inline-block;
 }
 
+.rtable-item.rtable-id{
+  font-weight: 600;
+}
+
+.rtable-id,
+.rtable-abrev{
+  flex: 1;
+}
+
+.rtable-name,
+.rtable-abrev{
+  flex: 2;
+}
+
+@media screen and (min-width: 425px){
+  .rtable-link > .rtable-span{
+    font-size: 1rem;
+  }
+}
+
 @media screen and (min-width: 500px){
   .unit-first{
     justify-content: flex-start;
@@ -147,5 +186,9 @@
 
   .unit-title > h2{
     font-size: 1.8rem;
+  }
+
+  .unit-second img{
+    max-inline-size: 26rem;
   }
 }

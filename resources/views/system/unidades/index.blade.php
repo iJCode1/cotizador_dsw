@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('css')
-  <link href="{{ asset('css/unidades.css') }}" rel="stylesheet">
   <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/table-responsive.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/unidades.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -60,14 +61,59 @@
       <span>Nuevo registro</span>
     </a>
   </div>
+  @if (count($unidades) <= 0)
+    <div class="unit-second">
+      <img src="{{ asset('images/illustrations/unit.svg') }}" alt="Unidades de medida" title="No hay unidades de medida registradas" width="250">
+      <p>No hay unidades de medida</p>
+    </div>
+  @else
+  <div class="rtable">
+    <div class="rtable-head">
+      <p class="rtable-col rtable-id">ID</p>
+      <p class="rtable-col rtable-name">Nombre</p>
+      <p class="rtable-col rtable-abrev">Abreviación</p>
+      <p class="rtable-col rtable-actions">Acciones</p>
+    </div>
+    <div class="rtable-body">
+      @foreach ($unidades as $unidad)
+        <div class="rtable-row">
+          <p class="rtable-item rtable-id">{{$unidad->unidad_medida_id}}</p>
+          <p class="rtable-item rtable-name">{{$unidad->nombre_unidad}}</p>
+          <p class="rtable-item rtable-abrev">{{$unidad->abrev}}</p>
+          <div class="rtable-group rtable-actions">
+            <a class="rtable-link" href="{{ route('tenant.showEditUnidad', $unidad) }}">
+              <img src="{{ asset('images/icons/icon-edit.svg') }}" class="rtable-icon" alt="Icono de editar" title="Editar" width="22">
+              <span class="rtable-span">Editar</span>
+            </a>
+            @if ($unidad->deleted_at != NULL)
+              <form id="activateForm" action="{{ route('tenant.activateUnidad', ['unidad_id' => $unidad->unidad_medida_id]) }}">
+                @csrf
+                <button class="rtable-link" type="submit">
+                  <img src="{{ asset('images/icons/icon-activate.svg') }}" class="rtable-icon" alt="Icono de activar" title="Activar" width="22">
+                  <span class="rtable-span">Activar</span>
+                </button>
+              <form/>
+            @else
+              <form id="deleteForm" action="{{ route('tenant.deleteUnidad', ['unidad_id' => $unidad->unidad_medida_id]) }}">
+                @method("DELETE")
+                @csrf
+                <button class="rtable-link" type="submit">
+                  <img src="{{ asset('images/icons/icon-disabled.svg') }}" class="rtable-icon" alt="Icono de desactivar" title="Desactivar" width="22">
+                  <span class="rtable-span">Desactivar</span>
+                </button>
+              </form>
+            @endif
+          </div>
+        </div>
+        @endforeach
+      </div>
+  </div>
+  @endif
 </div>
 
-{{-- Script para mostrar alertas --}}
 <script>
-
   const d = document;
 
-  // Alerta al querer eliminar un registro
   const deleteForms = d.querySelectorAll('#deleteForm');
 
   deleteForms.forEach(form => {
@@ -90,7 +136,6 @@
     })
   });
 
-  // Alerta al querer activar un registro
   const activateforms = d.querySelectorAll('#activateForm');
 
   activateforms.forEach(form => {
@@ -115,7 +160,6 @@
 
 </script>
 
-{{-- Condicional para mostrar alerta de producto y/o servicio creado --}}
 @if (session('crear') === 'ok')
   <script>
     Swal.fire(
@@ -126,7 +170,6 @@
   </script>
 @endif
 
-{{-- Condicional para mostrar alerta de editado --}}
 @if (session('editar') === 'ok')
   <script>
     Swal.fire(
@@ -137,7 +180,6 @@
   </script>
 @endif
 
-{{-- Condicional para mostrar alerta de eliminado --}}
 @if (session('eliminar') === 'ok')
   <script>
     Swal.fire(
@@ -148,7 +190,6 @@
   </script>
 @endif
 
-{{-- Condicional para mostrar alerta de activado --}}
 @if (session('activar') === 'ok')
   <script>
     Swal.fire(
