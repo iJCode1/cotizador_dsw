@@ -49,7 +49,7 @@
             @if (( Auth::guard('cliente')->user()->rol->nombre_rol === "Cliente" ))
               @include('layouts.partials.tenant._cliente')
             @endif
-            @include('layouts.partials._logout', ['authName' => Auth::guard('cliente')->user()->nombre])
+            {{-- @include('layouts.partials._logout', ['authName' => Auth::guard('cliente')->user()->nombre]) --}}
           @endif
 
           @if ( Auth::user() )                              
