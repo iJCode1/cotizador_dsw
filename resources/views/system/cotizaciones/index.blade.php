@@ -2,6 +2,7 @@
 
 @section('css')
   <link href="{{ asset('css/cotizaciones.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')

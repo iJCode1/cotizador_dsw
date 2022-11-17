@@ -24,7 +24,7 @@
   position: absolute;
   inset-inline: 0;
   flex-direction: column;
-  gap: 3rem;
+  gap: 2rem;
   flex: 1;
   background: rgb(76, 0, 255);
   padding-block-start: 2rem;
@@ -33,7 +33,7 @@
 .navv-options.is-visible{
   display: flex;
   left: 0%;
-  top: 3rem;
+  top: 3.5rem;
   right: 0;
 }
 
@@ -114,6 +114,10 @@
     block-size: 100vh;
   }
   
+  .navv-menu{
+    padding-block-start: 2rem;
+  }
+
   .navv.is-small{
     max-inline-size: 12rem;
     inline-size: 100%;
