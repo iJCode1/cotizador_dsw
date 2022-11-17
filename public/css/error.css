@@ -1,0 +1,58 @@
+.error{
+  display: flex;
+  flex-direction: column;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  padding-inline: 1rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.error-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-block-start: -5rem;
+  gap: 1.25rem;
+  z-index: 5;
+}
+
+.error-image{
+  inline-size: 90%;
+  max-inline-size: 22rem;
+}
+
+.error-message{
+  font-size: 1.25rem;
+  margin: 0;
+  font-family: var(--second-font);
+  font-weight: 500;
+}
+
+.error-wave{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 11.25rem;
+  background-position: center;
+  background-image: url('../images/illustrations/wave404.svg');
+}
+
+@media screen and (min-width: 768px) {
+  .error-content{
+    gap: 2rem;
+  }
+  
+  .error-image{
+    max-inline-size: 32rem;
+  }
+
+  .error-message{
+    font-size: 2.25rem;
+  }
+}
