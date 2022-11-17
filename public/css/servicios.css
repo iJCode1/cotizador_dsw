@@ -262,12 +262,12 @@
 }
 
 .rtable-item.rtable-type.isProduct{
-  background: #F48343;
+  background: var(--green);
   color: white;
 }
 
 .rtable-item.rtable-type.isService{
-  background: #628A0D;
+  background: var(--orange);
   color: white;
 }
 

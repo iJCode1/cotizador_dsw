@@ -23,6 +23,7 @@
 
 .rtable-actions{
   flex: 1.5;
+  align-items: baseline;
 }
 
 .rtable-body{
