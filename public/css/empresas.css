@@ -90,6 +90,7 @@
   box-sizing: border-box;
   max-inline-size: 360px;
   justify-content: center;
+  font-family: var(--second-font);
 }
 
 .cardd-item{
@@ -104,8 +105,8 @@
 }
 
 .cardd-body > h2{
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 500;
+  font-size: 1.2rem;
 }
 
 .cardd-body > p{
@@ -132,9 +133,10 @@
   align-items: center;
   text-decoration: none;
   transition: transform .2s;
-  font-size: .85rem;
-  color: #5D5FEF;
+  font-size: 1rem;
   cursor: pointer;
+  color: black;
+  font-weight: 400;
 }
 
 .cardd-actions > a:hover{
@@ -159,9 +161,12 @@
   border: none;
   background: none;
   padding: 0;
-  color: #6C63FF;
   font-family: 'League Spartan', sans-serif;
   font-size: 1rem;
+}
+
+.cardd-form img{
+  block-size: fit-content;
 }
 
 .company-form{
@@ -297,5 +302,9 @@
 @media screen and (min-width: 900px){
   .company-cards{
     justify-content: flex-start;
+  }
+
+  .cardd-body > p{
+    font-size: .95rem;
   }
 }

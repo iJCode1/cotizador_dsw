@@ -54,6 +54,10 @@
   justify-content: center;
 }
 
+button.rtable-link{
+  padding: 0;
+}
+
 .rtable-link{
   cursor: pointer;
   display: flex;
