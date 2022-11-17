@@ -50,6 +50,25 @@
   color: white;
 }
 
+.employees-second{
+  display: flex;
+  flex-direction: column;
+  font-family: 'League Spartan', sans-serif;
+  font-size: 1rem;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.employees-second img{
+  inline-size: 90%;
+  max-inline-size: 20rem;
+}
+
+.employees-second p{
+  margin: 0;
+  text-align: center;
+}
+
 .employees-form{
   display: flex;
   flex-direction: column;
@@ -141,6 +160,19 @@
   transform: scale(.9);
 }
 
+.cta-show{
+  display: flex;
+  margin-inline-start: auto;
+  inline-size: max-content;
+  cursor: pointer;
+  text-decoration: none;
+  margin-block-start: 2.5rem;
+}
+
+.cta-show > .rtable-span{
+  display: initial;
+}
+
 .invalid-feedbackk{
   width: 100%;
   margin-top: 0.25rem;
@@ -149,10 +181,49 @@
   display: inline-block;
 }
 
+.rtable-lastnamem,
+.rtable-address,
+.rtable-email,
+.rtable-phone{
+  display: none;
+}
+
+.rtable-id,
+.rtable-actions{
+  flex: 1;
+}
+
+.rtable-name,
+.rtable-email{
+  flex: 2.5;
+}
+
+.rtable-item.rtable-id{
+  font-weight: 600;
+}
+
+@media screen and (min-width: 375px){
+  .rtable-phone{
+    display: initial;
+    flex: 1;
+  }
+}
+
 @media screen and (min-width: 500px){
   .employees-first{
     justify-content: flex-start;
     gap: 1.5rem;
+  }
+
+  .rtable-span{
+    font-size: 1rem;
+    font-weight: 400;
+  }
+}
+
+@media screen and (min-width: 600px){
+  .rtable-email{
+    display: initial;
   }
 }
 
@@ -181,5 +252,34 @@
   .register-double{
     flex-direction: row;
     gap: 4rem;
+  }
+
+  .cta-show{
+    margin-block-start: 4rem;
+  }
+
+  .rtable-lastnamem{
+    display: initial;
+    flex: 1.5;
+  }
+
+  .rtable-lastnamep{
+    display: initial;
+    flex: 1.5;
+  }
+
+  .rtable-actions{
+    flex: 2;
+  }
+}
+
+@media screen and (min-width: 1024px){
+  .rtable-address{
+    display: initial;
+    flex: 3;
+  }
+
+  .rtable-name{
+    flex: 2;
   }
 }

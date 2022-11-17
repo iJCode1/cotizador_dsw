@@ -19,6 +19,7 @@ Route::middleware(['web'])
     Route::get('/empleados', [UsuariosController::class, 'index'])->name('showEmpleados');
     Route::get('/empleado', [UsuariosController::class, 'showRegister'])->name('showRegister');
     Route::post('/empleado/register', [UsuariosController::class, 'registerUser'])->name('registerUser');
+    Route::get('/empleado/{usuario_id}/info', [UsuariosController::class, 'showUser'])->name('showUser');
     Route::get('/empleado/{usuario_id}/edit', [UsuariosController::class, 'showEditUser'])->name('showEditUser');
     Route::put('/empleado/{usuario_id}', [UsuariosController::class, 'editUser'])->name('editUser');
     Route::get('/empleado/{usuario_id}/delete', [UsuariosController::class, 'deleteUser'])->name('deleteUser');

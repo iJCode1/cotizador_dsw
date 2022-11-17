@@ -126,6 +126,22 @@ class UsuariosController extends Controller
   }
 
   /**
+   * Función showUser()
+   * Busca al usuario del cual se desea ver su información
+   * Retorna la vista de info de usuario junto a la información
+   */
+  public function showUser($usuario_id)
+  {
+    $usuarioFind = User::withTrashed()->find($usuario_id);
+    $roles = Rol::limit(2)->get();
+
+    return view('system.empleados.info', [
+      'usuarioFind' => $usuarioFind,
+      'roles' => $roles,
+    ]);
+  }
+
+  /**
    * Función showEditUser()
    * Busca al usuario que se desea editar y obtiene su información 
    * Retorna la vista de edición de usuario junto a la información del usuario seleccionado
