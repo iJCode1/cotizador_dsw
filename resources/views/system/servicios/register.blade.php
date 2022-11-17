@@ -28,7 +28,7 @@
             <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" autocomplete="nombre" autofocus placeholder="Página web informativa">
 
             @error('nombre')
-            <span class="invalid-feedback" role="alert">
+            <span class="invalid-feedbackk" role="alert">
               <strong>{{ $message }}</strong>
             </span>
             @enderror
@@ -42,7 +42,7 @@
             <textarea id="descripcion" name="descripcion" autofocus rows="2" placeholder="La página web cuenta con ...">{{ old('descripcion') }}</textarea>
 
             @error('descripcion')
-            <span class="invalid-feedback" role="alert">
+            <span class="invalid-feedbackk" role="alert">
               <strong>{{ $message }}</strong>
             </span>
             @enderror
@@ -57,7 +57,7 @@
               <input id="precio" type="number" name="precio" value="{{ old('precio') }}" autocomplete="precio" autofocus min="1" placeholder="1800" step="any" onkeyup="validarPrecio(this)">
 
               @error('precio')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-feedbackk" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
               @enderror
@@ -70,7 +70,7 @@
               <input id="codigo" type="text" name="codigo" value="{{ old('codigo') }}" autocomplete="codigo" autofocus placeholder="7675645432">
               
               @error('codigo')
-                <span class="invalid-feedback" role="alert">
+                <span class="invalid-feedbackk" role="alert">
                   <strong>{{ $message }}</strong>
                 </span>
               @enderror
@@ -95,7 +95,7 @@
               </select>    
 
               @error('unidad')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
               @enderror
@@ -117,7 +117,7 @@
               </select> 
 
               @error('tipo')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
               @enderror
@@ -132,7 +132,7 @@
             <input id="imagen" type="file" name="imagen" value="{{ old('imagen') }}" autofocus onchange="vistaPreliminar(event)">
 
             @error('imagen')
-              <span class="invalid-feedback" role="alert">
+              <span class="invalid-feedbackk" role="alert">
                 <strong>{{ $message }}</strong>
               </span>
             @enderror

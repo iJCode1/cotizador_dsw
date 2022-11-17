@@ -30,6 +30,7 @@ Route::middleware(['web'])
     Route::get('/servicios', [ServiciosController::class, 'index'])->name('showServicios');
     Route::get('/servicio', [ServiciosController::class, 'showRegisterServicio'])->name('showRegisterServicio');
     Route::post('/servicio/register', [ServiciosController::class, 'registerServicio'])->name('registerServicio');
+    Route::get('/servicio/{servicio_id}/info', [ServiciosController::class, 'showServicio'])->name('showServicio');
     Route::get('/servicio/{servicio_id}/edit', [ServiciosController::class, 'showEditServicio'])->name('showEditServicio');
     Route::put('servicio/{servicio_id}', [ServiciosController::class, 'editServicio'])->name('editServicio');
     Route::get('/servicio/{servicio_id}/delete', [ServiciosController::class, 'deleteServicio'])->name('deleteServicio');

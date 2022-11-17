@@ -1,0 +1,97 @@
+.rtable{
+  font-family: 'League Spartan', sans-serif;
+  margin-block-start: 1rem;
+  margin-block-end: 2rem;
+}
+
+.rtable-head{
+  background: #5D5FEF;
+  color: white;
+  display: flex;
+  padding-inline: .5rem;
+  padding-block: .5rem;
+  border-radius: .25rem;
+  gap: 1.5rem;
+  margin-block-end: .5rem;
+}
+
+.rtable-col{
+  margin: 0;
+  text-align: center;
+}
+
+.rtable-actions{
+  flex: 1.5;
+}
+
+.rtable-body{
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rtable-row{
+  display: flex;
+  gap: 1.5rem;
+  /* box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px; */
+  box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
+  border-radius: .5rem;
+  align-items: center;
+  padding-inline: .5rem;
+  padding-block: 1rem;
+}
+
+.rtable-item{
+  margin: 0;
+  text-align: center;
+}
+
+.rtable-group{
+  display: flex;
+  gap: .25rem;
+  justify-content: center;
+}
+
+.rtable-link{
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  background: none;
+  border: none;
+  font-family: var(--second-font);
+}
+
+.rtable-link:hover{
+  text-decoration: underline;
+}
+
+.rtable-span{
+  display: none;
+}
+
+@media screen and (min-width: 960px){
+  .rtable{
+    margin-block-end: 3rem;
+  }
+
+  .rtable-group{
+    display: flex;
+    gap: .5rem;
+  }
+
+  .rtable-span{
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1024px){
+  .rtable-head,
+  .rtable-row{
+    gap: 2rem;
+  }
+}

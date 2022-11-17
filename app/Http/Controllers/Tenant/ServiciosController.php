@@ -118,7 +118,7 @@ class ServiciosController extends Controller
 
       $producto_servicio = [
         'nombre' => $request->nombre,
-        'descripcion' => $request->descripcion,
+        'descripcion' => nl2br($request->descripcion),
         'codigo' => $request->codigo,
         'imagen' => $img2,
         'precio_bruto' => $request->precio,
@@ -131,6 +131,26 @@ class ServiciosController extends Controller
       return redirect()->route('tenant.showServicios')
         ->with('crear', 'ok');
     }
+  }
+
+  /**
+   * Función showServicio()
+   * Busca el producto y/o servicio del cual se quiere ver su información
+   * retorna todo a la vista 'info' de servicios
+   * donde se muestran los datos del producto y/o servicio
+   */
+  public function showServicio($servicio)
+  {
+    $tiposProductoServicio = Tipo_Producto_Servicio::all();
+    $unidadesDeMedida = Unidad_De_Medida::withTrashed()->get();
+
+    $servicioFind = Producto_Servicio::withTrashed()->find($servicio);
+
+    return view('system.servicios.info', [
+      'tipos' => $tiposProductoServicio,
+      'unidades' => $unidadesDeMedida,
+      'servicio' => $servicioFind,
+    ]);
   }
 
   /**
