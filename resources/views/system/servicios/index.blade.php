@@ -20,8 +20,8 @@
     </a>
   </div>
   @if (count($productosServicios) <= 0)
-    <div class="company-second">
-      <img src="{{ asset('images/illustrations/services.svg') }}" alt="Empresas" title="No hay empresas registradas" width="250">
+    <div class="service-second">
+      <img src="{{ asset('images/illustrations/services.svg') }}" alt="Servicios" title="No hay productos y/o servicios registrados" width="250">
       <p>No hay productos y/o servicios registrados</p>
     </div>
   @else
