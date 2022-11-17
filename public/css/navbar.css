@@ -44,8 +44,18 @@
   align-items: center;
 }
 
-.navv-element:active{
-  transform: scale(.95);
+.navv-element > img,
+.navv-element > a{
+  transition: transform .2s ease-in-out;
+}
+
+.navv-element > img:active,
+.navv-element > a:active{
+  transform: scale(.9);
+}
+
+.navv-element > a:hover{
+  text-decoration: underline;
 }
 
 .navv-ancla{
@@ -58,7 +68,7 @@
   color: white;
 }
 
-.navv-ancla:hover{
+.navv-ancla:hover > span{
   text-decoration: underline;
 }
 
@@ -84,6 +94,10 @@
 
 .navv-hamburgerD{
   display: none;
+}
+
+.navv-hamburger > p{
+  margin: 0;
 }
 
 .link-text{
