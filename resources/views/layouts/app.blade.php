@@ -37,6 +37,8 @@
       rel="stylesheet"
     />
 
+    @yield('css')
+    
 </head>
 <body>
     <div id="app" class="container-app">
@@ -142,5 +144,7 @@
         </main>
     </div>
     <script src="{{asset('./js/navbar.js')}}"></script>
+    @yield('js')
+
 </body>
 </html>
