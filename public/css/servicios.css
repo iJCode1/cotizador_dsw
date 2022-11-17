@@ -142,6 +142,13 @@
   color: #888888;
 }
 
+.invalid-feedbackk{
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #e3342f;
+}
+
 .register-input > textarea{
   border: none;
   border-block-end: 1px solid black;
