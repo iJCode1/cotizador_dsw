@@ -1,237 +1,248 @@
 @extends('layouts.app')
 
 @section('css')
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
   <link href="{{ asset('css/table-responsive.css') }}" rel="stylesheet">
   <link href="{{ asset('css/cotizaciones.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">{{ __('Editar Cotización') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('tenant.editCotizacion', $cotizacion) }}">
-                        @csrf
-                        @method('put')
-
-                        {{-- Datos del Cliente --}}
-
-                        {{-- ID --}}
-                        <div class="col-md-4 my-3" style="display: none;">
-                          <label for="cliente_id" class="form-label">ID Cliente</label>
-                          <div class="form-group">
-                            <input type="text" readonly class="form-control" id="cliente_id" name="cliente_id" value="{{old('cliente_id', $cotizacion->cliente_id)}}">
-                          </div>
-                        </div>
-
-                        {{-- Nombre --}}
-                        <div class="my-3 text-center">
-                          <p class="font-weight-bold">Nombre Cliente:
-                            <span class="font-weight-normal">{{$cotizacion->cliente->nombre}}</span>
-                          </p>
-                        </div>
-
-                        {{-- Correo --}}
-                        <div class="my-3 text-center">
-                          <p class="font-weight-bold">Correo Cliente:
-                            <span class="font-weight-normal">{{$cotizacion->cliente->email}}</span>
-                            <input type="text" style="display: none" readonly class="form-control" id="correoCliente" name="correoCliente" value="{{old('correoCliente', $cotizacion->cliente->email)}}">
-                          </p>
-                        </div>
-
-                        {{-- Folio de la Cotización --}}
-                        <div class="form-group row">
-                          <label for="folio_cotizacion" class="col-md-4 col-form-label text-md-right">{{ __('Folio de la cotización') }}</label>
-
-                          <div class="col-md-6">
-                            <input id="folio_cotizacion" type="text" class="form-control @error('folio_cotizacion') is-invalid @enderror" name="folio_cotizacion" value="{{ old('folio_cotizacion', $cotizacion->folio_cotizacion) }}" autocomplete="folio_cotizacion" autofocus readonly>
-
-                            @error('folio_cotizacion')
-                            <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                          </div>
-                        </div>
-
-                        {{-- Descripcion --}}
-                        <div class="form-group row">
-                          <label for="descripcion" class="col-md-4 col-form-label text-md-right">{{ __('Descripcion') }}</label>
-
-                          <div class="col-md-6">
-                            <textarea @if($usuario === "cliente") readonly @endif class="form-control @error('descripcion') is-invalid @enderror" id="descripcion" name="descripcion" name="descripcion_cotizacion" rows="2" autofocus autocomplete="text">{{ old('descripcion', $cotizacion->descripcion) }}</textarea>
-
-                            @error('descripcion')
-                            <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                          </div>
-                        </div>
-
-                        {{-- Fecha de creación --}}
-                        <div class="my-3 text-center">
-                          <p class="font-weight-bold">Fecha de creación:
-                            <span class="font-weight-normal">{{$cotizacion->fecha_creacion}}</span>
-                          </p>
-                        </div>
-
-                        {{-- Vigencia --}}
-                        <div class="my-3 text-center">
-                          <p class="font-weight-bold">Vigencia (Días):
-                            <span class="font-weight-normal">{{$cotizacion->vigencia}}</span>
-                          </p>
-                        </div>
-
-                        {{-- Estatus de Cotización --}}
-                        <div class="form-group row">
-                          <label for="estatus_cotizacion_id" class="col-md-4 col-form-label text-md-right">{{ __('Estatus de la cotización') }}</label>
-                          <div class="col-md-6">
-                            <select name="estatus_cotizacion_id" id="estatus_cotizacion_id" class="form-control estatus_cotizacion_id @error('estatus_cotizacion_id') is-invalid @enderror" autofocus>
-                              @if($usuario === "cliente")
-                                <option selected value="{{$cotizacion->estatus_cotizacion_id}}">{{$cotizacion->estatus_cotizacion->estatus}}</option>
-                              @else
-                                <option selected disabled value="">Selecciona el status</option>
-                                @foreach($estatus as $estatu)
-                                  @if (old('estatus_cotizacion_id'))
-                                    @if (old('estatus_cotizacion_id') == $estatu->estatus_cotizacion_id)
-                                      <option selected value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
-                                      @continue
-                                      @endif
-                                  @else
-                                    @if ($cotizacion->estatus_cotizacion_id === $estatu->estatus_cotizacion_id)
-                                      <option selected value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
-                                      @continue
-                                    @endif
-                                  @endif
-                                  <option value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
-                                @endforeach
-                                
-                                @error('estatus_cotizacion_id')
-                                <span class="invalid-feedback" role="alert">
-                                  <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                              @endif
-                            </select>
-                          </div>
-                        </div>
-                        
-                        <div class="table-responsive">
-                          <table class="table table-bordered border-dark" id="detalle-servicios">
-                            <thead class="text-dark">
-                              <tr>
-                                <th style="display: none">id</th>
-                                <th>Servicio</th>
-                                <th>Descripcion</th>
-                                <th>Precio inicial</th>
-                                <th>Cantidad</th>
-                                <th>Descuento</th>
-                                <th>Precio bruto</th>
-                                <th>Iva</th>
-                                <th>Subtotal</th>
-                              </tr>
-                            </thead>
-                            <tbody id="t-body">
-                              @foreach($servicios as $servicio)
-                              <tr id="fila">
-                                <td style="display: none" id="servicio_id">
-                                  <input class="form-control servicio_id" type="text" name="servicio_id[]" value="{{$servicio->detalle_cotizacion_id}}">
-                                </td>
-                                <td id="nombre_serv">{{$servicio->nombre}}</td>
-                                <td id="desc_serv">{{$servicio->descripcion}}</td>
-                                <td>
-                                  @if($usuario === "cliente")
-                                    <span id="precio_inicialS">{{$servicio->precio_inicial}}</span>
-                                    <input id="precio_inicial" style="display: none" name="precio_inicial[]" class="form-control precio_inicial @error('precio_inicial') is-invalid @enderror" type="number" value="{{ old('precio_inicial', $servicio->precio_inicial) }}" min="1" step="any" onkeyup="validarPrecio(this)"/>
-                                  @else
-                                    <input id="precio_inicial" name="precio_inicial[]" class="form-control precio_inicial @error('precio_inicial') is-invalid @enderror" type="number" value="{{ old('precio_inicial', $servicio->precio_inicial) }}" min="1" step="any" onkeyup="validarPrecio(this)"/>
-                                    @error('precio_inicial')
-                                      <small class="text-danger">{{$message}}</small>
-                                    @enderror
-                                  @endif
-                                </td>
-                                <td>
-                                  <input id="cantidad" name="cantidad[]" class="form-control cantidad @error('cantidad') is-invalid @enderror" type="number" value="{{ old('cantidad', $servicio->cantidad) }}" min="1" step="1" onkeyup="validarCantidad(this)" />
-                                  @error('cantidad')
-                                    <small class="text-danger">{{$message}}</small>
-                                  @enderror
-                                </td>
-                                <td>
-                                  @if($usuario === "cliente")
-                                    <span id="descuentosS">{{$servicio->descuento}}</span>
-                                    <input style="display: none" id="descuento" name="descuento[]" class="form-control descuento @error('descuento') is-invalid @enderror" type="number" value="{{ old('descuento', $servicio->descuento) }}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
-                                  @else
-                                    <input id="descuento" name="descuento[]" class="form-control descuento @error('descuento') is-invalid @enderror" type="number" value="{{ old('descuento', $servicio->descuento) }}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
-                                    @error('descuento')
-                                      <small class="text-danger">{{$message}}</small>
-                                    @enderror
-                                  @endif
-                                </td>
-                                <td name="precio_bruto[]" class="precio_bruto">
-                                  <span id="precio_brutoS">{{$servicio->precio_bruto}}</span>
-                                  <input id="precio_bruto" style="display: none" type="text" name="precio_bruto[]" value="{{$servicio->precio_bruto}}">
-                                </td>
-                                <td>
-                                  <span id="precio_ivaS">{{$servicio->iva}}</span>
-                                  <input id="precio_iva" style="display: none" type="text" name="precio_iva[]" value="{{$servicio->iva}}">
-                                </td>
-                                <td>
-                                  <span id="subtotalS">{{$servicio->subtotal}}</span>
-                                  <input id="subtotal" style="display: none" type="text" name="subtotal[]" value="{{$servicio->subtotal}}">
-                                </td>
-                              </tr>
-                              @endforeach
-                            </tbody>
-                            <tfoot>
-                              <tr>
-                                <td colspan="8">
-                                  @if($usuario === "cliente")
-                                    <label for="descuento_general" class="form-label mr-1">{{ __('Descuento general (porcentaje):') }}</label>
-                                    <span id="descuento_generalS">{{$servicio->descuento_general}}</span>
-                                    <input style="display: none" type="number" class="form-control descuento_general @error('descuento_general') is-invalid @enderror" id="descuento_general" name="descuento_general" value="{{ old('descuento_general', $servicio->descuento_general) }}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
-                                  @else
-                                    <div class="form-group d-flex mb-0">
-                                      <label for="descuento_general" class="form-label">{{ __('Descuento general (porcentaje)') }}</label>
-                                      <input type="number" class="form-control descuento_general @error('descuento_general') is-invalid @enderror" id="descuento_general" name="descuento_general" value="{{ old('descuento_general', $servicio->descuento_general) }}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
-                                      
-                                      @error('descuento_general')
-                                      <small class="text-danger">{{$message}}</small>
-                                      @enderror
-                                    </div>
-                                  @endif
-                                </td>
-                              </tr>
-                              <tr>
-                                <th colspan="2" class="text-right">Total:</th>
-                                <th id="total_inicial">Total</th>
-                                <th id="total_cantidad" colspan="2">Total</th>
-                                <th id="total_bruto">Total</th>
-                                <th id="total_iva">Total</th>
-                                <th id="total_total">Total</th>
-                              </tr>
-                            </tfoot>
-                          </table>
-                        </div>
-
-                        {{-- Boton de Editar --}}
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-warning">
-                                    {{ __('Editar') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+<div class="quotation">
+  <div class="quotation-first">
+    <div class="quotation-title">
+      <img src="{{ asset('images/icons/icon-cotizaciones_black.svg') }}" class="nav-icon" alt="Icono de cotizaciones" title="Icono de cotizaciones" width="24">
+      <h2>{{ __('Editar cotización') }}</h2>
     </div>
+  </div>
+  <form class="quotation-form" method="POST" action="{{ route('tenant.editCotizacion', $cotizacion) }}">
+    @csrf
+    @method('put')
+
+    <div>
+      <div class="quotation-fFirst">
+        <p class="form-concept">Información del Cliente</p>
+  
+        <div class="form-inputs">
+          <div class="register-data"> 
+            <img src="{{ asset('images/icons/icon-label.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="cliente_id">{{ __('ID Cliente') }}</label>
+              <input class="data-readonly" id="cliente_id" readonly type="text" name="cliente_id" value="{{old('cliente_id', $cotizacion->cliente_id)}}">
+              <p class="read-only">{{$cotizacion->cliente->cliente_id}}</p>
+  
+            </div>
+          </div>
+  
+          <div class="register-data"> 
+            <img src="{{ asset('images/icons/icon-person_black.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label>{{ __('Nombre Cliente') }}</label>
+              <p class="read-only">{{$cotizacion->cliente->nombre}}</p>
+              
+            </div>
+          </div>
+  
+          <div class="register-data"> 
+            <img src="{{ asset('images/icons/icon-email.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="correoCliente">{{ __('Correo Cliente') }}</label>
+              <input class="data-readonly" id="correoCliente" type="text" name="correoCliente" value="{{old('correoCliente', $cotizacion->cliente->email)}}">
+              <p class="read-only">{{$cotizacion->cliente->email}}</p>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="quotation-fSecond">
+        <p class="form-concept">Información de la Cotización</p>
+        <div class="form-inputs">
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-folio.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="folio_cotizacion">{{ __('Folio de la Cotización') }}</label>
+              <input id="folio_cotizacion" type="text" name="folio_cotizacion" value="{{ old('folio_cotizacion', $cotizacion->folio_cotizacion) }}" autocomplete="folio_cotizacion" autofocus readonly placeholder="7675645432">
+              
+              @error('folio_cotizacion')
+                <span class="invalid-feedbackk" role="alert">
+                  <strong>{{ $message }}</strong>
+                </span>
+              @enderror
+            </div>
+          </div>
+  
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-descripcion.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="descripcion">{{ __('Descripción del producto y/o servicio') }}</label>
+              <textarea @if($usuario === "cliente") readonly @endif id="descripcion" name="descripcion" name="descripcion_cotizacion" rows="2" autofocus autocomplete="text" placeholder="La cotización contiene la solicitud de una Laptop Lenovo i7 para Julian desde la empresa...">{{ old('descripcion', $cotizacion->descripcion) }}</textarea>
+  
+              @error('descripcion')
+              <span class="invalid-feedbackk" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+              @enderror
+            </div>
+          </div>
+  
+          <div class="register-data"> 
+            <img src="{{ asset('images/icons/icon-clock.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label>{{ __('Fecha de creación') }}</label>
+              <p class="read-only">{{$cotizacion->fecha_creacion}}</p>
+              
+            </div>
+          </div>
+  
+          <div class="register-data"> 
+            <img src="{{ asset('images/icons/icon-calendar.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label>{{ __('Vigencia (días)') }}</label>
+              <p class="read-only">{{$cotizacion->vigencia}}</p>
+              
+            </div>
+          </div>
+  
+          <div class="register-data">
+            <img src="{{ asset('images/icons/icon-status.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="estatus_cotizacion_id">{{ __('Estatus de la cotización') }}</label>
+              <select name="estatus_cotizacion_id" id="estatus_cotizacion_id" autofocus>
+                @if($usuario === "cliente")
+                  <option selected value="{{$cotizacion->estatus_cotizacion_id}}">{{$cotizacion->estatus_cotizacion->estatus}}</option>
+                @else
+                  <option selected disabled value="">Selecciona el status</option>
+                  @foreach($estatus as $estatu)
+                    @if (old('estatus_cotizacion_id'))
+                      @if (old('estatus_cotizacion_id') == $estatu->estatus_cotizacion_id)
+                        <option selected value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
+                        @continue
+                        @endif
+                    @else
+                      @if ($cotizacion->estatus_cotizacion_id === $estatu->estatus_cotizacion_id)
+                        <option selected value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
+                        @continue
+                      @endif
+                    @endif
+                    <option value="{{$estatu->estatus_cotizacion_id}}">{{$estatu->estatus}}</option>
+                  @endforeach
+                  
+                  @error('estatus_cotizacion_id')
+                  <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+                @endif
+              </select>
+            </div>
+          </div>
+  
+          <div class="table-responsive">
+            <table class="table table-bordered border-dark" id="detalle-servicios">
+              <thead class="text-dark">
+                <tr>
+                  <th style="display: none">id</th>
+                  <th>Servicio</th>
+                  <th>Descripcion</th>
+                  <th>Precio inicial</th>
+                  <th>Cantidad</th>
+                  <th>Descuento</th>
+                  <th>Precio bruto</th>
+                  <th>Iva</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody id="t-body">
+                @foreach($servicios as $servicio)
+                <tr id="fila">
+                  <td style="display: none" id="servicio_id">
+                    <input class="form-control servicio_id" type="text" name="servicio_id[]" value="{{$servicio->detalle_cotizacion_id}}">
+                  </td>
+                  <td id="nombre_serv">{{$servicio->nombre}}</td>
+                  <td id="desc_serv">{!! $servicio->descripcion !!}</td>
+                  <td>
+                    @if($usuario === "cliente")
+                      <span id="precio_inicialS">{{$servicio->precio_inicial}}</span>
+                      <input id="precio_inicial" style="display: none" name="precio_inicial[]" class="form-control precio_inicial @error('precio_inicial') is-invalid @enderror" type="number" value="{{ old('precio_inicial', $servicio->precio_inicial) }}" min="1" step="any" onkeyup="validarPrecio(this)"/>
+                    @else
+                      <input id="precio_inicial" name="precio_inicial[]" class="form-control precio_inicial @error('precio_inicial') is-invalid @enderror" type="number" value="{{ old('precio_inicial', $servicio->precio_inicial) }}" min="1" step="any" onkeyup="validarPrecio(this)"/>
+                      @error('precio_inicial')
+                        <small class="text-danger">{{$message}}</small>
+                      @enderror
+                    @endif
+                  </td>
+                  <td>
+                    <input id="cantidad" name="cantidad[]" class="form-control cantidad @error('cantidad') is-invalid @enderror" type="number" value="{{ old('cantidad', $servicio->cantidad) }}" min="1" step="1" onkeyup="validarCantidad(this)" />
+                    @error('cantidad')
+                      <small class="text-danger">{{$message}}</small>
+                    @enderror
+                  </td>
+                  <td>
+                    @if($usuario === "cliente")
+                      <span id="descuentosS">{{$servicio->descuento}}</span>
+                      <input style="display: none" id="descuento" name="descuento[]" class="form-control descuento @error('descuento') is-invalid @enderror" type="number" value="{{ old('descuento', $servicio->descuento) }}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
+                    @else
+                      <input id="descuento" name="descuento[]" class="form-control descuento @error('descuento') is-invalid @enderror" type="number" value="{{ old('descuento', $servicio->descuento) }}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
+                      @error('descuento')
+                        <small class="text-danger">{{$message}}</small>
+                      @enderror
+                    @endif
+                  </td>
+                  <td name="precio_bruto[]" class="precio_bruto">
+                    <span id="precio_brutoS">{{$servicio->precio_bruto}}</span>
+                    <input id="precio_bruto" style="display: none" type="text" name="precio_bruto[]" value="{{$servicio->precio_bruto}}">
+                  </td>
+                  <td>
+                    <span id="precio_ivaS">{{$servicio->iva}}</span>
+                    <input id="precio_iva" style="display: none" type="text" name="precio_iva[]" value="{{$servicio->iva}}">
+                  </td>
+                  <td>
+                    <span id="subtotalS">{{$servicio->subtotal}}</span>
+                    <input id="subtotal" style="display: none" type="text" name="subtotal[]" value="{{$servicio->subtotal}}">
+                  </td>
+                </tr>
+                @endforeach
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="8">
+                    @if($usuario === "cliente")
+                      <label for="descuento_general" class="form-label mr-1">{{ __('Descuento general (porcentaje):') }}</label>
+                      <span id="descuento_generalS">{{$servicio->descuento_general}}</span>
+                      <input style="display: none" type="number" class="form-control descuento_general @error('descuento_general') is-invalid @enderror" id="descuento_general" name="descuento_general" value="{{ old('descuento_general', $servicio->descuento_general) }}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
+                    @else
+                      <div class="form-group d-flex mb-0">
+                        <label for="descuento_general" class="form-label">{{ __('Descuento general (porcentaje)') }}</label>
+                        <input type="number" class="form-control descuento_general @error('descuento_general') is-invalid @enderror" id="descuento_general" name="descuento_general" value="{{ old('descuento_general', $servicio->descuento_general) }}" min="0" max="100" step="any" onkeyup="validarDescuento(this)"/>
+                        
+                        @error('descuento_general')
+                        <small class="text-danger">{{$message}}</small>
+                        @enderror
+                      </div>
+                    @endif
+                  </td>
+                </tr>
+                <tr>
+                  <th colspan="2" class="text-right">Total:</th>
+                  <th id="total_inicial">Total</th>
+                  <th id="total_cantidad" colspan="2">Total</th>
+                  <th id="total_bruto">Total</th>
+                  <th id="total_iva">Total</th>
+                  <th id="total_total">Total</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="form-cta" type="submit">{{ __('Editar') }}</button>
+  </form>
 </div>
+
+
 <script>
 function validarNumero(value) {
   let valor = $(value).val();
