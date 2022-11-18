@@ -39,7 +39,7 @@
           <img src="{{ asset('images/icons/icon-descripcion.svg') }}" alt="" width="26">
           <div class="register-input">
             <label for="descripcion">{{ __('Descripción del producto y/o servicio') }}</label>
-            <textarea id="descripcion" name="descripcion" autofocus rows="2" placeholder="La página web cuenta con ...">{{ old('descripcion', $servicio->descripcion) }}</textarea>
+            <textarea id="descripcion" name="descripcion" autofocus rows="2" placeholder="La página web cuenta con ...">{{ old('descripcion', preg_replace("[<br />]", "", $servicio->descripcion)) }}</textarea>
 
             @error('descripcion')
             <span class="invalid-feedbackk" role="alert">
