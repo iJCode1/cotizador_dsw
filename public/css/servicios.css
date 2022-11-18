@@ -172,7 +172,7 @@
 }
 
 .register-file::before{
-  background-color: #5678EF;
+  background-color: var(--primaryC);
   color: white;
   display: flex;
   justify-content: center;

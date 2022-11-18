@@ -3,6 +3,8 @@
 @section('css')
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/register.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/servicios.css') }}" rel="stylesheet">
   <link href="{{ asset('css/cotizaciones.css') }}" rel="stylesheet">
 @endsection
 
@@ -68,12 +70,12 @@
                     </div>
                     <form method="POST" id="añadirUsuario">
                       @csrf
-                      <div class="modal-body">
+                      <div class="modal-body modal-padding">
                         @include('layouts.partials.tenant._registroCliente')
                       </div>
                       <div class="modal-footer">
-                        <button id="cancelModalCliente" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button id="btnAñadirUsuario" type="submit" class="btn btn-primary">Registrar</button>
+                        <button id="cancelModalCliente" type="button" class="btn-modal btn-cancel" data-dismiss="modal">Cancelar</button>
+                        <button id="btnAñadirUsuario" type="submit" class="btn-modal btn-register">Registrar</button>
                       </div>
                     </form>
                   </div>
@@ -303,12 +305,12 @@
                     </div>
                     <form method="POST" id="añadirServicio" enctype="multipart/form-data">
                       @csrf
-                      <div class="modal-body">
+                      <div class="modal-body modal-padding">
                         @include('layouts.partials.tenant._registroServicio')
                       </div>
                       <div class="modal-footer">
-                        <button id="cancelModalServicio" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" id="btnAñadirServicio" class="btn btn-primary">Registrar</button>
+                        <button id="cancelModalServicio" type="button" class="btn-modal btn-cancel" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" id="btnAñadirServicio" class="btn-modal btn-register">Registrar</button>
                       </div>
                     </form>
                   </div>

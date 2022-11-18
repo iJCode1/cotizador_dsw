@@ -1,111 +1,113 @@
-{{-- Nombre del Producto y/o Servicio--}}
-<div class="form-group row">
-  <label for="nombreServicio" class="col-md-4 col-form-label text-md-right">{{ __('Nombre del Producto y/o Servicio') }}</label>
+<div class="register-form">
+  <div class="service-fFirst">
+    <p class="form-concept">Información del producto y/o servicio</p>
 
-  <div class="col-md-6">
-      <input id="nombreServicio" type="text" class="form-control @error('nombreServicio') is-invalid @enderror" name="nombreServicio" value="{{ old('nombreServicio') }}" autocomplete="nombreServicio" autofocus placeholder="Página web informativa">
+    <div class="form-inputs">
+      <div class="register-data">
+        <img src="{{ asset('images/icons/icon-label.svg') }}" alt="" width="26">
+        <div class="register-input">
+          <label for="nombreServicio">{{ __('Nombre del producto y/o servicio') }}</label>
+          <input id="nombreServicio" type="text" name="nombreServicio" value="{{ old('nombreServicio') }}" autocomplete="nombreServicio" autofocus placeholder="Página web informativa">
 
-      <span id="nombreServicio-error" class="invalid-feedbackk" role="alert">
-        <strong></strong>
-      </span>
+          <span id="nombreServicio-error" class="invalid-feedbackk" role="alert">
+            <strong></strong>
+          </span>
+        </div>
+      </div>
+
+      <div class="register-data">
+        <img src="{{ asset('images/icons/icon-descripcion.svg') }}" alt="" width="26">
+        <div class="register-input">
+          <label for="descripcionServicio">{{ __('Descripción del producto y/o servicio') }}</label>
+          <textarea id="descripcionServicio" name="descripcionServicio" autofocus rows="2" placeholder="La página web cuenta con ...">{{ old('descripcionServicio') }}</textarea>
+
+          <span id="descripcionServicio-error" class="invalid-feedbackk" role="alert">
+            <strong></strong>
+          </span>
+        </div>
+      </div>
+      
+      <div class="register-data">
+        <img src="{{ asset('images/icons/icon-price.svg') }}" alt="" width="28">
+        <div class="register-input">
+          <label for="precioServicio">{{ __('Precio bruto') }}</label>
+          <input id="precioServicio" type="number" name="precioServicio" value="{{ old('precioServicio') }}" autocomplete="precioServicio" autofocus min="1" placeholder="1800" step="any" onkeyup="validarPrecio(this)">
+
+          <span id="precioServicio-error" class="invalid-feedbackk" role="alert">
+            <strong></strong>
+          </span>
+        </div>
+      </div>
+      <div class="register-data">
+        <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
+        <div class="register-input">
+          <label for="codigoServicio">{{ __('Código') }}</label>
+          <input id="codigoServicio" type="text" name="codigoServicio" value="{{ old('codigoServicio') }}" autocomplete="codigoServicio" autofocus placeholder="7675645432">
+          
+          <span id="codigoServicio-error" class="invalid-feedbackk" role="alert">
+            <strong></strong>
+          </span>
+        </div>
+      </div>
+
+      <div class="register-data">
+        <img src="{{ asset('images/icons/icon-unidad.svg') }}" alt="" width="26">
+        <div class="register-input">
+          <label for="unidadServicio">{{ __('Unidad de medida') }}</label>
+          <select name="unidadServicio" id="unidadServicio" autofocus>
+            <option selected disabled value="">Seleccione una unidad de medida</option>
+            @foreach($unidades as $unidad)
+              @if (old('unidadServicio') == $unidad->unidad_medida_id)
+                <option selected value="{{$unidad->unidad_medida_id}}">{{$unidad->nombre_unidad}}</option>
+                @continue
+              @endif
+            <option value="{{$unidad->unidad_medida_id}}">{{$unidad->nombre_unidad}}</option>
+            @endforeach  
+          </select>    
+
+          <span id="unidadServicio-error" class="invalid-feedbackk" role="alert">
+            <strong></strong>
+          </span>
+        </div>
+      </div>
+
+      <div class="register-data">
+        <img src="{{ asset('images/icons/icon-tipo.svg') }}" alt="" width="26">
+        <div class="register-input">
+          <label for="tipoServicio">{{ __('Tipo (Producto o Servicio)') }}</label>
+          <select name="tipoServicio" id="tipoServicio" autofocus>
+            <option selected disabled value="">Seleccione un tipo</option>
+            @foreach($tipos as $tipo)
+              @if (old('tipoServicio') == $tipo->tipo_id)
+                <option selected value="{{$tipo->tipo_id}}">{{$tipo->nombre_tipo}}</option>
+                @continue
+              @endif
+            <option value="{{$tipo->tipo_id}}">{{$tipo->nombre_tipo}}</option>
+            @endforeach  
+          </select> 
+
+          <span id="tipoServicio-error" class="invalid-feedbackk" role="alert">
+            <strong></strong>
+          </span>
+        </div>
+      </div>
+
+      <div class="register-data">
+        <img src="{{ asset('images/icons/icon-image.svg') }}" alt="" width="26">
+        <div class="register-input register-file">
+          <label for="imagenServicio">{{ __('Imagen') }}</label>
+          <input id="imagenServicio" type="file" name="imagenServicio" value="{{ old('imagenServicio') }}" autofocus onchange="vistaPreliminar(event)">
+
+          <span id="imagenServicio-error" class="invalid-feedbackk" role="alert">
+            <strong></strong>
+          </span>
+        </div>
+      </div>
+
+      <div class="service-image">
+        <img src="{{asset('images/productos_servicios/sinImagen.svg')}}" alt="" id="img_servicio" width="250">
+      </div>
+
+    </div>
   </div>
-</div>
-
-{{-- Descripción --}}
-<div class="form-group row">
-<label for="descripcionServicio" class="col-md-4 col-form-label text-md-right">{{ __('Descripción') }}</label>
-
-<div class="col-md-6">
-    <textarea id="descripcionServicio" class="form-control @error('descripcionServicio') is-invalid @enderror" name="descripcionServicio" autofocus rows="3">{{ old('descripcionServicio') }}</textarea>
-    
-    <span id="descripcionServicio-error" class="invalid-feedbackk" role="alert">
-      <strong></strong>
-    </span>
-</div>
-</div>
-
-{{-- Código --}}
-<div class="form-group row">
-<label for="codigoServicio" class="col-md-4 col-form-label text-md-right">{{ __('Código') }}</label>
-
-<div class="col-md-6">
-    <input id="codigoServicio" type="text" class="form-control @error('codigoServicio') is-invalid @enderror" name="codigoServicio" value="{{ old('codigoServicio') }}" autocomplete="codigoServicio" autofocus placeholder="7675645432">
-
-    <span id="codigoServicio-error" class="invalid-feedbackk" role="alert">
-      <strong></strong>
-    </span>
-</div>
-</div>
-
-{{-- Imagen --}}
-<div class="form-group row">
-<label for="imagenServicio" class="col-md-4 col-form-label text-md-right">{{ __('Imagen') }}</label>
-
-<div class="col-md-6">
-    <input id="imagenServicio" type="file" class="mt-1 @error('imagenServicio') is-invalid @enderror" name="imagenServicio" value="{{ old('imagenServicio') }}" autofocus onchange="vistaPreliminar(event)">
-
-    <span id="imagenServicio-error" class="invalid-feedbackk" role="alert">
-      <strong></strong>
-    </span>
-</div>
-</div>
-<div class="d-flex justify-content-center mb-4">
-  <img src="{{asset('images/productos_servicios/sinImagen.svg')}}" alt="Imagen del producto y/o servicio" id="img_servicio" width="250">
-</div>
-
-{{-- Precio bruto --}}
-<div class="form-group row">
-<label for="precioServicio" class="col-md-4 col-form-label text-md-right">{{ __('Precio bruto') }}</label>
-
-<div class="col-md-6">
-    <input id="precioServicio" type="number" step="any" class="form-control @error('precioServicio') is-invalid @enderror" name="precioServicio" value="{{ old('precioServicio') }}" autocomplete="precioServicio" autofocus min="1" placeholder="1800" step="any" onkeyup="validarPrecio(this)">
-
-    <span id="precioServicio-error" class="invalid-feedbackk" role="alert">
-      <strong></strong>
-    </span>
-</div>
-</div>
-
-{{-- Tipo --}}
-<div class="form-group row">
-<label for="tipoServicio" class="col-md-4 col-form-label text-md-right">{{ __('Tipo') }}</label>
-
-<div class="col-md-6">
-  <select name="tipoServicio" id="tipoServicio" class="form-control @error('tipoServicio') is-invalid @enderror" autofocus>
-    <option selected disabled value="">Seleccione un tipo</option>
-    @foreach($tipos as $tipo)
-      @if (old('tipoServicio') == $tipo->tipo_id)
-        <option selected value="{{$tipo->tipo_id}}">{{$tipo->nombre_tipo}}</option>
-        @continue
-      @endif
-    <option value="{{$tipo->tipo_id}}">{{$tipo->nombre_tipo}}</option>
-    @endforeach
-  </select>    
-          
-  <span id="tipoServicio-error" class="invalid-feedbackk" role="alert">
-    <strong></strong>
-  </span>
-</div>
-</div>
-
-{{-- Unidad de Medida --}}
-<div class="form-group row">
-<label for="unidadServicio" class="col-md-4 col-form-label text-md-right">{{ __('Unidad de medida') }}</label>
-
-<div class="col-md-6">
-  <select name="unidadServicio" id="unidadServicio" class="form-control @error('unidadServicio') is-invalid @enderror" autofocus>
-    <option selected disabled value="">Seleccione una unidad de medida</option>
-    @foreach($unidades as $unidad)
-      @if (old('unidadServicio') == $unidad->unidad_medida_id)
-        <option selected value="{{$unidad->unidad_medida_id}}">{{$unidad->nombre_unidad}}</option>
-        @continue
-      @endif
-    <option value="{{$unidad->unidad_medida_id}}">{{$unidad->nombre_unidad}}</option>
-    @endforeach
-  </select>    
-          
-  <span id="unidadServicio-error" class="invalid-feedbackk" role="alert">
-    <strong></strong>
-  </span>
-</div>
 </div>
