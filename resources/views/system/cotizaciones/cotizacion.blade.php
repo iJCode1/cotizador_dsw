@@ -422,6 +422,18 @@
             
           </div>
         </div>
+
+        <div class="register-data register-image quotation-image">
+          <div class="data-body">
+            <img src="{{ asset('images/icons/icon-image.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="imagen">{{ __('Imagen') }}</label>
+            </div>
+          </div>
+          <div>
+            <img class="image-cont" src="#" alt="Imagen del producto y/o servicio" id="img_servicio2" width="250">
+          </div>
+        </div>
         
         <button type="button" id="btn_add" class="coti-add">
           {{ __('Agregar') }}
@@ -638,12 +650,18 @@ $(document).ready(function () {
   
           tipoDelPS = (tipoDePS[0]) ? tipoDePS[0].nombre_tipo : "No definido";
           
+          let formatoDescripcion = "Sin datos"
+          if(data.descripcion){
+            formatoDescripcion = data.descripcion.replace(/<br \/>/g, "");
+          }
+
           $("#servicio_id").val(data.producto_servicio_id ?? "Sin datos")
           $("#nombre_serv").val(data.nombre ?? "Sin datos")
-          $("#descripcion_servicio").val(data.descripcion ?? "Sin datos")
+          $("#descripcion_servicio").val(formatoDescripcion ?? "Sin datos")
           $("#tipo").val(tipoDelPS ?? "Sin datos")
           $("#precio").val(data.precio_bruto ?? "Sin datos")
           $("#img_servicio2").attr('src',`images/productos_servicios/${data.imagen}`);
+          $("#img_servicio2").removeClass('image-cont')
         }
         // Swal.fire({
         //   icon: 'error',
@@ -837,7 +855,9 @@ $(document).ready(function () {
       <td><input class="form-control" type="text" id="precio_bruto" name="precio_bruto[]" value="${precioBruto}" readonly></td>
       <td><input class="form-control" type="text" id="precio_iva" name="precio_iva[]" value="${precioIva}" readonly></td>
       <td><input class="form-control" type="number" id="subtotal" name="subtotal[]" value="${subtotal}" readonly></td> 
-      <td><button type="button" class="btn btn-danger delete" value="Eliminar">X</button></td>
+      <td class="d-flex justify-content-center"><button type="button" class="btn p-0 delete" value="Eliminar">
+        <img src="{{ asset('images/icons/icon-trash.svg') }}" class="rtable-icon" alt="Icono de eliminar" title="Eliminar" width="22">
+      </button></td>
       </tr>; `
 
     limpiarCampos();
@@ -1003,6 +1023,7 @@ $(document).ready(function () {
     $("#cantidad").val(1);
     $("#descuento").val(0);
     $("#img_servicio2").attr('src',``);
+    $("#img_servicio2").addClass('image-cont')
   }
 
   function validarProductoServicio(){

@@ -21,4 +21,5 @@ body{
 .main-app{
   flex: 1;
   inline-size: 100%;
+  overflow: hidden;
 }
