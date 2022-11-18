@@ -160,7 +160,7 @@
         </div>
 
         <div class="service-image">
-          <img src="{{asset('images/productos_servicios/sinImagen.svg')}}" alt="" id="img_servicio" width="250">
+          <img src="{{asset("images/productos_servicios/$servicio->imagen")}}" alt="" id="img_servicio" width="250">
         </div>
 
       </div>
