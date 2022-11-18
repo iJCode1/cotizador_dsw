@@ -1,53 +1,12 @@
 @extends('layouts.app')
 
 @section('css')
-  <link href="{{ asset('css/cotizaciones.css') }}" rel="stylesheet">
   <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/table-responsive.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/cotizaciones.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
-{{-- <div class="container">
-  @if ( count($cotizaciones) <= 0 )
-    <p>No hay Cotizaciones</p>
-    <img src="{{asset('images/illustrations/emptyQuotes.svg')}}" alt="Empty Quotes" width="300">
-  @else
-    <p>Si hay Cotizaciones</p>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Folio Cotización</th>
-          <th scope="col">Descripción</th>
-          <th scope="col">Fecha Creación</th>
-          <th scope="col">Vigencia</th>
-          <th scope="col">Estatus Cotización</th>
-          <th scope="col">Usuario</th>
-          <th scope="col">Cliente</th>
-          <th scope="col">Editar</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach ($cotizaciones as $cotizacion)
-        <tr>
-          <th scope="row">{{$cotizacion->cotizacion_id}}</th>
-          <td>{{$cotizacion->folio_cotizacion}}</td>
-          <td>{{$cotizacion->descripcion}}</td>
-          <td>{{$cotizacion->fecha_creacion}}</td>
-          <td>{{$cotizacion->vigencia}}</td>
-          <td>{{$cotizacion->estatus_cotizacion_id}}</td>
-          <td>{{$cotizacion->user->nombre}}</td>
-          <td>{{$cotizacion->cliente->nombre}}</td>
-          <td>
-            <a href="{{ route('tenant.showCotizacionEditForm', $cotizacion) }}" class="btn btn-warning">Editar</a>
-          </td>
-        </tr>
-        @endforeach
-      </tbody>
-    </table>
-    {{$cotizaciones->links()}}
-  @endif
-  <a href="{{route('tenant.cotizacion')}}" class="btn btn-block btn-primary my-4">Crear Nueva Cotización</a>
-</div> --}}
 <div class="quotation">
   <div class="quotation-first">
     <div class="quotation-title">
@@ -65,9 +24,36 @@
       <p>No se han realizado cotizaciones</p>
     </div>
   @else
-
+  <div class="rtable">
+    <div class="rtable-head">
+      <p class="rtable-col rtable-id">ID</p>
+      <p class="rtable-col rtable-folio">Folio</p>
+      <p class="rtable-col rtable-description">Descripción</p>
+      <p class="rtable-col rtable-validity">Vigencia</p>
+      <p class="rtable-col rtable-employee">Generada por</p>
+      <p class="rtable-col rtable-customer">Cliente</p>
+      <p class="rtable-col rtable-actions">Acciones</p>
+    </div>
+    <div class="rtable-body">
+      @foreach ($cotizaciones as $cotizacion)
+        <div class="rtable-row">
+          <p class="rtable-item rtable-id">{{$cotizacion->cotizacion_id}}</p>
+          <p class="rtable-item rtable-folio">{{$cotizacion->folio_cotizacion}}</p>
+          <p class="rtable-item rtable-description">{!! $cotizacion->descripcion !!}</p>
+          <p class="rtable-item rtable-validity">{{$cotizacion->vigencia}} días</p>
+          <p class="rtable-item rtable-employee">{{$cotizacion->user->nombre}}</p>
+          <p class="rtable-item rtable-customer">{{$cotizacion->cliente->nombre}}</p>
+          <div class="rtable-group rtable-actions">
+            <a class="rtable-link" href="{{ route('tenant.showCotizacionEditForm', $cotizacion) }}">
+              <img src="{{ asset('images/icons/icon-edit.svg') }}" class="rtable-icon" alt="Icono de editar" title="Editar" width="22">
+              <span class="rtable-span">Editar</span>
+            </a>
+          </div>
+        </div>
+      @endforeach
+    </div>
+  </div>
   @endif
-  
 </div>
 
 @if (session('crear') === 'ok')

@@ -281,7 +281,7 @@ class CotizacionesController extends Controller
 
       $producto_servicio = [
         'nombre' => $request->get('nombreServicio'),
-        'descripcion' => $request->get('descripcionServicio'),
+        'descripcion' => nl2br($request->get('descripcionServicio')),
         'codigo' => $request->get('codigoServicio'),
         'imagen' => $img2,
         'precio_bruto' => $request->get('precioServicio'),

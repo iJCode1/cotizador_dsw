@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@section('css')
+  <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/table-responsive.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/cotizaciones.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

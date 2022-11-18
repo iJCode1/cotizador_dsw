@@ -5,7 +5,7 @@
   <div class="col-md-6">
       <input id="nombre" type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" value="{{ old('nombre') }}" autocomplete="nombre" autofocus placeholder="Fernando">
       
-      <span id="nombre-error" class="invalid-feedback" role="alert" style="display: none">
+      <span id="nombre-error" class="invalid-feedbackk" role="alert" style="display: none">
         <strong></strong>
       </span>
   </div>
@@ -18,7 +18,7 @@
 <div class="col-md-6">
     <input id="apep" type="text" class="form-control @error('apep') is-invalid @enderror" name="apep" value="{{ old('apep') }}" autocomplete="apep" autofocus placeholder="Díaz">
     
-    <span id="apep-error" class="invalid-feedback" role="alert" style="display: none">
+    <span id="apep-error" class="invalid-feedbackk" role="alert" style="display: none">
       <strong></strong>
     </span>
 </div>
@@ -31,7 +31,7 @@
 <div class="col-md-6">
     <input id="apm" type="text" class="form-control @error('apm') is-invalid @enderror" name="apm" value="{{ old('apm') }}" autocomplete="apm" autofocus placeholder="Álvarez">
 
-    <span id="apm-error" class="invalid-feedback" role="alert" style="display: none">
+    <span id="apm-error" class="invalid-feedbackk" role="alert" style="display: none">
       <strong></strong>
     </span>
 </div>
@@ -44,7 +44,7 @@
 <div class="col-md-6">
     <input id="direccion" type="text" class="form-control @error('direccion') is-invalid @enderror" name="direccion" value="{{ old('direccion') }}" autocomplete="direccion" autofocus placeholder="Privada del Sol #12">
 
-    <span id="direccion-error" class="invalid-feedback" role="alert" style="display: none">
+    <span id="direccion-error" class="invalid-feedbackk" role="alert" style="display: none">
       <strong></strong>
     </span>
 </div>
@@ -57,7 +57,7 @@
 <div class="col-md-6">
     <input id="telefono" type="tel" class="form-control @error('telefono') is-invalid @enderror" name="telefono" value="{{ old('telefono') }}" autocomplete="telefono" autofocus placeholder="xxxxxxxxxx">
 
-    <span id="telefono-error" class="invalid-feedback" role="alert" style="display: none">
+    <span id="telefono-error" class="invalid-feedbackk" role="alert" style="display: none">
       <strong></strong>
     </span>
 </div>
@@ -70,7 +70,7 @@
   <div class="col-md-6">
       <input id="correo" type="email" class="form-control @error('correo') is-invalid @enderror" name="correo" value="{{ old('correo') }}" autocomplete="email" placeholder="example@example.com">
 
-      <span id="correo-error" class="invalid-feedback" role="alert" style="display: none">
+      <span id="correo-error" class="invalid-feedbackk" role="alert" style="display: none">
         <strong></strong>
       </span>
   </div>
@@ -83,7 +83,7 @@
   <div class="col-md-6">
       <input id="contraseña" type="password" class="form-control @error('contraseña') is-invalid @enderror" name="contraseña" autocomplete="new-password" placeholder="********">
 
-      <span id="contraseña-error" class="invalid-feedback" role="alert" style="display: none">
+      <span id="contraseña-error" class="invalid-feedbackk" role="alert" style="display: none">
         <strong></strong>
       </span>
   </div>

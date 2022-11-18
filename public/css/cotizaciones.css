@@ -51,6 +51,11 @@
   color: white;
 }
 
+.quotation-fSecond,
+.quotation-fThird{
+  margin-block-start: 4rem;
+}
+
 .quotation-second{
   display: flex;
   flex-direction: column;
@@ -70,10 +75,252 @@
   text-align: center;
 }
 
+.quotation-form{
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.form-concept{
+  font-size: 1.25rem;
+  border-bottom: 2px solid #6C63FF;
+  padding-block-end: .5rem;
+  display: inline-block;
+  margin: 0;
+  margin-block-end: 2.5rem;
+  font-weight: 600;
+}
+
+.form-inputs{
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.inputs-search{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.register-data{
+  flex: 1;
+}
+
+.register-data,
+.register-data > .data-body{
+  display: flex;
+  gap: 0.75rem;
+}
+
+.register-data.register-image{
+  flex-direction: column;
+}
+
+.btn-modal{
+  font-family: var(--second-font);
+  font-size: 1.1rem;
+  background-color: var(--rose);
+  color: var(--white);
+  padding-block: .75rem;
+  padding-inline: 1.5rem;
+  border: none;
+  border-radius: .5rem;
+  margin-inline-start: 2.375rem;
+  inline-size: fit-content;
+  cursor: pointer;
+  transition: transform .2s;
+}
+
+.btn-modal:active{
+  transform: scale(.9);
+}
+
+.btn-modal:hover{
+  opacity: .85;
+}
+
+.data-readonly{
+  display: none;
+}
+
+.register-input{
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+.register-input input{
+  border: none;
+  border-block-end: 1px solid black;
+  font-family: 'League Spartan', sans-serif;
+  padding-inline: .5rem;
+  padding-block: .25rem;
+  font-size: 1rem;
+  background: none;
+}
+
+.register-input label{
+  font-weight: 600;
+  margin: 0;
+}
+
+.register-input > select{
+  border: none;
+  border-block-end: 1px solid black;
+  font-family: 'League Spartan', sans-serif;
+  padding: .5rem;
+  font-size: 1rem;
+  background: none;
+}
+
+.register-input.register-search{
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.register-input > .input-group{
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  flex: 1;
+}
+
+.register-double,
+.register-triple{
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.register-triple{
+  flex-wrap: wrap;
+}
+
+
+.register-double > .register-data,
+.register-triple > .register-data{
+  flex: 1;
+}
+
+.register-input p{
+  margin: 0;
+  font-family: 'League Spartan', sans-serif;
+}
+
+.register-input >.read-only{
+  color: #888888;
+}
+
+.invalid-feedbackk{
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #e3342f;
+}
+
+.register-input > textarea{
+  border: none;
+  border-block-end: 1px solid black;
+  font-family: 'League Spartan', sans-serif;
+  padding: 0.5rem;
+  resize: vertical;
+  font-size: 1rem;
+  min-height: 4rem;
+  background: none;
+}
+
+.form-cta{
+  background-color: #5D5FEF;
+  color: white;
+  padding-block: .75rem;
+  border: 0;
+  border-radius: .5rem;
+  font-size: 1.1rem;
+  font-family: 'League Spartan', sans-serif;
+  transition: transform .2s;
+  align-self: flex-end;
+  padding-inline: 3.5rem;
+  cursor: pointer;
+}
+
+.form-cta.select-cta{
+  border-radius: .5rem .5rem .5rem 0;
+}
+
+.form-cta:active{
+  transform: scale(.9);
+}
+
+.form-cta:hover{
+  opacity: .85;
+}
+
+.coti-add,
+.coti-btn{
+  background: #0A2D55;
+  text-transform: uppercase;
+  font-size: 1rem;
+  padding-block: .6rem;
+  inline-size: 100%;
+  margin-block-start: 2rem;
+  margin-block-end: 6rem;
+  color: var(--white);
+  border-radius: .75rem;
+  font-family: var(--second-font);
+  transition: transform .2s;
+  cursor: pointer;
+  border: none;
+}
+
+.coti-btn{
+  background: #5D5FEF;
+  padding-block: .4rem;
+}
+
+.coti-add:active,
+.coti-btn:active{
+  transform: scale(.9);
+}
+
+.coti-add:hover,
+.coti-btn:hover{
+  opacity: .85;
+}
+
+.rtable-validity,
+.rtable-description,
+.rtable-employee{
+  display: none;
+}
+
+.rtable-id,
+.rtable-customer,
+.rtable-actions{
+  flex: 1;
+}
+
+.rtable-folio{
+  flex: 2;
+}
+
+@media screen and (min-width: 375px){
+  .rtable-employee{
+    display: initial;
+    flex: 1;
+  }
+}
+
 @media screen and (min-width: 500px){
   .quotation-first{
     justify-content: flex-start;
     gap: 1.5rem;
+  }
+
+  .rtable-validity{
+    display: initial;
+    flex: 1;
   }
 }
 
@@ -93,5 +340,41 @@
 
   .quotation-second img{
     max-inline-size: 26rem;
+  }
+
+  .register-double{
+    flex-direction: row;
+    gap: 4rem;
+  }
+
+  .register-triple{
+    flex-direction: row;
+    gap: 4rem;
+  }
+  
+  .inputs-search{
+    align-items: flex-end;
+    flex-direction: row;
+    gap: 2.5rem;
+  }
+
+  .register-input.register-search{
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 0;
+  }
+
+  .btn-modal{
+    margin-inline-start: 0;
+  }
+
+  .rtable-description{
+    display: initial;
+    flex: 3;
+  }
+
+  .rtable-employee,
+  .rtable-customer{
+    flex: 2;
   }
 }

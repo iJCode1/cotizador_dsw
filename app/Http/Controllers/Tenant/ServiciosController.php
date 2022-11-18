@@ -233,7 +233,7 @@ class ServiciosController extends Controller
       }
 
       $servicio->nombre = $request->nombre;
-      $servicio->descripcion = $request->descripcion;
+      $servicio->descripcion = nl2br($request->descripcion);
       $servicio->codigo = $request->codigo;
       $servicio->precio_bruto = $request->precio;
       $servicio->tipo_id = $request->tipo;
