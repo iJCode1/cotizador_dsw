@@ -388,7 +388,6 @@ class CotizacionesController extends Controller
    */
   public function generarPDFCotizacion($request, $cotizacion_id)
   {
-
     $empresa = Empresa::all()->first();
     $fqdn = $empresa->fqdn;
     $cotizacion = Cotizacion::find($cotizacion_id);

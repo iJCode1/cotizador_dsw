@@ -62,7 +62,7 @@
           <h3>{{ $empresa->fqdn }}</h3>
           <p>Dirección: {{ $empresa->direccion }}</p>
           <p>C.P: {{ $empresa->codigo_postal }}</p>
-          <p>Asesor de venta: {{ $cotizacion->user->nombre }}</p>
+          <p>Asesor de venta: {{ ucfirst($cotizacion->user->nombre)." ".ucfirst($cotizacion->user->apellido_p)." ".ucfirst($cotizacion->user->apellido_m) }}</p>
         </td>
         <td class="subtd" align="right">
           <h3 style="color: #db2a24">FOLIO: {{ $cotizacion->folio_cotizacion }}</h3>
@@ -81,7 +81,7 @@
         <th class="th-customer">Cliente</th>
       </tr>
       <tr align="left">
-        <td class="td-customer">Nombre: {{ $cotizacion->cliente->nombre }}</td>
+        <td class="td-customer">Nombre: {{ ucfirst($cotizacion->cliente->nombre)." ".ucfirst($cotizacion->cliente->apellido_p)." ".ucfirst($cotizacion->cliente->apellido_m) }}</td>
       </tr>
       <tr align="left">
         <td class="td-customer">Email: {{ $cotizacion->cliente->email }}</td>
@@ -97,7 +97,6 @@
 
   <br/>
 
-  <!-- Resumen de la cotización -->
   <table width="100%">
     <thead style="background-color: #0B6FED; color: white;">
       <tr>
@@ -110,9 +109,6 @@
       </tr>
     </thead>
     <tbody>
-      {{-- foreach --}}
-      {{-- dd($servicios[0]->unidad->nombre_unidad); --}}
-
       @foreach ($servicios as $servicio)
         <tr>
           <td scope="row">{{ $servicio->codigo }}</td>
@@ -154,93 +150,15 @@
     </tfoot>
   </table>
 
-{{-- <div class="first">
-  <div class="pdf-image">
-    <img src="<?php echo $imagenBase64 ?>" width="90" />
-  </div>
-
-  <div class="pdf-company">
-    <div class="company-content1" >
-      <p>Avenida Ignacio Manuel Altamirano 101 interior B Colonia La joya Zinacantepec,
-        Toluca, Estado de México C.P. 51355
-      </p>
-      <p>Email: comercializadoracmeventas1@gmail.com</p>
-      <p>Teléfono: 722 4027 100</p>
-      <p>Asesor de venta: Ulises</p>
-    </div>
-
-    <div class="company-content2">
-      <p>Fecha: 15/11/22</p>
-      <p>Folio: COT-12</p>
-      <p>Cliente ID: 1</p>
-      <p>Valido hasta: 20/11/22</p>
-    </div>
-  </div>
-</div> --}}
-
-  {{-- <div>
-    <img src="<?php echo $imagenBase64 ?>" width="90" />
-  </div> --}}
-        {{-- <br><br> --}}
-        {{-- <div class="h2">
-            <center><b><label>Cotizaci&oacute;n</label></b></center>
-        </div> --}}
-        {{-- <br> --}}
-        {{-- <div class="h4">
-            <table>
-                <tr>
-                    <td>Fecha de realizaci&oacute;n:</td><td><u>18/11/2022</u></td>
-                </tr>
-                <tr>
-                    <td>Nombre del cliente: </td><td><u>Joel</u></td>
-                </tr>
-                <tr>
-                    <td>Descripci&oacute;n del coche: </td><td><u>Buena descripcion</u></td>
-                </tr>
-            </table>
-        </div> --}}
-
-        {{-- <br> --}}
-
-        {{-- <div class="table-responsive">
-            <table class="table table-hover" border="1" cellpadding="10">
-                <thead>
-                    <tr>
-                        <th> No. </th>
-                        <th>Refacci&oacute;n</th>
-                        <th>Precio</th>
-                        <th>No. de piezas</th>
-                        <th>Mano de obra</th>
-                        <th>Costo parcial</th>
-                    </tr>
-                </thead>
-                <tbody>     
-                  <tr>
-                    <td>1</td>
-                    <td>Nombreq</td>
-                    <td>1200</td>
-                    <td>2</td>
-                    <td>100</td>
-                    <td>1300</td>
-                  </tr>
-                </tbody>
-
-            </table>
-        </div> --}}
-        {{-- <br><br> --}}
-        {{-- <div class="h5">
-            <p>
-                La presente cotizaci&oacute;n no representa en forma alguna, reserva de inventario<br>
-                Precios sujetos a cambios por el proveedor<br>
-            </p>
-        </div> --}}
-        {{-- <br><br> --}}
-        {{-- <div class="h5">
-            <p><i>
-                    Direcci&oacute;n: Calle 5 de febrero No.300 <br>
-                    Teléfono: 22222222<br>
-                    mecanico@gmail.com<br>
-                </i></p>
-        </div> --}}
+  <table width="100%" style="margin-top: 20px">
+    <thead >
+      <tr align="top" style="background-color: #0B6FED;" width="100%">
+        <th style="padding: 4px; color: white; font-size: 16px;">Descripción de la cotización</th>
+      </tr>
+      <tr align="left">
+        <td>{{ $cotizacion->descripcion }}</td>
+      </tr>
+    </thead>
+  </table>
 </body>
 </html>
