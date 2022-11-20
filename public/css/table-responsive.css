@@ -35,6 +35,7 @@
 }
 
 .rtable-body{
+  display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
@@ -48,7 +49,13 @@
   align-items: center;
   padding-inline: .5rem;
   padding-block: 1rem;
-  gap: .5rem;
+  gap: 1rem;
+}
+
+.rtable-row > p{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .rtable-item{
