@@ -347,12 +347,21 @@ class CotizacionesController extends Controller
 
       return DB::transaction(function () use ($request) {
 
+        $cotizacionData = [
+          'folio_cotizacion' => $request->folio_cotizacion,
+          'descripcion' => nl2br($request->descripcion),
+          'fecha_creacion' => $request->fecha_creacion,
+          'vigencia' => $request->vigencia,
+          'estatus_cotizacion_id' => $request->estatus_cotizacion_id,
+          'cliente_id' => $request->cliente_id,
+        ];
+
         if (Auth::guard('cliente')->check()) {
-          $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => 1]);
+          $cotizacion = Cotizacion::create($cotizacionData + ['usuario_id' => 1]);
         }
 
         if (Auth::check()) {
-          $cotizacion = Cotizacion::create($request->all() + ['usuario_id' => Auth::user()->user_id]);
+          $cotizacion = Cotizacion::create($cotizacionData + ['usuario_id' => Auth::user()->user_id]);
         }
 
         foreach ($request->servicio_id as $index => $servicio_id) {
@@ -561,7 +570,7 @@ class CotizacionesController extends Controller
 
       $cotizacion = Cotizacion::find($cotizacion_id);
 
-      $cotizacion->descripcion = $request->descripcion;
+      $cotizacion->descripcion = nl2br($request->descripcion);
       $cotizacion->estatus_cotizacion_id = $request->estatus_cotizacion_id;
       $cotizacion->update();
 

@@ -80,7 +80,7 @@
             <img src="{{ asset('images/icons/icon-descripcion.svg') }}" alt="" width="26">
             <div class="register-input">
               <label for="descripcion">{{ __('Descripción del producto y/o servicio') }}</label>
-              <textarea @if($usuario === "cliente") readonly @endif id="descripcion" name="descripcion" name="descripcion_cotizacion" rows="2" autofocus autocomplete="text" placeholder="La cotización contiene la solicitud de una Laptop Lenovo i7 para Julian desde la empresa...">{{ old('descripcion', $cotizacion->descripcion) }}</textarea>
+              <textarea @if($usuario === "cliente") readonly @endif id="descripcion" name="descripcion" name="descripcion_cotizacion" rows="2" autofocus autocomplete="text" placeholder="La cotización contiene la solicitud de una Laptop Lenovo i7 para Julian desde la empresa...">{{ old('descripcion', preg_replace("[<br />]", "", $cotizacion->descripcion)) }}</textarea>
   
               @error('descripcion')
               <span class="invalid-feedbackk" role="alert">

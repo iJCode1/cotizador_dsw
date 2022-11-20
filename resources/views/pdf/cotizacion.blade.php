@@ -156,7 +156,7 @@
         <th style="padding: 4px; color: white; font-size: 16px;">Descripción de la cotización</th>
       </tr>
       <tr align="left">
-        <td>{{ $cotizacion->descripcion }}</td>
+        <td>{!! $cotizacion->descripcion !!}</td>
       </tr>
     </thead>
   </table>
