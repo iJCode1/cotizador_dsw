@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\Cliente;
 use App\Models\Tenant\Cotizacion;
 use App\Models\Tenant\Detalle_Cotizacion;
+use App\Models\Tenant\Empresa;
 use App\Models\Tenant\Estatus_Cotizacion;
 use App\Models\Tenant\Producto_Servicio;
 use App\Models\Tenant\Tipo_Producto_Servicio;
@@ -388,13 +389,27 @@ class CotizacionesController extends Controller
   public function generarPDFCotizacion($request, $cotizacion_id)
   {
 
-    $servicios = Detalle_Cotizacion::select('detalle_cotizaciones.detalle_cotizacion_id', 'detalle_cotizaciones.cantidad', 'detalle_cotizaciones.descuento', 'detalle_cotizaciones.descuento_general', 'detalle_cotizaciones.precio_inicial', 'detalle_cotizaciones.precio_bruto', 'detalle_cotizaciones.iva', 'detalle_cotizaciones.subtotal', 'productos_servicios.nombre', 'productos_servicios.descripcion')
+    $empresa = Empresa::all()->first();
+    $cotizacion = Cotizacion::find($cotizacion_id);
+    $unidades = Unidad_De_Medida::all();
+
+    $servicios = Detalle_Cotizacion::select('detalle_cotizaciones.detalle_cotizacion_id', 'detalle_cotizaciones.cantidad', 'detalle_cotizaciones.descuento', 'detalle_cotizaciones.descuento_general', 'detalle_cotizaciones.precio_inicial', 'detalle_cotizaciones.precio_bruto', 'detalle_cotizaciones.iva', 'detalle_cotizaciones.subtotal', 'productos_servicios.nombre', 'productos_servicios.descripcion', 'productos_servicios.codigo', 'productos_servicios.unidad_medida_id')
       ->join('productos_servicios', 'detalle_cotizaciones.producto_servicio_id', '=', 'productos_servicios.producto_servicio_id')
       ->where("detalle_cotizaciones.cotizacion_id", "=", $cotizacion_id)
       ->get();
 
     if (count($servicios) > 0) {
-      $pdf = Pdf::loadView('pdf.cotizacion', compact("request", "servicios"));
+      $subtotal = 0;
+      $iva = 0;
+      $total = 0;
+
+      foreach($servicios as $servicio){
+        $subtotal += ($servicio->precio_inicial - (($servicio->precio_inicial * $servicio->descuento)/100)) * $servicio->cantidad;
+      }
+      $iva = round(($subtotal * 0.16), 2);
+      $total = round(($subtotal + $iva), 2);
+      
+      $pdf = Pdf::loadView('pdf.cotizacion', compact("request", "servicios", "empresa", "cotizacion", "unidades", "subtotal", "iva", "total"));
 
       /**
        * Al hacer la validación del tenant...
