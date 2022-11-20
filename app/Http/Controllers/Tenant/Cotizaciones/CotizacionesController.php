@@ -37,7 +37,7 @@ class CotizacionesController extends Controller
     $hostname = app(\Hyn\Tenancy\Environment::class)->hostname();
     if ($hostname) {
       $fqdn = $hostname->fqdn;
-      $this->tenantName = explode('.', $fqdn)[0];
+      $this->tenantName = strtolower(explode('.', $fqdn)[0]);
     }
   }
 
@@ -413,13 +413,19 @@ class CotizacionesController extends Controller
 
       /**
        * Al hacer la validación del tenant...
-       * el nombre con el que se compara debe ser exactamente igual (Mayúsculas y minúsculas)
+       * el nombre (fqdn) con el que se compara ya se encuentra en minúsculas
+       * por lo que se debe hacer la comparación en minúsculas
        */
 
       if ($this->tenantName === 'joele') {
 
         $this->tenantEmailConfiguration($request, $pdf, $servicios, "joeldome17@gmail.com", "ecfzmowdugttsxaq", $fqdn);
-      } else {
+
+      } elseif($this->tenantName === 'compushop'){
+        
+        $this->tenantEmailConfiguration($request, $pdf, $servicios, "joeldome17@gmail.com", "ecfzmowdugttsxaq", $fqdn);
+
+      }else {
 
         Mail::send('email.cotizacion', compact("servicios", "fqdn"), function ($mail) use ($pdf, $request) {
           $mail->from("devjoel17@gmail.com", '');
