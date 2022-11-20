@@ -2,13 +2,22 @@
   --main-font: 'Inter', sans-serif;
   --second-font: 'League Spartan', sans-serif;
   --main-gradient: linear-gradient(180deg, #9358CE 0%, rgba(139, 104, 240, 0.98) 48.44%, #4C1098 100%);
-  --primaryC: #9358CE;
+  --primaryC: #0B6FED;
+  --blue-10: #5BA7E7;
+  --blue-20: #329ef1;
+  --blue-30: #0A2D55;
   --greyC: #939393;
+  --grey-10: #888888;
   --green: #238800;
   --orange: #F48343;
+  --yellow: #fde34d;
+  --yellow-10: #f9d715;
   --red: #FF1111;
+  --red-10: #db2a24;
   --rose: #EA608A;
   --white: #FFF;
+  --white-10: #E0E0E0;
+  --black: rgb(17, 17, 17);
 }
 
 body{

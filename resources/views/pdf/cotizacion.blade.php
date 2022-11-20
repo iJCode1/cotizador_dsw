@@ -3,10 +3,6 @@
   <head>
     <meta charset="UTF-8">
     <title>Generar cotizaci&oacute;n</title>
-
-    
-
-    {{-- <link href="{{ asset('css/pdf.css') }}" rel="stylesheet" media="screen"> --}}
     <style type="text/css">
       * {
         font-family: Verdana, Arial, sans-serif;
@@ -31,7 +27,6 @@
       }
   
       .subtd{
-        /* border: 1px solid lightgray; */
         width: max-content;
         padding: 8px;
         text-align: start;
@@ -47,55 +42,10 @@
         padding: 8px;
         font-size: 16px;
       }
-  
-      .td-customer{
-        /* font-size: 14px; */
-      }
-  
-      .gray {
-        background-color: lightgray;
-      }
-  
-      .success {
-        color: green;
-      }
     </style>
 </head>
 <body>
-  {{-- <header class="title">
-    <h1>Cotización</h1>
-  </header> --}}
 
-  {{-- <h1>Nombre del cliente: {{ $request->nombreCliente }}</h1>
-  <p>Folio de la cotización: {{ $request->folio_cotizacion }}</p>
-  <textarea>{{ $request->descripcion }}</textarea> --}}
-
-  {{-- <table class="table">
-    <thead>
-      <tr>
-        <th>Servicio</th>
-        <th>Descripción</th>
-        <th>Cantidad</th>
-        <th>Precio Bruto</th>
-        <th>Precio Iva</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach ($servicios as $servicio)
-        <tr>
-          <td>{{ $servicio->nombre }}</td>
-          <td>{{ $servicio->descripcion }}</td>
-          <td>{{ $servicio->cantidad }}</td>
-          <td>{{ $servicio->precio_bruto }}</td>
-          <td>{{ $servicio->iva }}</td>
-          <td>{{ $servicio->subtotal }}</td>
-        </tr>
-      @endforeach
-    </tbody>
-  </table> --}}
-
-  <!-- Cabecera -->
   <table width="100%">
     <tr>
       @if ($empresa->imagen !== null)
@@ -115,7 +65,7 @@
           <p>Asesor de venta: {{ $cotizacion->user->nombre }}</p>
         </td>
         <td class="subtd" align="right">
-          <h3 style="color: red">FOLIO: {{ $cotizacion->folio_cotizacion }}</h3>
+          <h3 style="color: #db2a24">FOLIO: {{ $cotizacion->folio_cotizacion }}</h3>
           <p>FECHA: {{ $cotizacion->fecha_creacion }}</p>
           <p>CLIENTE ID: {{ $cotizacion->cliente_id }}</p>
           <p>VÁLIDO HASTA: {{ date("Y-m-d",strtotime($cotizacion->fecha_creacion."+ $cotizacion->vigencia days")) }}</p>
@@ -127,7 +77,7 @@
   <!-- Información del cliente -->
   <table width="100%" style="margin-top: 16px;">
     <thead >
-      <tr align="top" style="background-color: rgb(37, 157, 197);" width="100%">
+      <tr align="top" style="background-color: #0B6FED;" width="100%">
         <th class="th-customer">Cliente</th>
       </tr>
       <tr align="left">
@@ -149,7 +99,7 @@
 
   <!-- Resumen de la cotización -->
   <table width="100%">
-    <thead style="background-color: rgb(37, 157, 197); color: white;">
+    <thead style="background-color: #0B6FED; color: white;">
       <tr>
         <th>Código</th>
         <th colspan="2">Descripción</th>
@@ -184,22 +134,22 @@
       <tr>
         <td colspan="5"></td>
         <td align="right">Subtotal $</td>
-        <td align="right" style="background-color: rgb(37, 157, 197); color: white;">{{ $subtotal }}</td>
+        <td align="right" style="background-color: #0B6FED; color: white;">{{ $subtotal }}</td>
       </tr>
       <tr>
         <td colspan="5"></td>
         <td align="right">Descuento</td>
-        <td align="right" style="background-color: rgb(37, 157, 197); color: white;">{{ $servicio->descuento_general }}%</td>
+        <td align="right" style="background-color: #0B6FED; color: white;">{{ $servicio->descuento_general }}%</td>
       </tr>
       <tr>
         <td colspan="5"></td>
         <td align="right">Total impuestos $</td>
-        <td align="right" style="background-color: rgb(37, 157, 197); color: white;">{{ $iva }}</td>
+        <td align="right" style="background-color: #0B6FED; color: white;">{{ $iva }}</td>
       </tr>
       <tr>
         <td colspan="5"></td>
         <td align="right">Total $</td>
-        <td align="right" style="background-color: rgb(37, 157, 197); color: white;">{{ $total }}</td>
+        <td align="right" style="background-color: #0B6FED; color: white;">{{ $total }}</td>
       </tr>
     </tfoot>
   </table>

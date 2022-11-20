@@ -1,5 +1,5 @@
 .company{
-  font-family: 'Inter', sans-serif;
+  font-family: var(--main-font);
   box-sizing: border-box;
   padding-inline: 1rem;
   inline-size: 100%;
@@ -30,15 +30,15 @@
 
 .company-button{
   font-size: .8rem;
-  background-color: #6C63FF;
+  background-color: var(--primaryC);
   padding: .5rem 1rem;
   border-radius: .5rem;
-  color: white;
+  color: var(--white);
   text-decoration: none;
   cursor: pointer;
   transition: transform .2s;
   display: inline-block;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
   font-size: 1rem;
 }
 
@@ -47,14 +47,13 @@
 }
 
 .company-button:hover{
-  text-decoration: none;
-  color: white;
+  background-color: var(--blue-20);
 }
 
 .company-second{
   display: flex;
   flex-direction: column;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
   font-size: 1rem;
   align-items: center;
   gap: 1.5rem;
@@ -79,7 +78,8 @@
 
 .cardd{
   /* box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px; */
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; */
+  box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(235, 235, 235, 0.8) -6px -2px 16px 0px;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -110,13 +110,14 @@
 }
 
 .cardd-body > p{
-  font-size: .85rem;
+  font-size: 1rem;
 }
 
 .cardd-body > a{
   text-decoration: none;
-  color: #5D5FEF;
-  font-size: .85rem;
+  color: var(--primaryC);
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .cardd-body > h2, .cardd-body > p{
@@ -135,7 +136,7 @@
   transition: transform .2s;
   font-size: 1rem;
   cursor: pointer;
-  color: black;
+  color: var(--black);
   font-weight: 400;
 }
 
@@ -161,7 +162,7 @@
   border: none;
   background: none;
   padding: 0;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
   font-size: 1rem;
 }
 
@@ -177,7 +178,7 @@
 
 .form-concept{
   font-size: 1.25rem;
-  border-bottom: 2px solid #6C63FF;
+  border-bottom: 2px solid var(--primaryC);
   padding-block-end: .5rem;
   display: inline-block;
   margin: 0;
@@ -201,13 +202,13 @@
   flex-direction: column;
   gap: .5rem;
   inline-size: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--main-font);
 }
 
 .register-input input{
   border: none;
-  border-block-end: 1px solid black;
-  font-family: 'League Spartan', sans-serif;
+  border-block-end: 1px solid var(--black);
+  font-family: var(--second-font);
   padding: .5rem;
   font-size: 1rem;
 }
@@ -218,8 +219,8 @@
 
 .register-input > select{
   border: none;
-  border-block-end: 1px solid black;
-  font-family: 'League Spartan', sans-serif;
+  border-block-end: 1px solid var(--black);
+  font-family: var(--second-font);
   padding: .5rem;
   font-size: 1rem
 }
@@ -245,21 +246,21 @@
 
 .register-input p{
   margin: 0;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
 }
 
 .register-input >.read-only{
-  color: #888888;
+  color: var(--grey-10);
 }
 
 .form-cta{
-  background-color: #5D5FEF;
-  color: white;
+  background-color: var(--primaryC);
+  color: var(--white);
   padding-block: .75rem;
   border: 0;
   border-radius: .5rem;
   font-size: 1.1rem;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
   transition: transform .2s;
   align-self: flex-end;
   padding-inline: 3.5rem;
@@ -270,11 +271,15 @@
   transform: scale(.9);
 }
 
+.form-cta:hover{
+  background-color: var(--blue-20);
+}
+
 .invalid-feedbackk{
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.875em;
-  color: #e3342f;
+  color: var(--red-10);
 }
 
 .company-file{
@@ -285,7 +290,7 @@
 
 .company-file::before{
   background-color: var(--primaryC);
-  color: white;
+  color: var(--white);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -298,7 +303,7 @@
   font-size: 1rem;
   padding-inline: 1rem;
   padding-block: .5rem;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
 }
 
 .company-file input[type="file"] {
@@ -327,6 +332,7 @@
 @media screen and (min-width: 768px){
   .company{
     margin-block: 3rem;
+    margin-block-start: 2rem;
     padding-inline: 3rem;
   }
 
@@ -352,9 +358,5 @@
 @media screen and (min-width: 900px){
   .company-cards{
     justify-content: flex-start;
-  }
-
-  .cardd-body > p{
-    font-size: .95rem;
   }
 }

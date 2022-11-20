@@ -1,5 +1,5 @@
 .unit{
-  font-family: 'Inter', sans-serif;
+  font-family: var(--main-font);
   box-sizing: border-box;
   padding-inline: 1rem;
   inline-size: 100%;
@@ -29,21 +29,22 @@
 
 .unit-button{
   font-size: .8rem;
-  background-color: #6C63FF;
+  background-color: var(--primaryC);
   padding: .5rem 1rem;
   border-radius: .5rem;
-  color: white;
+  color: var(--white);
   text-decoration: none;
   cursor: pointer;
   transition: transform .2s;
   display: inline-block;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
   font-size: 1rem;
 }
 
 .unit-button:hover{
   text-decoration: none;
-  color: white;
+  color: var(--white);
+  background-color: var(--blue-20);
 }
 
 .unit-button:active{
@@ -53,7 +54,7 @@
 .unit-second{
   display: flex;
   flex-direction: column;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
   font-size: 1rem;
   align-items: center;
   gap: 1.5rem;
@@ -77,7 +78,7 @@
 
 .form-concept{
   font-size: 1.25rem;
-  border-bottom: 2px solid #6C63FF;
+  border-bottom: 2px solid var(--primaryC);
   padding-block-end: .5rem;
   display: inline-block;
   margin: 0;
@@ -101,30 +102,31 @@
   flex-direction: column;
   gap: .5rem;
   inline-size: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--main-font);
 }
 
 .register-input input{
   border: none;
-  border-block-end: 1px solid black;
-  font-family: 'League Spartan', sans-serif;
+  border-block-end: 1px solid var(--black);
+  font-family: var(--second-font);
   padding: .5rem;
+  font-size: 1rem;
 }
 
 .register-input label{
   font-weight: 500;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
   margin: 0;
 }
 
 .form-cta{
-  background-color: #5D5FEF;
-  color: white;
+  background-color: var(--primaryC);
+  color: var(--white);
   padding-block: .75rem;
   border: 0;
   border-radius: .5rem;
   font-size: 1.1rem;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
   transition: transform .2s;
   align-self: flex-end;
   padding-inline: 3.5rem;
@@ -135,11 +137,24 @@
   transform: scale(.9);
 }
 
+.form-cta:hover{
+  background-color: var(--blue-20);
+}
+
+.form-cta.cta-edit{
+  background-color: var(--yellow);
+  color: var(--black);
+}
+
+.form-cta.cta-edit:hover{
+  background-color: var(--yellow-10);
+}
+
 .invalid-feedbackk{
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.875em;
-  color: #e3342f;
+  color: var(--red-10);
   display: inline-block;
 }
 
@@ -172,7 +187,8 @@
 
 @media screen and (min-width: 768px){
   .unit{
-    margin-block: 3rem;
+    margin-block-start: 2rem;
+    margin-block-end: 3rem;
     padding-inline: 3rem;
   }
 

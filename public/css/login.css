@@ -11,7 +11,7 @@
   flex-direction: column;
   text-align: center;
   align-items: center;
-  background: linear-gradient(180deg, #9358CE 0%, rgba(139, 104, 240, 0.98) 48.44%, #4C1098 100%);
+  background: linear-gradient(180deg, var(--primaryC) 0%, var(--blue-10) 100%);
   position: relative;
   padding-inline: 1rem;
   padding-block-start: 1rem;
@@ -38,7 +38,7 @@
 .login-title{
   font-size: 2.5rem;
   margin: 0;
-  color: white;
+  color: var(--white);
 }
 
 .login-second{
@@ -53,6 +53,7 @@
   text-align: center;
   margin-block-end: 2rem;
   font-size: 1.5rem;
+  color: var(--blue-30);
 }
 
 .second-form{
@@ -82,22 +83,21 @@
 
 .login-input input{
   border: none;
-  border-block-end: 1px solid black;
+  border-block-end: 1px solid var(--black);
   font-family: var(--second-font);
   padding: .5rem;
-  /* border-radius: 1rem; */
 }
 
 .invalid-feedback{
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.875em;
-  color: #e3342f;
+  color: var(--red-10);
 }
 
 .login-cta{
-  background-color: #5D5FEF;
-  color: white;
+  background-color: var(--primaryC);
+  color: var(--white);
   padding-block: 0.75rem;
   border: 0;
   border-radius: 3rem;
@@ -111,10 +111,14 @@
   transform: scale(.9);
 }
 
+.login-cta:hover{
+  background-color: var(--blue-20);
+}
+
 .login-line{
   inline-size: 100%;
   block-size: 2px;
-  background-color: #E0E0E0;
+  background-color: var(--white-10);
   display: block;
 }
 
@@ -125,7 +129,7 @@
 }
 
 .login-link a{
-  color: #4C1098;
+  color: var(--primaryC);
   text-decoration: none;
 }
 

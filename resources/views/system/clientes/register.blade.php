@@ -23,7 +23,7 @@
           <input id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" autocomplete="nombre" autofocus placeholder="Julieta">
 
           @error('nombre')
-            <span class="invalid-feedback" role="alert">
+            <span class="invalid-feedbackk" role="alert">
               <strong>{{ $message }}</strong>
             </span>
           @enderror
@@ -37,7 +37,7 @@
           <input id="app" type="text" name="app" value="{{ old('app') }}" autocomplete="app" autofocus placeholder="Vega">
 
           @error('app')
-            <span class="invalid-feedback" role="alert">
+            <span class="invalid-feedbackk" role="alert">
               <strong>{{ $message }}</strong>
             </span>
           @enderror
@@ -51,7 +51,7 @@
           <input id="apm" type="text" name="apm" value="{{ old('apm') }}" autocomplete="apm" autofocus placeholder="Álvarez">
           
           @error('apm')
-            <span class="invalid-feedback" role="alert">
+            <span class="invalid-feedbackk" role="alert">
               <strong>{{ $message }}</strong>
             </span>
           @enderror
@@ -65,7 +65,7 @@
           <input id="direccion" type="text" name="direccion" value="{{ old('direccion') }}" autocomplete="direccion" autofocus placeholder="Calle del Sol #45, Col. 5 soles, Toluca, Edo. México">
 
           @error('direccion')
-            <span class="invalid-feedback" role="alert">
+            <span class="invalid-feedbackk" role="alert">
               <strong>{{ $message }}</strong>
             </span>
           @enderror
@@ -79,7 +79,7 @@
           <input id="telefono" type="tel" name="telefono" value="{{ old('telefono') }}" autocomplete="telefono" autofocus placeholder="7226745674">
           
           @error('telefono')
-            <span class="invalid-feedback" role="alert">
+            <span class="invalid-feedbackk" role="alert">
               <strong>{{ $message }}</strong>
             </span>
           @enderror
@@ -93,7 +93,7 @@
           <input id="correo" type="email" name="correo" value="{{ old('correo') }}" autocomplete="email" placeholder="example@email.com">
 
           @error('correo')
-            <span class="invalid-feedback" role="alert">
+            <span class="invalid-feedbackk" role="alert">
               <strong>{{ $message }}</strong>
             </span>
           @enderror
@@ -107,7 +107,7 @@
           <input id="contraseña" type="password" name="contraseña" autocomplete="password" placeholder="**********">
 
           @error('contraseña')
-            <span class="invalid-feedback" role="alert">
+            <span class="invalid-feedbackk" role="alert">
               <strong>{{ $message }}</strong>
             </span>
           @enderror

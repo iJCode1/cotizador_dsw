@@ -1,5 +1,5 @@
 .quotation{
-  font-family: 'Inter', sans-serif;
+  font-family: var(--main-font);
   box-sizing: border-box;
   padding-inline: 1rem;
   inline-size: 100%;
@@ -30,15 +30,15 @@
 
 .quotation-button{
   font-size: .8rem;
-  background-color: #6C63FF;
+  background-color: var(--primaryC);
   padding: .5rem 1rem;
   border-radius: .5rem;
-  color: white;
+  color: var(--white);
   text-decoration: none;
   cursor: pointer;
   transition: transform .2s;
   display: inline-block;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
   font-size: 1rem;
 }
 
@@ -48,7 +48,8 @@
 
 .quotation-button:hover{
   text-decoration: none;
-  color: white;
+  color: var(--white);
+  background-color: var(--blue-20);
 }
 
 .quotation-fSecond,
@@ -59,7 +60,7 @@
 .quotation-second{
   display: flex;
   flex-direction: column;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
   font-size: 1rem;
   align-items: center;
   gap: 1.5rem;
@@ -83,7 +84,7 @@
 
 .form-concept{
   font-size: 1.25rem;
-  border-bottom: 2px solid #6C63FF;
+  border-bottom: 2px solid var(--primaryC);
   padding-block-end: .5rem;
   display: inline-block;
   margin: 0;
@@ -160,6 +161,10 @@
   padding-inline: 1.5rem;
 }
 
+.btn-modal.btn-register:hover{
+  background-color: var(--blue-20);
+}
+
 .data-readonly{
   display: none;
 }
@@ -168,13 +173,13 @@
   display: flex;
   flex-direction: column;
   inline-size: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--main-font);
 }
 
 .register-input input{
   border: none;
-  border-block-end: 1px solid black;
-  font-family: 'League Spartan', sans-serif;
+  border-block-end: 1px solid var(--black);
+  font-family: var(--second-font);
   padding-inline: .5rem;
   padding-block: .25rem;
   font-size: 1rem;
@@ -188,8 +193,8 @@
 
 .register-input > select{
   border: none;
-  border-block-end: 1px solid black;
-  font-family: 'League Spartan', sans-serif;
+  border-block-end: 1px solid var(--black);
+  font-family: var(--second-font);
   padding: .5rem;
   font-size: 1rem;
   background: none;
@@ -226,24 +231,25 @@
 
 .register-input p{
   margin: 0;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
+  font-size: 1rem;
 }
 
 .register-input >.read-only{
-  color: #888888;
+  color: var(--grey-10);
 }
 
 .invalid-feedbackk{
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.875em;
-  color: #e3342f;
+  color: var(--red-10);
 }
 
 .register-input > textarea{
   border: none;
-  border-block-end: 1px solid black;
-  font-family: 'League Spartan', sans-serif;
+  border-block-end: 1px solid var(--black);
+  font-family: var(--second-font);
   padding: 0.5rem;
   resize: vertical;
   font-size: 1rem;
@@ -252,13 +258,13 @@
 }
 
 .form-cta{
-  background-color: #5D5FEF;
-  color: white;
+  background-color: var(--primaryC);
+  color: var(--white);
   padding-block: 0.5rem;
   border: 0;
   border-radius: .5rem;
   font-size: 1.1rem;
-  font-family: 'League Spartan', sans-serif;
+  font-family: var(--second-font);
   transition: transform .2s;
   align-self: flex-end;
   padding-inline: 3.5rem;
@@ -275,11 +281,21 @@
 
 .form-cta:hover{
   opacity: .85;
+  background-color: var(--blue-20);
+}
+
+.form-cta.cta-edit{
+  background-color: var(--yellow);
+  color: var(--black);
+}
+
+.form-cta.cta-edit:hover{
+  background-color: var(--yellow-10);
 }
 
 .coti-add,
 .coti-btn{
-  background: #0A2D55;
+  background: var(--blue-30);
   text-transform: uppercase;
   font-size: 1rem;
   padding-block: .6rem;
@@ -295,7 +311,7 @@
 }
 
 .coti-btn{
-  background: #5D5FEF;
+  background: var(--primaryC);
   padding-block: .4rem;
   margin-block-end: 0rem;
 }
@@ -305,9 +321,12 @@
   transform: scale(.9);
 }
 
-.coti-add:hover,
+.coti-add:hover{
+  opacity: .7;
+}
+
 .coti-btn:hover{
-  opacity: .85;
+  background-color: var(--blue-20);
 }
 
 .rtable-validity,
@@ -355,7 +374,8 @@
 
 @media screen and (min-width: 768px){
   .quotation{
-    margin-block: 3rem;
+    margin-block-start: 2rem;
+    margin-block-end: 3rem;
     padding-inline: 3rem;
   }
 

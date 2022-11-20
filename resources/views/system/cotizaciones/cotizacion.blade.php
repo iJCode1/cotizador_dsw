@@ -445,7 +445,7 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="table-responsive">
           <table id="detalles" name="servicio_uuid" class="table table-striped table-bordered condensed table-hover @error('servicio_uuid') is-invalid @enderror">
-            <thead class="thead-dark">
+            <thead class="text-dark">
               <th>ID servicio</th>
               <th>Nombre servicio</th>
               <th>Precio inicial</th>
