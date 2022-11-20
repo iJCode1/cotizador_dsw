@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>Cotización</title>
 </head>
 <body>
-  <p>Prueba</p>
+  <p>{{$fqdn}}; Le envía su cotización, gracias por su preferencia.</p>
 </body>
 </html>

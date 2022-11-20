@@ -390,6 +390,7 @@ class CotizacionesController extends Controller
   {
 
     $empresa = Empresa::all()->first();
+    $fqdn = $empresa->fqdn;
     $cotizacion = Cotizacion::find($cotizacion_id);
     $unidades = Unidad_De_Medida::all();
 
@@ -418,10 +419,10 @@ class CotizacionesController extends Controller
 
       if ($this->tenantName === 'joele') {
 
-        $this->tenantEmailConfiguration($request, $pdf, $servicios, "joeldome17@gmail.com", "ecfzmowdugttsxaq");
+        $this->tenantEmailConfiguration($request, $pdf, $servicios, "joeldome17@gmail.com", "ecfzmowdugttsxaq", $fqdn);
       } else {
 
-        Mail::send('email.cotizacion', compact("servicios"), function ($mail) use ($pdf, $request) {
+        Mail::send('email.cotizacion', compact("servicios", "fqdn"), function ($mail) use ($pdf, $request) {
           $mail->from("devjoel17@gmail.com", '');
           $mail->to($request->correoCliente);
           $mail->subject("Cotización: $request->folio_cotizacion");
@@ -440,7 +441,7 @@ class CotizacionesController extends Controller
    * desde donde se desean enviar las cotizaciones de cada tenant (empresa)
    * con estos datos aplica la nueva configuración para el correcto envío del email.
    */
-  public function tenantEmailConfiguration($request, $pdf, $servicios, $email, $password)
+  public function tenantEmailConfiguration($request, $pdf, $servicios, $email, $password, $fqdn)
   {
     // Copia del mailer actual
     $backup = Mail::getSwiftMailer();
@@ -455,7 +456,7 @@ class CotizacionesController extends Controller
     // Estableciendo el nuevo mailer
     Mail::setSwiftMailer($gmail);
 
-    Mail::send('email.cotizacion', compact("servicios"), function ($mail) use ($pdf, $request, $email) {
+    Mail::send('email.cotizacion', compact("servicios", "fqdn"), function ($mail) use ($pdf, $request, $email) {
       $mail->from($email, '');
       $mail->to($request->correoCliente);
       $mail->subject("Cotización: $request->folio_cotizacion");
