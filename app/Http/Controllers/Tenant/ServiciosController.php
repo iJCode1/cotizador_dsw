@@ -30,12 +30,14 @@ class ServiciosController extends Controller
    * Retorna la vista 'index' de servicios donde se enlistan
    * los productos y/o servicios registrados
    */
-  public function index()
+  public function index(Request $request)
   {
+    $search = $request->buscarServicio;
+
     $usuario = [];
     array_push($usuario, ['name' => Auth::user()->name, 'NombreRol' => Auth::user()->rol->nombre_rol]);
 
-    $productosServicios = Producto_Servicio::withTrashed()->get();
+    $productosServicios = Producto_Servicio::withTrashed()->where('nombre', 'LIKE', "%{$search}%")->latest()->get();
 
     return view('system.servicios.index', [
       'user' => $usuario,

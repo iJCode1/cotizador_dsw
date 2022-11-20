@@ -23,6 +23,14 @@
       <span>Nuevo registro</span>
     </a>
   </div>
+  <form class="service-search" method="GET" action="{{ route('tenant.showServicios') }}">
+    <div class="search-input">
+      <img src="{{ asset('images/icons/icon-search_black.svg') }}" class="nav-icon" alt="Icono de servicios" title="Icono de servicios" width="24">
+      <input type="search" name="buscarServicio" id="buscarServicio" placeholder="Buscar" value="{{ request('buscarServicio') }}">
+    </div>
+
+    <button type="submit">Buscar</button>
+  </form>
   @if (count($productosServicios) <= 0)
     <div class="service-second">
       <img src="{{ asset('images/illustrations/services.svg') }}" alt="Servicios" title="No hay productos y/o servicios registrados" width="250">
