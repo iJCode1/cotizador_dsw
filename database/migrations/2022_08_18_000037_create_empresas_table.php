@@ -18,8 +18,8 @@ class CreateEmpresasTable extends AbstractMigration
             $table->bigIncrements('empresa_id');
             $table->string('direccion', 255);
             $table->string('codigo_postal', 5);
-            $table->string('numero', 10);
             $table->string('rfc', 13);
+            $table->string('imagen', 255)->nullable();
             $table->string('nombre_contacto', 45);
             $table->string('apellido_p', 45);
             $table->string('apellido_m', 45);

@@ -121,7 +121,6 @@ class EmpresaController extends Controller
       'postal' => 'required|digits_between:5,5',
       'estado' => 'required',
       'municipio_id' => 'required',
-      'number' => 'required|numeric|digits_between:1,5',
       'rfc' => 'required|between:13,13',
       'nameContact' => 'required|string',
       'apep' => 'required|string',
@@ -169,6 +168,16 @@ class EmpresaController extends Controller
         ->withInput()
         ->withErrors($validator);
     } else {
+      // Se prepara la imágen para ser almacenada dentro de la carpeta 'images > productos_servicios/'
+      $file = $request->file('imagen'); // Se obtiene la imagen
+      $img2 = null;
+      if ($file != "") { // Si la imagen es diferente de vacio
+        $imgDestination = 'images/productos_servicios/';
+        $img = $file->getClientOriginalName(); // Se obtiene el nombre de la imagen
+        $img2 = time() . '-' . $img; // Se concatena el nombre de la imagen
+        $request->file('imagen')->move($imgDestination, $img2);
+      }
+
       $contraseña = Hash::make($request->password);
       $_SESSION['name_contact'] = $request->nameContact;
       $_SESSION['lastname1'] = $request->apep;
@@ -176,8 +185,12 @@ class EmpresaController extends Controller
       $_SESSION['email'] = $request->email;
       $_SESSION['password'] = $contraseña;
       $_SESSION['address'] = $request->address;
+      $_SESSION['codigo_postal'] = $request->postal;
+      $_SESSION['rfc'] = $request->rfc;
+      $_SESSION['imagen'] = $img2;
+      $_SESSION['fqdn'] = $request->fqdn;
       $_SESSION['phone'] = $request->phone;
-      $this->registered($request);
+      $this->registered($request, $img2);
 
       return redirect()->route('empresas')
         ->with('crear', 'ok');
@@ -199,7 +212,7 @@ class EmpresaController extends Controller
    * para la empresa que se está registrando
    * finalmente invoca a la función crearEmpresa
    */
-  protected function registered($request)
+  protected function registered($request, $img)
   {
     // Se concatena: fqdn.APP_DOMAIN
     $fqdn1 = sprintf('%s.%s', $request->fqdn, env('APP_DOMAIN'));
@@ -214,7 +227,7 @@ class EmpresaController extends Controller
 
     app(HostnameRepository::class)->attach($hostname, $website);
 
-    $this->crearEmpresa($request, $hostname);
+    $this->crearEmpresa($request, $hostname, $img);
   }
 
   /**
@@ -222,13 +235,13 @@ class EmpresaController extends Controller
    * Se obtienen los datos ingresados en el formulario
    * Hace el alta de la nueva empresa en la BD
    */
-  public function crearEmpresa($request, $hostname)
+  public function crearEmpresa($request, $hostname, $img)
   {
     $empresa = [
       'direccion' => $request->address,
       'codigo_postal' => $request->postal,
-      'numero' => $request->number,
       'rfc' => $request->rfc,
+      'imagen' => $img, 
       'nombre_contacto' => $request->nameContact,
       'apellido_p' => $request->apep,
       'apellido_m' => $request->apem,

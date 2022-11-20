@@ -43,32 +43,17 @@
           </div>
         </div>
         
-        <div class="register-double">
-          <div class="register-data">
-            <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
-            <div class="register-input">
-              <label for="postal">{{ __('Código postal') }}</label>
-              <input id="postal" type="number" name="postal" value="{{ old('postal', $empresa->codigo_postal) }}" autocomplete="postal" autofocus placeholder="67453">
-              
-              @error('postal')
-                <span class="invalid-feedbackk" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
-          </div>
-          <div class="register-data">
-            <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
-            <div class="register-input">
-              <label for="number">{{ __('Número') }}</label>
-              <input id="number" type="number" name="number" value="{{ old('number', $empresa->numero) }}" autocomplete="number" autofocus placeholder="21">
-
-              @error('number')
-                <span class="invalid-feedbackk" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="postal">{{ __('Código postal') }}</label>
+            <input id="postal" type="number" name="postal" value="{{ old('postal', $empresa->codigo_postal) }}" autocomplete="postal" autofocus placeholder="67453">
+            
+            @error('postal')
+              <span class="invalid-feedbackk" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
           </div>
         </div>
 
@@ -128,6 +113,18 @@
                 <strong>{{ $message }}</strong>
               </span>
             @enderror
+          </div>
+        </div>
+
+        <div class="register-data register-image">
+          <div class="data-body">
+            <img src="{{ asset('images/icons/icon-image.svg') }}" alt="" width="26">
+            <div class="register-input">
+              <label for="imagen">{{ __('Imagen') }}</label>
+            </div>
+          </div>
+          <div class="service-image">
+            <img src="{{asset("images/productos_servicios/$empresa->imagen")}}" alt="Logo de la empresa" id="img_servicio" width="250">
           </div>
         </div>
       </div>
@@ -210,6 +207,19 @@
 @endsection
 
 <script>
+function vistaPreliminar(event){
+  let img = new FileReader();
+  let img_id = document.getElementById('img_servicio');
+
+  img.onload = () => {
+    if(img.readyState == 2){
+      img_id.src = img.result;
+    }
+  }
+
+  img.readAsDataURL(event.target.files[0]);
+}
+
   window.onload = function exampleFunction() {
     
     $estadoSelect = document.getElementById("estado");

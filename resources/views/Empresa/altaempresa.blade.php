@@ -13,7 +13,7 @@
       <h2>Registrar nueva empresa</h2>
     </div>
   </div>
-  <form class="company-form" method="POST" action="{{ route('registrarEmpresa') }}">
+  <form class="company-form" method="POST" action="{{ route('registrarEmpresa') }}" enctype="multipart/form-data">
     @csrf
 
     <div class="company-fFirst">
@@ -48,32 +48,17 @@
           </div>
         </div>
         
-        <div class="register-double">
-          <div class="register-data">
-            <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
-            <div class="register-input">
-              <label for="postal">{{ __('Código postal') }}</label>
-              <input id="postal" type="number" name="postal" value="{{ old('postal') }}" autocomplete="postal" autofocus placeholder="67453">
-              
-              @error('postal')
-                <span class="invalid-feedbackk" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
-          </div>
-          <div class="register-data">
-            <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
-            <div class="register-input">
-              <label for="number">{{ __('Número') }}</label>
-              <input id="number" type="number" name="number" value="{{ old('number') }}" autocomplete="number" autofocus placeholder="21">
-
-              @error('number')
-                <span class="invalid-feedbackk" role="alert">
-                  <strong>{{ $message }}</strong>
-                </span>
-              @enderror
-            </div>
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
+          <div class="register-input">
+            <label for="postal">{{ __('Código postal') }}</label>
+            <input id="postal" type="number" name="postal" value="{{ old('postal') }}" autocomplete="postal" autofocus placeholder="67453">
+            
+            @error('postal')
+              <span class="invalid-feedbackk" role="alert">
+                <strong>{{ $message }}</strong>
+              </span>
+            @enderror
           </div>
         </div>
 
@@ -134,6 +119,20 @@
             @enderror
           </div>
         </div>
+
+        <div class="register-data">
+          <img src="{{ asset('images/icons/icon-image.svg') }}" alt="" width="26">
+          <div class="register-input company-file">
+            <label for="imagen">{{ __('Logotipo') }}</label>
+            <input id="imagen" type="file" name="imagen" value="{{ old('imagen') }}" autofocus onchange="vistaPreliminar(event)">
+
+          </div>
+        </div>
+
+        <div class="company-image company-none" id="company-image">
+          <img src="{{asset('images/productos_servicios/sinImagen.svg')}}" alt="" id="img_company" width="250">
+        </div>
+
       </div>
     </div>
 
@@ -233,6 +232,18 @@
 @endsection
 
 <script>
+
+  function vistaPreliminar(event){
+    let img = new FileReader();
+    let img_id = document.getElementById('img_company');
+    img.onload = () => {
+      if(img.readyState == 2){
+        img_id.src = img.result;
+        $("#company-image").removeClass('company-none')
+      }
+    }
+      img.readAsDataURL(event.target.files[0]);
+  }
 
   window.onload = function mostrarOptions() {
     

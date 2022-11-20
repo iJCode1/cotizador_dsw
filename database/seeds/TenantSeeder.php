@@ -93,6 +93,18 @@ class TenantSeeder extends Seeder
         'telefono' => $_SESSION['phone'],
         'rol_id' => 1,
       ]);
+
+      DB::table('empresa')->insert([
+        'direccion' => $_SESSION['address'],
+        'codigo_postal' => $_SESSION['codigo_postal'],
+        'rfc' => $_SESSION['rfc'],
+        'imagen' => $_SESSION['imagen'],
+        'nombre_contacto' => $_SESSION['name_contact'],
+        'apellido_p' => $_SESSION['lastname1'],
+        'apellido_m' => $_SESSION['lastname2'],
+        'telefono' => $_SESSION['phone'],
+        'fqdn' => $_SESSION['fqdn'],
+      ]);
     }
   }
 }
