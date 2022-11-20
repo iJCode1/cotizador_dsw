@@ -160,6 +160,7 @@
 
 .rtable-item.rtable-id{
   font-weight: 600;
+  font-size: 1.2rem;
 }
 
 .rtable-abrev{
@@ -225,5 +226,11 @@
 
   .unit-second img{
     max-inline-size: 26rem;
+  }
+}
+
+@media screen and (min-width: 1024px){
+  .rtable-item.rtable-id{
+    font-size: 1.3rem;
   }
 }

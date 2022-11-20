@@ -220,7 +220,6 @@
   display: none;
 }
 
-
 .rtable-item.rtable-id{
   font-weight: 600;
 }
@@ -228,6 +227,10 @@
 @media screen and (min-width: 450px){
   .rtable-id{
     grid-column: 1 / 3;
+  }
+  
+  .rtable-item.rtable-id{
+    font-size: 1.2rem;
   }
   
   .rtable-name{
@@ -355,7 +358,10 @@
 }
 
 @media screen and (min-width: 1024px){
-
+  .rtable-item.rtable-id{
+    font-size: 1.3rem;
+  }
+  
   .rtable-id{
     grid-column: 1 / 2;
   }
