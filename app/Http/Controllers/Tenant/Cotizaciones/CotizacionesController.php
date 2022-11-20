@@ -428,11 +428,11 @@ class CotizacionesController extends Controller
 
       if ($this->tenantName === 'joele') {
 
-        $this->tenantEmailConfiguration($request, $pdf, $servicios, "joeldome17@gmail.com", "ecfzmowdugttsxaq", $fqdn);
+        $this->tenantEmailConfiguration($request, $pdf, $servicios, "joeldome17@gmail.com", "ecfzmowdugttsxaq", $fqdn, "gmail");
 
       } elseif($this->tenantName === 'compushop'){
         
-        $this->tenantEmailConfiguration($request, $pdf, $servicios, "joeldome17@gmail.com", "ecfzmowdugttsxaq", $fqdn);
+        $this->tenantEmailConfiguration($request, $pdf, $servicios, "joel_1999puma@hotmail.com", "pass", $fqdn, "outlook");
 
       }else {
 
@@ -455,30 +455,55 @@ class CotizacionesController extends Controller
    * desde donde se desean enviar las cotizaciones de cada tenant (empresa)
    * con estos datos aplica la nueva configuración para el correcto envío del email.
    */
-  public function tenantEmailConfiguration($request, $pdf, $servicios, $email, $password, $fqdn)
+  public function tenantEmailConfiguration($request, $pdf, $servicios, $email, $password, $fqdn, $proveedor)
   {
     // Copia del mailer actual
     $backup = Mail::getSwiftMailer();
 
-    // Definiendo el gmail mailer
-    $transport = new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl');
-    $transport->setUsername($email);
-    $transport->setPassword($password);
+    switch ($proveedor) {
+      case 'gmail':
+        // Definiendo el gmail mailer
+        $transport = new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl');
+        $transport->setUsername($email);
+        $transport->setPassword($password);
 
-    $gmail = new Swift_Mailer($transport);
+        $gmail = new Swift_Mailer($transport);
 
-    // Estableciendo el nuevo mailer
-    Mail::setSwiftMailer($gmail);
+        // Estableciendo el nuevo mailer
+        Mail::setSwiftMailer($gmail);
 
-    Mail::send('email.cotizacion', compact("servicios", "fqdn"), function ($mail) use ($pdf, $request, $email) {
-      $mail->from($email, '');
-      $mail->to($request->correoCliente);
-      $mail->subject("Cotización: $request->folio_cotizacion");
-      $mail->attachData($pdf->output(), 'cotizacion.pdf');
-    });
+        Mail::send('email.cotizacion', compact("servicios", "fqdn"), function ($mail) use ($pdf, $request, $email) {
+          $mail->from($email, '');
+          $mail->to($request->correoCliente);
+          $mail->subject("Cotización: $request->folio_cotizacion");
+          $mail->attachData($pdf->output(), 'cotizacion.pdf');
+        });
+        break;
+      case 'outlook':
+        // Definiendo el gmail mailer
+        $transport = new Swift_SmtpTransport('smtp-mail.outlook.com', 587, 'tls');
+        $transport->setUsername($email);
+        $transport->setPassword($password);
 
-    // Restaurando el mailer original
-    Mail::setSwiftMailer($backup);
+        $outlook = new Swift_Mailer($transport);
+
+        // Estableciendo el nuevo mailer
+        Mail::setSwiftMailer($outlook);
+
+        Mail::send('email.cotizacion', compact("servicios", "fqdn"), function ($mail) use ($pdf, $request, $email) {
+          $mail->from($email, '');
+          $mail->to($request->correoCliente);
+          $mail->subject("Cotización: $request->folio_cotizacion");
+          $mail->attachData($pdf->output(), 'cotizacion.pdf');
+        });
+        break;
+      default:
+        return;
+        break;
+
+      // Restaurando el mailer original
+      Mail::setSwiftMailer($backup);
+    }
   }
 
   /**
