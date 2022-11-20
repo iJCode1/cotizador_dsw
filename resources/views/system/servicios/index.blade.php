@@ -6,8 +6,8 @@
 
 @section('css')
   <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
-  <link href="{{ asset('css/servicios.css') }}" rel="stylesheet">
   <link href="{{ asset('css/table-responsive.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/servicios.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
