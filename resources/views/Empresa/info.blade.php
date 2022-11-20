@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+  <title>Empresa</title>
+@endsection
+
 @section('css')
   <link href="{{ asset('css/empresas.css') }}" rel="stylesheet">
   <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
@@ -10,7 +14,7 @@
   <div class="company-first">
     <div class="company-title">
       <img src="{{ asset('images/icons/icon-empresas_black.svg') }}" class="nav-icon" alt="Icono de empresas" title="Icono de empresas" width="24">
-      <h2>{{ __('Editar empresa') }}</h2>
+      <h2>{{ __('Empresa') }}</h2>
     </div>
   </div>
 

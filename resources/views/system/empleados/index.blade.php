@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+  <title>Empleados</title>
+@endsection
+
 @section('css')
   <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
   <link href="{{ asset('css/table-responsive.css') }}" rel="stylesheet">

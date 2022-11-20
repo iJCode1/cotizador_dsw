@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+  <title>Editar Unidad</title>
+@endsection
+
 @section('css')
   <link href="{{ asset('css/unidades.css') }}" rel="stylesheet">
   <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">

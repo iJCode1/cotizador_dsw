@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+  <title>Registrar Empresa</title>
+@endsection
+
 @section('css')
   <link href="{{ asset('css/empresas.css') }}" rel="stylesheet">
   <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">

@@ -1,5 +1,9 @@
 @extends('layouts.login')
 
+@section('title')
+  <title>Ingresar</title>
+@endsection
+
 @section('css')
   <link href="{{ asset('css/login.css') }}" rel="stylesheet">
 @endsection
