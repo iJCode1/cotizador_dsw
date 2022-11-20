@@ -28,7 +28,7 @@ class UnidadesDeMedidaController extends Controller
   public function index()
   {
     $unidades = Unidad_De_Medida::withTrashed()
-      ->get();
+      ->latest()->get();
 
     return view('system.unidades.index', [
       "unidades" => $unidades,

@@ -162,19 +162,38 @@
   font-weight: 600;
 }
 
-.rtable-id,
 .rtable-abrev{
-  flex: 1;
+  display: none;
 }
 
-.rtable-name,
-.rtable-abrev{
-  flex: 2;
+.rtable-id{
+  grid-column: 1/3;
+}
+
+.rtable-name{
+  grid-column: 3 / 9;
+}
+
+.rtable-actions{
+  grid-column: 9 / 13;
 }
 
 @media screen and (min-width: 425px){
   .rtable-link > .rtable-span{
     font-size: 1rem;
+  }
+  
+  .rtable-name{
+    grid-column: 3 / 7;
+  }
+
+  .rtable-abrev{
+    display: initial;
+    grid-column: 7 / 11;
+  }  
+  
+  .rtable-actions{
+    grid-column: 11 / 13;
   }
 }
 
