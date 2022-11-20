@@ -125,7 +125,7 @@
               </div>
             </div>
             <div class="service-image">
-              <img src="{{asset("images/productos_servicios/$empresa->imagen")}}" alt="Logo de la empresa" id="img_servicio" width="250">
+              <img src="{{asset("images/logotipos/$empresa->imagen")}}" alt="Logo de la empresa" id="img_servicio" width="250">
             </div>
           </div>
         @endif

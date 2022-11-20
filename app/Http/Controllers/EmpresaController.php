@@ -172,7 +172,7 @@ class EmpresaController extends Controller
       $file = $request->file('imagen'); // Se obtiene la imagen
       $img2 = null;
       if ($file != "") { // Si la imagen es diferente de vacio
-        $imgDestination = 'images/productos_servicios/';
+        $imgDestination = 'images/logotipos/';
         $img = $file->getClientOriginalName(); // Se obtiene el nombre de la imagen
         $img2 = time() . '-' . $img; // Se concatena el nombre de la imagen
         $request->file('imagen')->move($imgDestination, $img2);

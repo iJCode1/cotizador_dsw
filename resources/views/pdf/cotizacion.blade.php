@@ -50,7 +50,7 @@
     <tr>
       @if ($empresa->imagen !== null)
         <?php
-          $nombreImagen = "images/productos_servicios/$empresa->imagen";
+          $nombreImagen = "images/logotipos/$empresa->imagen";
           $imagenBase64 = "data:image/png;base64," . base64_encode(file_get_contents($nombreImagen));
         ?>
         <td align="top">

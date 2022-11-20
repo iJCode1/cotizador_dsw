@@ -55,5 +55,6 @@ Homestead.json
 
 
 public/images/productos_servicios/*
+public/images/logotipos/*
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#macOS,Laravel
