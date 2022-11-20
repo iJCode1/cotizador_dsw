@@ -67,9 +67,9 @@
               <div class="cardd-body">
                 <h2>Acciones</h2>
                 <div class="cardd-actions">
-                  <a href="{{ route('editarEmpresa', $empresa) }}" class="cardd-edit">
-                    <img src="{{ asset('images/icons/icon-edit.svg') }}" class="nav-icon" alt="Icono de editar" title="Editar" width="26">
-                    Editar
+                  <a href="{{ route('showEmpresa', $empresa) }}" class="cardd-edit">
+                    <img src="{{ asset('images/icons/icon-eye.svg') }}" class="nav-icon" alt="Icono de ver" title="Ver" width="26">
+                    Ver
                   </a>
                   @foreach ($websites as $website)
                     @if ($empresa->hostname->website_id === $website->id)

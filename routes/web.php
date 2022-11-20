@@ -56,6 +56,7 @@ Route::get('/empresa', [EmpresaController::class, 'altaEmpresa'])->name('altaEmp
 Route::post('/empresa/register', [EmpresaController::class, 'registrarEmpresa'])->name('registrarEmpresa');
 Route::get('/empresa/{id}/desactivar', [EmpresaController::class, 'desactivarEmpresa'])->name('desactivarEmpresa');
 Route::get('/empresa/{id}/activar', [EmpresaController::class, 'activateEmpresa'])->name('activateEmpresa');
+Route::get('/empresa/{id}/info', [EmpresaController::class, 'showEmpresa'])->name('showEmpresa');
 Route::get('/empresa/{id}/editar', [EmpresaController::class, 'editarEmpresa'])->name('editarEmpresa');
 Route::put('empresa/{id}', [EmpresaController::class, 'actualizarEmpresa'])->name('actualizarEmpresa');
 

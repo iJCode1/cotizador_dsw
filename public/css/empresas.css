@@ -69,6 +69,10 @@
   text-align: center;
 }
 
+.company-info{
+  margin-block-start: 2rem;
+}
+
 .company-cards{
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(290px, 360px));
@@ -138,6 +142,7 @@
   cursor: pointer;
   color: var(--black);
   font-weight: 400;
+  gap: .5rem;
 }
 
 .cardd-actions > a:hover{
@@ -273,6 +278,14 @@
 
 .form-cta:hover{
   background-color: var(--blue-20);
+}
+
+.form-cta.cta-back{
+  display: flex;
+  inline-size: max-content;
+  margin-left: auto;
+  margin-block-start: 3rem;
+  text-decoration: none;
 }
 
 .invalid-feedbackk{

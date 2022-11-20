@@ -116,17 +116,19 @@
           </div>
         </div>
 
-        <div class="register-data register-image">
-          <div class="data-body">
-            <img src="{{ asset('images/icons/icon-image.svg') }}" alt="" width="26">
-            <div class="register-input">
-              <label for="imagen">{{ __('Imagen') }}</label>
+        @if ($empresa->imagen !== null)
+          <div class="register-data register-image">
+            <div class="data-body">
+              <img src="{{ asset('images/icons/icon-image.svg') }}" alt="" width="26">
+              <div class="register-input">
+                <label for="imagen">{{ __('Logotipo') }}</label>
+              </div>
+            </div>
+            <div class="service-image">
+              <img src="{{asset("images/productos_servicios/$empresa->imagen")}}" alt="Logo de la empresa" id="img_servicio" width="250">
             </div>
           </div>
-          <div class="service-image">
-            <img src="{{asset("images/productos_servicios/$empresa->imagen")}}" alt="Logo de la empresa" id="img_servicio" width="250">
-          </div>
-        </div>
+        @endif
       </div>
     </div>
 

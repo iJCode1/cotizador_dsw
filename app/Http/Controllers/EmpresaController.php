@@ -258,6 +258,48 @@ class EmpresaController extends Controller
   }
 
   /**
+   * Función showEmpresa()
+   * Obtiene la información de la empresa de la que se quiere ver su información
+   */
+  public function showEmpresa($empresa)
+  {
+    $id = Auth::user()->id ?? 0; // ID del usuario logueado
+    // Consulta entre 2 tablas - Users y Roles
+    $user = User::join('roles', 'users.rol_id', '=', 'roles.rol_id')
+      ->select('users.name', 'roles.nombre_rol AS NombreRol')
+      ->where('users.id', "=", $id)
+      ->get();
+
+    $empresaFind = Empresa::find($empresa);
+    
+    // Consulta entre 2 tablas - Empresas y Hostames
+    $fqdn = Hostname::find($empresaFind->hostname_id);
+    
+    $municipioId = $empresaFind->municipio_id;
+    $municipios = Municipio::select('municipio_id', 'nombre', 'estado_id')
+    ->orderBy('estado_id')
+    ->orderBy('nombre', 'Asc')
+    ->get();
+    $municipioEmpresa = Municipio::find($municipioId);
+    $municipiosEmpresa = Municipio::where('estado_id', '=', $municipioEmpresa->estado_id)->get();
+
+    $estadoId = Estado::find($municipioEmpresa->estado_id);
+    $estados = Estado::all();
+    $estadoEmpresa = $estadoId->nombre;
+    
+    return view('Empresa.info', [
+      'empresa' => $empresaFind,
+      'user' => $user,
+      'fqdn' => $fqdn->fqdn,
+      'municipios' => $municipios,
+      'estados' => $estados,
+      'municipioEmpresa' => $municipioEmpresa,
+      'municipiosEmpresa' => $municipiosEmpresa,
+      'estadoEmpresa' => $estadoEmpresa,
+    ]);
+  }
+
+  /**
    * Función editarEmpresa()
    * Obtiene la información de la empresa que se quiere editar
    * Obtiene los estados y municipios y se lo manda a la vista de Empresa.editar
