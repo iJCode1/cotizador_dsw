@@ -12,4 +12,5 @@
 
 @section('message')
   <p class="error-message">500: Error del servidor</p>
+  <p class="error-message message-small">Contacte al administrador</p>
 @endsection
