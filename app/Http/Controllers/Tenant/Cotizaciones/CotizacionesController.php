@@ -408,6 +408,7 @@ class CotizacionesController extends Controller
       ->get();
 
     if (count($servicios) > 0) {
+      $descuento_general = $servicios[0]->descuento_general;
       $subtotal = 0;
       $iva = 0;
       $total = 0;
@@ -415,10 +416,19 @@ class CotizacionesController extends Controller
       foreach($servicios as $servicio){
         $subtotal += ($servicio->precio_inicial - (($servicio->precio_inicial * $servicio->descuento)/100)) * $servicio->cantidad;
       }
-      $iva = round(($subtotal * 0.16), 2);
-      $total = round(($subtotal + $iva), 2);
       
-      $pdf = Pdf::loadView('pdf.cotizacion', compact("request", "servicios", "empresa", "cotizacion", "unidades", "subtotal", "iva", "total"));
+      $subtotal_inicial = round($subtotal, 2);
+
+      $_subtotal = $subtotal;
+      $subtotal = round($_subtotal, 2);
+
+      $_ahorro = $subtotal * $descuento_general / 100;
+      $_subtotal = $subtotal - $_ahorro;
+
+      $iva = round(($_subtotal * 0.16), 2);
+      $total = round(($_subtotal + $iva), 2);
+      
+      $pdf = Pdf::loadView('pdf.cotizacion', compact("request", "servicios", "empresa", "cotizacion", "unidades", "subtotal_inicial", "iva", "total"));
 
       /**
        * Al hacer la validación del tenant...

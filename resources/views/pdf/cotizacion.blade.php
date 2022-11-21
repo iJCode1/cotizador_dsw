@@ -134,7 +134,7 @@
       <tr>
         <td colspan="5"></td>
         <td align="right">Subtotal $</td>
-        <td align="right" style="background-color: #0B6FED; color: white;">{{ $subtotal }}</td>
+        <td align="right" style="background-color: #0B6FED; color: white;">{{ $subtotal_inicial }}</td>
       </tr>
       <tr>
         <td colspan="5"></td>
