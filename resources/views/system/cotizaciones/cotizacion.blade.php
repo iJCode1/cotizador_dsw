@@ -34,7 +34,7 @@
             @if ($usuario === "interno")
               <div class="inputs-search">
                 <div class="register-data">
-                  <img src="{{ asset('images/icons/icon-person_black.svg') }}" alt="" width="26">
+                  <img src="{{ asset('images/icons/icon-email.svg') }}" alt="" width="26">
                   <div class="register-input register-search">
                     <div class="input-group">
                       <label for="cliente">{{ __('Buscar cliente (por email)') }}</label>
@@ -127,7 +127,7 @@
     
             @if ($usuario === "cliente")
               <div class="register-data">
-                <img src="{{ asset('images/icons/icon-person_black.svg') }}" alt="" width="26">
+                <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
                 <div class="register-input">
                   <label for="cliente_id">{{ __('ID Cliente') }}</label>
                   <input id="cliente_id" readonly type="text" name="cliente_id" value="{{$cliente->cliente_id}}">
@@ -136,7 +136,7 @@
               </div>
     
               <div class="register-data">
-                <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
+                <img src="{{ asset('images/icons/icon-person_black.svg') }}" alt="" width="26">
                 <div class="register-input">
                   <label for="cliente">{{ __('Nombre Cliente') }}</label>
                   <input id="cliente" name="cliente" type="text" readonly value="{{$cliente->nombre}}">
@@ -156,7 +156,7 @@
               <div class="register-data">
                 <img src="{{ asset('images/icons/icon-email.svg') }}" alt="" width="26">
                 <div class="register-input">
-                  <label for="correoCliente">{{ __('Nombre Cliente') }}</label>
+                  <label for="correoCliente">{{ __('Email Cliente') }}</label>
                   <input id="correoCliente" type="email" readonly name="correoCliente" value="{{$cliente->email}}">
                   
                 </div>
@@ -325,7 +325,7 @@
   
           <div class="register-double">
             <div class="register-data">
-              <img src="{{ asset('images/icons/icon-servicios_black.svg') }}" alt="" width="26">
+              <img src="{{ asset('images/icons/icon-hash.svg') }}" alt="" width="26">
               <div class="register-input">
                 <label for="servicio_id">{{ __('ID') }}</label>
                 <input id="servicio_id" readonly type="text" name="servicio_id" value="{{old('servicio_id')}}">

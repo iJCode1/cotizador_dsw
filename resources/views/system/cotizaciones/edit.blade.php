@@ -37,23 +37,25 @@
   
             </div>
           </div>
-  
-          <div class="register-data"> 
-            <img src="{{ asset('images/icons/icon-person_black.svg') }}" alt="" width="26">
-            <div class="register-input">
-              <label>{{ __('Nombre Cliente') }}</label>
-              <p class="read-only">{{$cotizacion->cliente->nombre}}</p>
-              
+
+          <div class="register-double">
+            <div class="register-data"> 
+              <img src="{{ asset('images/icons/icon-person_black.svg') }}" alt="" width="26">
+              <div class="register-input">
+                <label>{{ __('Nombre Cliente') }}</label>
+                <p class="read-only">{{$cotizacion->cliente->nombre}}</p>
+                
+              </div>
             </div>
-          </div>
-  
-          <div class="register-data"> 
-            <img src="{{ asset('images/icons/icon-email.svg') }}" alt="" width="26">
-            <div class="register-input">
-              <label for="correoCliente">{{ __('Correo Cliente') }}</label>
-              <input class="data-readonly" id="correoCliente" type="text" name="correoCliente" value="{{old('correoCliente', $cotizacion->cliente->email)}}">
-              <p class="read-only">{{$cotizacion->cliente->email}}</p>
-              
+
+            <div class="register-data"> 
+              <img src="{{ asset('images/icons/icon-email.svg') }}" alt="" width="26">
+              <div class="register-input">
+                <label for="correoCliente">{{ __('Correo Cliente') }}</label>
+                <input class="data-readonly" id="correoCliente" type="text" name="correoCliente" value="{{old('correoCliente', $cotizacion->cliente->email)}}">
+                <p class="read-only">{{$cotizacion->cliente->email}}</p>
+                
+              </div>
             </div>
           </div>
         </div>
@@ -79,7 +81,7 @@
           <div class="register-data">
             <img src="{{ asset('images/icons/icon-descripcion.svg') }}" alt="" width="26">
             <div class="register-input">
-              <label for="descripcion">{{ __('Descripción del producto y/o servicio') }}</label>
+              <label for="descripcion">{{ __('Descripción de la cotización') }}</label>
               <textarea @if($usuario === "cliente") readonly @endif id="descripcion" name="descripcion" name="descripcion_cotizacion" rows="2" autofocus autocomplete="text" placeholder="La cotización contiene la solicitud de una Laptop Lenovo i7 para Julian desde la empresa...">{{ old('descripcion', preg_replace("[<br />]", "", $cotizacion->descripcion)) }}</textarea>
   
               @error('descripcion')
@@ -90,21 +92,23 @@
             </div>
           </div>
   
-          <div class="register-data"> 
-            <img src="{{ asset('images/icons/icon-clock.svg') }}" alt="" width="26">
-            <div class="register-input">
-              <label>{{ __('Fecha de creación') }}</label>
-              <p class="read-only">{{$cotizacion->fecha_creacion}}</p>
-              
+          <div class="register-double">
+            <div class="register-data"> 
+              <img src="{{ asset('images/icons/icon-clock.svg') }}" alt="" width="26">
+              <div class="register-input">
+                <label>{{ __('Fecha de creación') }}</label>
+                <p class="read-only">{{$cotizacion->fecha_creacion}}</p>
+                
+              </div>
             </div>
-          </div>
-  
-          <div class="register-data"> 
-            <img src="{{ asset('images/icons/icon-calendar.svg') }}" alt="" width="26">
-            <div class="register-input">
-              <label>{{ __('Vigencia (días)') }}</label>
-              <p class="read-only">{{$cotizacion->vigencia}}</p>
-              
+    
+            <div class="register-data"> 
+              <img src="{{ asset('images/icons/icon-calendar.svg') }}" alt="" width="26">
+              <div class="register-input">
+                <label>{{ __('Vigencia (días)') }}</label>
+                <p class="read-only">{{$cotizacion->vigencia}}</p>
+                
+              </div>
             </div>
           </div>
   
