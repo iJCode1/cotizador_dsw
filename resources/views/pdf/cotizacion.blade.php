@@ -36,6 +36,10 @@
       .subtd > h3{
         margin: 0;
       }
+
+      .subtd > p{
+        font-size: 12px;
+      }
   
       .th-customer{
         color: white;
