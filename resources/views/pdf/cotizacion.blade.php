@@ -48,7 +48,7 @@
 
   <table width="100%">
     <tr>
-      @if ($empresa->imagen !== null)
+      @if ($empresa->imagen !== "no-image.webp")
         <?php
           $nombreImagen = "images/logotipos/$empresa->imagen";
           $imagenBase64 = "data:image/png;base64," . base64_encode(file_get_contents($nombreImagen));
