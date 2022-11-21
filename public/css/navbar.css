@@ -3,6 +3,7 @@
   box-sizing: border-box;
   position: fixed;
   top: 0;
+  z-index: 15;
 }
 
 .navv.is-full{
@@ -111,7 +112,8 @@
   .navv{
     inline-size: auto;
     position: sticky;
-    block-size: 100vh;
+    min-block-size: 100vh;
+    block-size: auto;
   }
   
   .navv-menu{
