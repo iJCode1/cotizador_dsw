@@ -5279,6 +5279,7 @@ input[type=button].btn-block {
   padding-left: 0;
   list-style: none;
   border-radius: 0.25rem;
+  justify-content: flex-end;
 }
 
 .page-link {
@@ -5320,7 +5321,7 @@ input[type=button].btn-block {
 .page-item.active .page-link {
   z-index: 3;
   color: #fff;
-  background-color: #3490dc;
+  background-color: var(--primaryC);
   border-color: #3490dc;
 }
 

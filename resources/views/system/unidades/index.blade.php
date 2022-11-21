@@ -5,6 +5,7 @@
 @endsection
 
 @section('css')
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
   <link href="{{ asset('css/table-responsive.css') }}" rel="stylesheet">
   <link href="{{ asset('css/unidades.css') }}" rel="stylesheet">
@@ -110,6 +111,7 @@
           </div>
         </div>
         @endforeach
+        {{ $unidades->links() }}
       </div>
   </div>
   @endif

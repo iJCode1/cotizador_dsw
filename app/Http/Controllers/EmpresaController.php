@@ -61,7 +61,7 @@ class EmpresaController extends Controller
       ->where('users.id', "=", $id)
       ->get();
 
-    $empresas = Empresa::withTrashed()->get();
+    $empresas = Empresa::withTrashed()->latest()->get();
     $municipios = Municipio::all();
     $estados = Estado::all();
     $hostnames = Hostname::all();

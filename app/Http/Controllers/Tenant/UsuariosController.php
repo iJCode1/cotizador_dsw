@@ -37,7 +37,7 @@ class UsuariosController extends Controller
    */
   public function index()
   {
-    $usuarios = User::withTrashed()->latest()->get();
+    $usuarios = User::withTrashed()->latest()->paginate(10);
 
     return view('system.empleados.index', [
       'usuarios' => $usuarios,

@@ -5,6 +5,7 @@
 @endsection
 
 @section('css')
+  <link href="{{ asset('css/app.css') }}" rel="stylesheet">
   <link href="{{ asset('css/navbar.css') }}" rel="stylesheet">
   <link href="{{ asset('css/table-responsive.css') }}" rel="stylesheet">
   <link href="{{ asset('css/empleados.css') }}" rel="stylesheet">
@@ -80,6 +81,7 @@
           </div>
         </div>
         @endforeach
+        {{ $usuarios->links() }}
       </div>
   </div>
   @endif

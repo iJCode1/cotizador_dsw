@@ -37,7 +37,7 @@ class ServiciosController extends Controller
     $usuario = [];
     array_push($usuario, ['name' => Auth::user()->name, 'NombreRol' => Auth::user()->rol->nombre_rol]);
 
-    $productosServicios = Producto_Servicio::withTrashed()->where('nombre', 'LIKE', "%{$search}%")->latest()->get();
+    $productosServicios = Producto_Servicio::withTrashed()->where('nombre', 'LIKE', "%{$search}%")->latest()->paginate(10);
 
     return view('system.servicios.index', [
       'user' => $usuario,

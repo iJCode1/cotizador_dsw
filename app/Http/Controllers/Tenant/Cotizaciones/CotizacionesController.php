@@ -52,12 +52,12 @@ class CotizacionesController extends Controller
 
     if (Auth::guard('cliente')->check()) {
       $cliente_id = Auth::guard('cliente')->user()->cliente_id;
-      $cotizaciones = Cotizacion::where("cliente_id", "=", $cliente_id)->paginate(10);
+      $cotizaciones = Cotizacion::where("cliente_id", "=", $cliente_id)->latest()->paginate(10);
     }
 
     if (Auth::check()) {
       $user_id = Auth::user()->user_id;
-      $cotizaciones = Cotizacion::where("usuario_id", "=", $user_id)->paginate(10);
+      $cotizaciones = Cotizacion::where("usuario_id", "=", $user_id)->latest()->paginate(10);
     }
 
     return view('system.cotizaciones.index', [
