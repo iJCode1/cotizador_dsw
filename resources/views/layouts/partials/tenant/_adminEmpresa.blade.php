@@ -1,5 +1,12 @@
 <div id="navv-options" class="navv-options">
   <li class="navv-element">
+    <a href="{{ route('tenant.editarEmpresa') }}" class="navv-ancla">
+      <img src="{{ asset('images/icons/icon-company.svg') }}" class="navv-icon" alt="Icono de empresa" title="Empresa" width="32">
+      <span class="link-text">Empresa</span>
+    </a>
+  </li>
+
+  <li class="navv-element">
     <a href="{{ route('tenant.showServicios') }}" class="navv-ancla">
       <img src="{{ asset('images/icons/icon-servicios.svg') }}" class="navv-icon" alt="Icono de servicios" title="Servicios" width="32">
       <span class="link-text">Productos y/o Servicios</span>

@@ -168,9 +168,9 @@ class EmpresaController extends Controller
         ->withInput()
         ->withErrors($validator);
     } else {
-      // Se prepara la imágen para ser almacenada dentro de la carpeta 'images > productos_servicios/'
+      // Se prepara la imágen para ser almacenada dentro de la carpeta 'images > logotipos/'
       $file = $request->file('imagen'); // Se obtiene la imagen
-      $img2 = null;
+      $img2 = "no-image.webp";
       if ($file != "") { // Si la imagen es diferente de vacio
         $imgDestination = 'images/logotipos/';
         $img = $file->getClientOriginalName(); // Se obtiene el nombre de la imagen

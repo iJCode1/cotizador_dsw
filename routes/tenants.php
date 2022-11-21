@@ -4,6 +4,7 @@ use App\Http\Controllers\Tenant\Cliente\ClienteController;
 use App\Http\Controllers\Tenant\Cliente\LoginCustomerController;
 use App\Http\Controllers\Tenant\Cliente\RegisterCustomerController;
 use App\Http\Controllers\Tenant\Cotizaciones\CotizacionesController;
+use App\Http\Controllers\Tenant\Empresa\EmpresaController;
 use App\Http\Controllers\Tenant\ServiciosController;
 use App\Http\Controllers\Tenant\UnidadesDeMedidaController;
 use App\Http\Controllers\Tenant\UsuariosController;
@@ -47,6 +48,13 @@ Route::middleware(['web'])
     Route::put('/unidad/{unidad_id}', [UnidadesDeMedidaController::class, 'editUnidad'])->name('editUnidad');
     Route::get('/unidad/{unidad_id}/delete', [UnidadesDeMedidaController::class, 'deleteUnidad'])->name('deleteUnidad');
     Route::get('/unidad/{unidad_id}/activate', [UnidadesDeMedidaController::class, 'activateUnidad'])->name('activateUnidad');
+
+    /**
+     * Rutas de empresa para administrador
+     */
+    Route::get('/empresa', [EmpresaController::class, 'editarEmpresa'])->name('editarEmpresa');
+    Route::put('/empresa/{id}', [EmpresaController::class, 'actualizarEmpresa'])->name('actualizarEmpresa');
+
 
     /**
      * Rutas para clientes

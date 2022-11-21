@@ -335,6 +335,15 @@
   display: none;
 }
 
+.form-cta.cta-edit{
+  background-color: var(--yellow);
+  color: var(--black);
+}
+
+.form-cta.cta-edit:hover{
+  background-color: var(--yellow-10);
+}
+
 @media screen and (min-width: 500px){
   .company-first{
     justify-content: flex-start;

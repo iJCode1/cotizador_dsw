@@ -430,7 +430,7 @@ class CotizacionesController extends Controller
 
         $this->tenantEmailConfiguration($request, $pdf, $servicios, "joeldome17@gmail.com", "ecfzmowdugttsxaq", $fqdn, "gmail");
 
-      } elseif($this->tenantName === 'compushop'){
+      } elseif($this->tenantName === 'compushopp'){
         
         $this->tenantEmailConfiguration($request, $pdf, $servicios, "joel_1999puma@hotmail.com", "pass", $fqdn, "outlook");
 

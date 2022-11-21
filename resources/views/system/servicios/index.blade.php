@@ -163,6 +163,16 @@
   </script>
 @endif
 
+@if (session('editarE') === 'ok')
+  <script>
+    Swal.fire(
+      'Editado!',
+      'La empresa se ha editado correctamente!',
+      'success'
+    )
+  </script>
+@endif
+
 @if (session('eliminar') === 'ok')
   <script>
     Swal.fire(
