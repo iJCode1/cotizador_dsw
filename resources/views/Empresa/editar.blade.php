@@ -207,7 +207,7 @@
 
       </div>
     </div>
-    <button class="form-cta" type="submit">{{ __('Editar') }}</button>
+    <button class="form-cta" type="submit">{{ __('Actualizar') }}</button>
   </form>
 </div>
 @endsection
