@@ -274,6 +274,7 @@
 
 .form-cta.select-cta{
   border-radius: .5rem .5rem .5rem 0;
+  display: none;
 }
 
 .form-cta:active{

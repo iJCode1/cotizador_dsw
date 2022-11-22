@@ -275,6 +275,7 @@
                 <div class="input-group">
                   <label for="servicio">{{ __('Buscar Producto y/o Servicio') }}</label>
                   <input id="servicio" type="search" name="servicio" value="{{ old('servicio') }}" autocomplete="servicio" autofocus aria-label="Search">
+
                 </div>
                 <span class="input-group-btn">
                   <button type="button" id="selectServicio" class="form-cta select-cta">
@@ -580,6 +581,10 @@ $(document).ready(function () {
             return obj.email;
             response(data);
           });
+          $("#ui-id-1").click(function() {
+            $("#selectCliente").click()
+            $("#nombreCliente").focus();
+          })
           response(resp);
         }
       })
@@ -625,7 +630,11 @@ $(document).ready(function () {
             return obj.nombre;
             response(data);
           });
-          response(resp);
+          $("#ui-id-2").click(function() {
+            $("#selectServicio").click()
+            $("#servicio_id").focus();
+          })
+            response(resp);
         }
       })
     },
