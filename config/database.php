@@ -46,9 +46,9 @@ return [
     // Configuración de Tenancy
     'system' => [
       'driver' => 'mysql',
-      'host' => env('TENANCY_HOST', '127.0.0.1'),
-      'port' => env('TENANCY_PORT', '3306'),
-      'database' => env('TENANCY_DATABASE', 'cotizaciones_dsw'),
+      'host' => env('TENANCY_HOST', 'app-08d0b94a-fe54-4dba-9e85-6c433f25f25d-do-user-12971064-0.b.db.ondigitalocean.com'),
+      'port' => env('TENANCY_PORT', '25060'),
+      'database' => env('TENANCY_DATABASE', 'cotizaciones-dsw'),
       'username' => env('TENANCY_USERNAME', ''),
       'password' => env('TENANCY_PASSWORD', ''),
       'unix_socket' => env('DB_SOCKET', ''),
@@ -61,9 +61,9 @@ return [
 
     'tenant' => [
       'driver' => 'mysql',
-      'host' => env('TENANCY_HOST', '127.0.0.1'),
-      'port' => env('TENANCY_PORT', '3306'),
-      'database' => env('TENANCY_DATABASE', 'cotizaciones_dsw'),
+      'host' => env('TENANCY_HOST', 'app-08d0b94a-fe54-4dba-9e85-6c433f25f25d-do-user-12971064-0.b.db.ondigitalocean.com'),
+      'port' => env('TENANCY_PORT', '25060'),
+      'database' => env('TENANCY_DATABASE', 'cotizaciones-dsw'),
       'username' => env('TENANCY_USERNAME', ''),
       'password' => env('TENANCY_PASSWORD', ''),
       'unix_socket' => env('DB_SOCKET', ''),
@@ -97,9 +97,9 @@ return [
     'pgsql' => [
       'driver' => 'pgsql',
       'url' => env('DATABASE_URL'),
-      'host' => env('DB_HOST', '127.0.0.1'),
-      'port' => env('DB_PORT', '5432'),
-      'database' => env('DB_DATABASE', 'forge'),
+      'host' => env('DB_HOST', 'app-08d0b94a-fe54-4dba-9e85-6c433f25f25d-do-user-12971064-0.b.db.ondigitalocean.com'),
+      'port' => env('DB_PORT', '25060'),
+      'database' => env('DB_DATABASE', 'cotizaciones-dsw'),
       'username' => env('DB_USERNAME', 'forge'),
       'password' => env('DB_PASSWORD', ''),
       'charset' => 'utf8',
