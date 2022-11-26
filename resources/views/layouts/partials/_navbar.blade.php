@@ -3,11 +3,11 @@
     <div class="navv-menu">
       <li class="navv-element navv-hamburgerD">
         <img id="icon-hamburgerD" src="{{ asset('images/icons/icon-menu.svg') }}" class="navv-icon" alt="Menu" title="menu" width="32">
-        <p class="link-text">Cotizador</p>
+        <p class="link-text">Cotizacloud</p>
       </li>
       <li class="navv-element navv-hamburger">
         <img id="icon-hamburger" src="{{ asset('images/icons/icon-menu.svg') }}" class="navv-icon" alt="Menu" title="menu" width="32">
-        <p>Cotizador</p>
+        <p>Cotizacloud</p>
       </li>
       {{-- <div id="nav-options" class="nav-options">
         <li class="nav-element">

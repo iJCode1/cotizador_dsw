@@ -100,7 +100,7 @@ class EmpresaController extends Controller
       ->orderBy('nombre', 'Asc')
       ->get();
 
-    return view('Empresa.altaEmpresa')
+    return view('Empresa.altaempresa')
       ->with('estados', $estados)
       ->with('municipios', $municipios)
       ->with('user', $user);
